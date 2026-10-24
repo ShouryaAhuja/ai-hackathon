@@ -20,11 +20,13 @@ describe('recorder — computeVerdict', () => {
     expect(computeVerdict('ILoveYou', 'ILoveYou')).toBe('correct')
     expect(computeVerdict('Thumb_Up', 'Thumb_Up')).toBe('correct')
     expect(computeVerdict('Thumb_Down', 'Thumb_Down')).toBe('correct')
+    expect(computeVerdict('Closed_Fist', 'Closed_Fist')).toBe('correct')
   })
 
   it('returns "neutral" when true gesture was intentional but prediction is NEUTRAL', () => {
     expect(computeVerdict('Open_Palm', 'NEUTRAL')).toBe('neutral')
     expect(computeVerdict('Pointing_Up', 'NEUTRAL')).toBe('neutral')
+    expect(computeVerdict('Closed_Fist', 'NEUTRAL')).toBe('neutral')
     expect(computeVerdict('Victory', '')).toBe('neutral')
   })
 
@@ -32,6 +34,7 @@ describe('recorder — computeVerdict', () => {
     expect(computeVerdict('Open_Palm', 'Pointing_Up')).toBe('incorrect')
     expect(computeVerdict('Victory', 'Thumb_Up')).toBe('incorrect')
     expect(computeVerdict('Thumb_Up', 'Thumb_Down')).toBe('incorrect')
+    expect(computeVerdict('Closed_Fist', 'Open_Palm')).toBe('incorrect')
   })
 
   it('handles "None" / no-gesture condition properly', () => {

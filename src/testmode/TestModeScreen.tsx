@@ -60,6 +60,7 @@ export default function TestModeScreen({
   // Test configuration state
   const [trueGesture, setTrueGesture] = useState<TrueGesture>('Open_Palm')
   const [condition, setCondition] = useState<ConditionTag>('C1_baseline')
+  const [evalScope, setEvalScope] = useState<'full' | 'fast'>('full')
   const [sessionId] = useState<string>(() => {
     const d = new Date()
     return `session-${d.toISOString().slice(0, 10).replace(/-/g, '')}-${d.toTimeString().slice(0, 8).replace(/:/g, '')}`
@@ -321,6 +322,54 @@ export default function TestModeScreen({
       )}
 
       {/* ------------------------------------------------------------------ */}
+      {/* Protocol Scope Selector (PRE-COLLECTION-FIX Task C)                 */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl" aria-hidden="true">
+            ⏱️
+          </span>
+          <div>
+            <h3 className="font-bold text-white text-base">
+              Evaluation Protocol Scope
+            </h3>
+            <p className="text-xs text-slate-400">
+              {evalScope === 'full'
+                ? 'Full evaluation: 10 trials × 4 conditions (C1–C4) across gestures'
+                : 'Time-boxed fallback: 10 trials × 2 conditions (C1 baseline & C4 cluttered)'}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setEvalScope('full')}
+            className={[
+              'px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border-2',
+              evalScope === 'full'
+                ? 'bg-teal-500 text-slate-950 border-teal-300 shadow-md'
+                : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700',
+            ].join(' ')}
+          >
+            Full Protocol (C1–C4)
+          </button>
+          <button
+            type="button"
+            onClick={() => setEvalScope('fast')}
+            className={[
+              'px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border-2',
+              evalScope === 'fast'
+                ? 'bg-teal-500 text-slate-950 border-teal-300 shadow-md'
+                : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700',
+            ].join(' ')}
+          >
+            Fast Fallback (C1 &amp; C4)
+          </button>
+        </div>
+      </div>
+
+      {/* ------------------------------------------------------------------ */}
       {/* 1. Trial Configuration Panel: True Gesture & Condition Tag          */}
       {/* ------------------------------------------------------------------ */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -415,9 +464,18 @@ export default function TestModeScreen({
                     >
                       {c.label}
                     </span>
-                    {isSelected && (
-                      <span className="text-teal-400 text-xs">✓ Active</span>
-                    )}
+                    <div className="flex items-center gap-1.5">
+                      {evalScope === 'fast' &&
+                        (c.value === 'C1_baseline' ||
+                          c.value === 'C4_cluttered') && (
+                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-300 border border-teal-500/40 font-bold">
+                            ⚡ Fast Scope
+                          </span>
+                        )}
+                      {isSelected && (
+                        <span className="text-teal-400 text-xs">✓ Active</span>
+                      )}
+                    </div>
                   </div>
                   <p className="text-slate-400 text-xs leading-snug">
                     {c.description}

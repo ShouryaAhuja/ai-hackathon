@@ -12,6 +12,7 @@ export type TrueGesture =
   | 'Thumb_Up'
   | 'Thumb_Down'
   | 'ILoveYou'
+  | 'Closed_Fist'
   | 'None'
 
 export type ConditionTag =
@@ -33,6 +34,7 @@ export const TRUE_GESTURE_OPTIONS: TrueGestureOption[] = [
   { value: 'ILoveYou', label: 'I-Love-You', emoji: '🤟', action: 'Help' },
   { value: 'Thumb_Up', label: 'Thumb Up', emoji: '👍', action: 'Confirm' },
   { value: 'Thumb_Down', label: 'Thumb Down', emoji: '👎', action: 'Back' },
+  { value: 'Closed_Fist', label: 'Closed Fist', emoji: '✊', action: 'Lock' },
   { value: 'None', label: 'No Gesture', emoji: '🚫', action: 'None / Other' },
 ]
 
