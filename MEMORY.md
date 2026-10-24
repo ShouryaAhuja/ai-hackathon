@@ -5,8 +5,8 @@
 ## 1. Current status
 - **Phase:** 0 - Setup + Go/No-Go
 - **Selected problem:** **Q15 Gesture-Based Interface (conditional on T0.8 Go/No-Go)**. Fallback: Q19 Water Quality (or Q11).
-- **Last completed task:** pre-Q15 skeleton (repo, scaffold, Pages deploy verified)
-- **Next task:** T0.5
+- **Last completed task:** T0.5 (self-hosted MediaPipe WASM + gesture_recognizer.task)
+- **Next task:** T0.6
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/  - **Last known-good tag:** none
 
@@ -57,6 +57,7 @@
 - [ ] Report file  - [ ] PPT  - [ ] Demo link/video  - [ ] Repo link  - [ ] Submitted before deadline (time: ASSUME 25 Oct 9:00 AM — owner to confirm exact deadline/format on Teams before 5 PM)
 
 ## 8. Session log
+- `24 Oct 17:38` T0.5: Installed @mediapipe/tasks-vision, copied WASM files to public/mediapipe/, downloaded official gesture_recognizer.task model (7.98MB). Added Section 11 Night protocol.
 - `24 Oct` Docs rewritten for Q15. Awaiting Phase 0.
 
 ## 9. Open questions
@@ -67,3 +68,12 @@
 ## 10. Next actions for the agent
 1. Do Phase 0 in order; stop at T0.8 and report Go/No-Go evidence.
 2. Never skip the live-URL check; never claim a gesture works without testing it.
+
+## 11. Night protocol (24-25 Oct)
+1. **SAFETY TAGS:** after every completed task create git tag `wip-<HHMM>` (24h local) and run `git push --tags`. Rollback = one command if something breaks.
+2. **PARALLEL DELIVERABLES:** after T0.9, while owner tests on localhost, draft `docs/REPORT.md` skeleton (Problem & users, Architecture, Implementation, [RESULTS - placeholder], Responsible AI, SDG alignment, Implemented vs future work). Fill everything except results. Never block build tasks for this.
+3. **EVALUATION SCOPE (owner decision):** 10 trials per gesture, 4 conditions (C1 baseline, C2 dim, C3 backlit, C4 cluttered). C5 distance and C6 second person only if time allows. State exactly what was tested.
+4. **VIDEO:** when `v0.1-demo-safe` is tagged, owner records rough 2-min backup demo on phone.
+5. **STALL RULE:** if a task stalls more than 15 minutes, STOP and report instead of trying more approaches.
+6. **EXPLAIN-BACK:** after each task, report "What I built in plain English" (3-5 sentences) + "What would break if this module were removed" (1-2 sentences).
+7. **TAG HYGIENE:** after the event, delete all `wip-*` tags (local + remote). Keep only `v*` milestone tags.

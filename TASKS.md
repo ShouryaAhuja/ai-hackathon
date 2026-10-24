@@ -9,7 +9,7 @@ Deadline anchor: work backwards from the **official submission time (confirm: li
 - [x] T0.2 Copy docs into repo root; `.gitignore` (node, python, `.env*`, `ml/data/raw/`); MIT licence; commit (done in pre-Q15 skeleton, verified live)
 - [x] T0.3 Scaffold Vite + React + TS + Tailwind; `base: '/<repo>/'`; ESLint/Prettier; commit (done in pre-Q15 skeleton, verified live)
 - [x] T0.4 GitHub Actions deploy workflow; push "Hello"; **(you) verify live URL in incognito** (done in pre-Q15 skeleton, verified live)
-- [ ] T0.5 Download MediaPipe model + WASM into `public/mediapipe/` (follow current docs); commit — TIP: WASM files ship inside the npm package; copy from node_modules/@mediapipe/tasks-vision/wasm/ into public/mediapipe/. Only the .task model file needs a one-time download.
+- [x] T0.5 Download MediaPipe model + WASM into `public/mediapipe/` (follow current docs); commit — TIP: WASM files ship inside the npm package; copy from node_modules/@mediapipe/tasks-vision/wasm/ into public/mediapipe/. Only the .task model file needs a one-time download.
 - [ ] T0.6 Minimal page: camera on, mirrored preview, live `label + score` text via GestureRecognizer
 - [ ] T0.7 Deploy; open **live URL**; test the 5 gestures (and Network -> Offline reload)
 - [ ] **T0.8 GO/NO-GO (30 min max):** GO if live URL runs, camera works, >= 4 of 5 gestures recognised clearly in your room. NO-GO -> switch to Q19 (tell me; I'll regenerate docs). Log decision in `MEMORY.md`
