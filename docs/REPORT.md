@@ -101,28 +101,55 @@ The gesture mapping was frozen prior to formal empirical evaluation per PRD Sect
 
 ## 4. Quantitative Evaluation & Results
 
-```
-[RESULTS - PLACEHOLDER]
-This section will be populated directly from empirical trial data collected via AirTouch Test Mode (src/testmode/)
-and evaluated through ml/analyze.py.
+### 4.1 Empirical Evaluation Overview
+AirTouch was formally evaluated across **324 unique trials** using the built-in Test Mode (`src/testmode/`), and quantitatively analyzed using `ml/analyze.py`. In compliance with the frozen evaluation protocol, the operating threshold was held strictly at `SCORE_THRESHOLD = 0.70`.
 
-Evaluation Protocol:
-- Benchmark across four distinct environmental conditions:
-  • C1: Baseline (optimal indoor lighting, plain background)
-  • C2: Dim Light (low ambient illuminance)
-  • C3: Backlit (strong backlight / silhouette)
-  • C4: Cluttered (complex background with dynamic movement)
-- Performance metrics evaluated per condition and per gesture:
-  • True Positive Rate / Precision / Recall / F1-Score
-  • Abstention Rate (percentage of frames safely mapped to NEUTRAL)
-  • False Trigger Rate (accidental actions fired during non-gesture sessions)
-  • Mean Inference Frame Latency (target < 30ms)
-- Quantitative artifacts to be embedded:
-  • docs/per_class.csv
-  • docs/confusion_matrix.png
-  • docs/condition_table.csv
-  • docs/threshold_curve.png
-```
+Testing was conducted across four distinct, realistic environmental conditions rather than idealized laboratory settings:
+- **C1 (Baseline):** Normal indoor light with mild background clutter (newspapers on desk).
+- **C2 (Dim Light):** Overhead lighting turned off, low ambient light level.
+- **C3 (Backlit):** Desk lamp positioned directly behind the user, generating high optical contrast and hand silhouettes.
+- **C4 (Heavy Clutter):** Complex, layered background containing newspapers, boxes, and clothing.
+- **Handedness & Orientation:** Alternating left/right hand in C1–C2, consistent dominant hand in C3–C4. Victory was tested with front-facing palmar orientation.
+
+### 4.2 Overall Performance Summary
+- **Total Unique Trials:** 324
+- **Overall System Accuracy:** **78.70%** (255 / 324 correct)
+- **Neutral Abstention Rate:** **21.30%** (69 / 324 safely abstained)
+- **Misclassification Rate:** **0.00%** (0 false activations)
+- **Total False Triggers:** **0**
+- **False-Trigger Rate:** **0.00 triggers / minute** (evaluated across 40 No-Gesture trials / 200 seconds total observation)
+- **Mean Frame Inference Latency:** **93.3 ms**
+
+### 4.3 Condition Breakdown Table (`docs/condition_table.csv`)
+
+| Environmental Condition | Total Trials | Correct | Neutral (Abstained) | Errors | False Triggers | Accuracy (%) | Neutral Rate (%) | Mean Latency |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **C1: Baseline (mild clutter)** | 80 | 64 | 16 | 0 | 0 | **80.0%** | 20.0% | 94.6 ms |
+| **C2: Dim Light** | 84 | 74 | 10 | 0 | 0 | **88.1%** | 11.9% | 95.9 ms |
+| **C3: Backlit (lamp silhouette)** | 80 | 48 | 32 | 0 | 0 | **60.0%** | 40.0% | 88.5 ms |
+| **C4: Heavy Clutter** | 80 | 69 | 11 | 0 | 0 | **86.2%** | 13.8% | 94.0 ms |
+| **ALL CONDITIONS (Combined)** | **324** | **255** | **69** | **0** | **0** | **78.7%** | **21.3%** | **93.3 ms** |
+
+### 4.4 Per-Class Precision, Recall & F1-Score (`docs/per_class.csv`)
+
+| Gesture Class | Kiosk Action | Precision | Recall | F1-Score | Support | Abstentions | Notes |
+|---|---|:---:|:---:|:---:|:---:|:---:|---|
+| `Open_Palm` | Home | 1.000 | 0.302 | **0.464** | 43 | 30 | **Weakest gesture**: raw scores clustered at 0.53–0.69 |
+| `Pointing_Up` | Schedule | 1.000 | 0.775 | **0.873** | 40 | 9 | Robust; occasional silhouette dropout in C3 |
+| `Victory` | Campus Map | 1.000 | 0.925 | **0.961** | 40 | 3 | High reliability when palm faces lens |
+| `Thumb_Up` | Confirm | 1.000 | 0.600 | **0.750** | 40 | 16 | C3 backlight occluded thumb silhouette |
+| `Thumb_Down` | Back | 1.000 | 0.750 | **0.857** | 40 | 10 | High precision; C3 backlighting caused abstentions |
+| `ILoveYou` | Help | 1.000 | 1.000 | **1.000** | 41 | 0 | **Strongest gesture**: 100% precision & recall across all conditions |
+| `Closed_Fist` | Lock | 1.000 | 0.975 | **0.987** | 40 | 1 | Exceptional clutter and dim-light resistance |
+| `None` (Idle) | Neutral | 0.367 | 1.000 | **0.537** | 40 | 0 | 100% safe rejection (40/40 trials stayed neutral) |
+| **Macro Average** | — | **0.921** | **0.791** | **0.804** | 324 | 69 | — |
+| **Weighted Average** | — | **0.922** | **0.787** | **0.801** | 324 | 69 | — |
+
+### 4.5 Key Observations & Threshold Sensitivity
+1. **Zero Accidental Actions:** Across all 324 trials and 40 No-Gesture trials, the three-stage filter (0.70 threshold + 7-frame smoothing + 800ms dwell) achieved **zero false triggers**.
+2. **First-Class Neutral State:** When recognition degraded in C3 (backlit condition), the system safely abstained 40.0% of trials into `NEUTRAL`, never triggering an unintended navigation.
+3. **Threshold Sensitivity Analysis:** Plotting performance across operating thresholds ($0.50 \le \tau \le 0.90$, see `docs/threshold_curve.png`) demonstrated that lowering the threshold from 0.70 to 0.60 boosts overall accuracy to **91.7%** (abstentions drop to 8.0%) with only a 0.3% error rate. In adherence to scientific rigor, the threshold was maintained at 0.70 in `src/config.ts`.
+4. **Detailed Failure Analysis:** See [docs/FAILURE_ANALYSIS.md](file:///d:/work/AI_Hackathon/docs/FAILURE_ANALYSIS.md) for root-cause analyses on `Open_Palm` sub-threshold clustering, C3 backlight silhouette blindness, thumb occlusions, and Victory angle sensitivity.
 
 ---
 

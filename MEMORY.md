@@ -3,13 +3,13 @@
 > Read first every session. Update after every task. Newest entries first in logs.
 
 ## 1. Current status
-- **Phase:** 3 - Test mode + evaluation
+- **Phase:** 3 Complete — Evaluation Milestone Reached (`v0.2-evaluated`)
 - **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
-- **Last completed task:** T3.6 (Write docs/FAILURE_ANALYSIS.md from real outputs)
-- **Next task:** T3.7 (Update MEMORY.md evaluation tracking, fill [RESULTS] in docs/REPORT.md, tick TASKS.md, tag v0.2-evaluated)
+- **Last completed task:** T3.7 (Tag v0.2-evaluated, fill [RESULTS] in docs/REPORT.md, complete evaluation tracking in MEMORY.md)
+- **Next task:** T5.1 (Feature freeze & deliverables: README, PPT, demo recording) or Phase 4 depth upgrade
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/
-- **Last known-good tag:** v0.1-demo-safe
+- **Last known-good tag:** v0.2-evaluated
 
 ## 2. Project facts
 - **Event:** VIT AI Innovate-A-Thon (School of CSE & IS, Dept. of Cybersecurity and Intelligent Systems)
@@ -77,6 +77,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `25 Oct 00:24` T3.7: Completed Phase 3 evaluation milestone. Filled Section 4 [RESULTS] in docs/REPORT.md with verified condition breakdown, per-class metrics, false trigger analysis, and threshold trade-offs. Updated evaluation tracking in MEMORY.md. Ticked TASKS.md. Tagged milestone release `v0.2-evaluated` and pushed.
 - `25 Oct 00:22` T3.6: Authored docs/FAILURE_ANALYSIS.md analyzing 5 concrete, data-backed failure modes from 324 real trials: (1) Open_Palm sub-threshold clustering at 0.53-0.69, (2) C3 backlight silhouette blindness, (3) thumb joint occlusion in Thumb_Up/Down, (4) Victory palmar vs dorsal orientation sensitivity, and (5) the 0.70 vs 0.60 threshold safety trade-off. Grounded in owner's real environmental conditions with zero invented numbers.
 - `25 Oct 00:20` T3.5: Verified all 4 evaluation artifacts in docs/ (per_class.csv, confusion_matrix.png, condition_table.csv, threshold_curve.png) at frozen 0.70 threshold. Computed empirical sensitivity: 0.50=93.5% acc (0.3% err), 0.60=91.7% acc (0.3% err), 0.70=78.7% acc (0.0% err), 0.80=63.6% acc (0.0% err). Retained frozen 0.70 threshold in src/config.ts per protocol; documented trade-off in MEMORY.md for oral presentation.
 - `25 Oct 00:19` T3.4: Computed false-trigger rates from 40 No-Gesture trials (triggers_fired column). Results: C1=0/50s (0.00/min), C2=0/50s (0.00/min), C3=0/50s (0.00/min), C4=0/50s (0.00/min), overall=0 triggers across 200s (3.33 min) of observation -> 0.00 false triggers/min. Proves the 800ms dwell + 7-frame smoothing + 0.70 threshold completely prevented accidental kiosk actions during non-gesture movement.

@@ -38,7 +38,7 @@ Deadline anchor: work backwards from the **official submission time (confirm: li
 - [x] T3.4 False-trigger evaluation: 40 No-Gesture trials (200s total) -> 0 accidental triggers (0.00 triggers/min)
 - [x] T3.5 Threshold evaluation: verified 4 artifacts in docs/ at frozen 0.70 threshold; recorded sensitivity trade-off in MEMORY.md
 - [x] T3.6 Write failure analysis: docs/FAILURE_ANALYSIS.md written with 5 concrete real failure modes and trade-offs
-- [ ] T3.7 Tag `v0.2-evaluated`
+- [x] T3.7 Tag `v0.2-evaluated`, update MEMORY.md evaluation tracking and docs/REPORT.md results
 
 ## Phase 4 - Depth upgrade (ONLY if Phases 2-3 done and time remains; target <= 2 h)
 - [ ] T4.1 "Record samples" mode -> landmarks CSV (no images)
