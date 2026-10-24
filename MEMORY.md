@@ -5,8 +5,8 @@
 ## 1. Current status
 - **Phase:** 2 - Core build (MVP)
 - **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
-- **Last completed task:** T2.5 (UI feedback: ConfidenceMeter, DwellRing, NeutralBanner)
-- **Next task:** T2.6 (Manual parity: buttons for every action, >= 72px tall, camera-off/denied friendly states)
+- **Last completed task:** T2.6 (Manual parity: buttons for every action, >= 72px tall, camera-off/denied friendly states)
+- **Next task:** T2.7 (Idle/lock behaviour: Closed_Fist toggle, camera on/off, privacy notice)
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/
 - **Last known-good tag:** v0.0-skeleton
@@ -68,6 +68,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `24 Oct 19:05` T2.6: Implemented full manual parity per DESIGN.md §12. All 6 actions (Home, Schedule, Map, Help, Back, Confirm) rendered on every screen via a dedicated navigation bar with buttons >= 72px tall and keyboard shortcuts indicated. Contextual Back/Confirm buttons on all screens also >= 72px tall. Camera-off and permission-denied states display reassuring guidance banners while manual mode remains 100% operational. Unit tests expanded (47/47 pass).
 - `24 Oct 18:59` T2.5: Built UI feedback suite per DESIGN.md §3/§12: ConfidenceMeter (live bar + %, teal-500 fill, amber when < 0.70 threshold), DwellRing (circular SVG filling over 800ms using dwellProgress), NeutralBanner (amber feedback on uncertain state), CameraPreview (mirrored in corner with canvas landmark overlay drawn without React re-render per frame and toggleable landmarks), and integrated status strip at bottom. Lint/format/tests clean (46/46).
 - `24 Oct 18:42` MAP-AMEND-1: Pre-evaluation gesture map amendment: ILoveYou -> Help added as 6th gesture across PRD.md, config.ts, actions.ts, KioskShell legend, with unit tests in decision.test.ts and actions.test.ts.
 - `24 Oct 18:28` T2.4: Wired DecisionEngine into App.tsx frame loop and connected emitted GestureEvents to kioskReducer. Mapped KioskAction compatibility in actions.ts, keyboard shortcuts and gestures unified under one dispatcher. 44/44 unit tests pass, lint passes, build passes.

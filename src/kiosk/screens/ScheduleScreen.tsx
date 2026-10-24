@@ -1,6 +1,6 @@
 /**
- * ScheduleScreen.tsx — Campus event schedule (T2.3)
- * Synthetic, realistic VIT event data.
+ * ScheduleScreen.tsx — Campus event schedule (T2.3, T2.6 manual parity)
+ * Large, accessible typography, buttons >= 72px tall.
  */
 import { Action } from '../actions'
 
@@ -57,27 +57,47 @@ const EVENTS = [
 
 export default function ScheduleScreen({ onDispatch }: Props) {
   return (
-    <section className="min-h-full p-8 max-w-4xl mx-auto">
-      {/* Header row */}
-      <div className="flex items-center justify-between mb-8">
+    <section className="min-h-full p-8 max-w-4xl mx-auto flex flex-col gap-6">
+      {/* Header row with buttons >= 72px tall */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2
             className="font-extrabold text-white leading-none"
-            style={{ fontSize: 'clamp(40px, 5vw, 56px)' }}
+            style={{ fontSize: 'clamp(36px, 5vw, 52px)' }}
           >
             Today&rsquo;s Schedule
           </h2>
-          <p className="mt-1 text-slate-400" style={{ fontSize: '24px' }}>
-            {TODAY}
-          </p>
+          <p className="mt-2 text-slate-400 text-2xl">{TODAY}</p>
         </div>
-        <button
-          type="button"
-          onClick={() => onDispatch(Action.BACK)}
-          className="px-5 py-3 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 text-lg font-semibold transition-colors"
-        >
-          ← Back
-        </button>
+
+        {/* Action buttons >= 72px tall */}
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <button
+            type="button"
+            onClick={() => onDispatch(Action.BACK)}
+            className="min-h-[72px] flex-1 sm:flex-initial px-6 py-4 rounded-2xl bg-slate-800 hover:bg-slate-700 border-2 border-slate-700 text-white text-xl font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
+            aria-label="Go back to previous screen"
+          >
+            <span>←</span>
+            <span>Back</span>
+            <kbd className="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-0.5 rounded border border-slate-700">
+              Esc
+            </kbd>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onDispatch(Action.CONFIRM)}
+            className="min-h-[72px] flex-1 sm:flex-initial px-6 py-4 rounded-2xl bg-teal-600 hover:bg-teal-500 border-2 border-teal-400 text-white text-xl font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-teal-500/20"
+            aria-label="Confirm current selection"
+          >
+            <span>✓</span>
+            <span>Confirm</span>
+            <kbd className="text-xs font-mono bg-teal-800 text-teal-100 px-2 py-0.5 rounded border border-teal-600">
+              ↵ Enter
+            </kbd>
+          </button>
+        </div>
       </div>
 
       {/* Event list */}
@@ -85,23 +105,23 @@ export default function ScheduleScreen({ onDispatch }: Props) {
         {EVENTS.map(({ time, venue, title, tag, tagColor }) => (
           <li
             key={title}
-            className="flex gap-5 items-start bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-slate-600 transition-colors"
+            className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start sm:items-center bg-slate-900 border-2 border-slate-800 rounded-2xl p-6 hover:border-slate-600 transition-colors"
           >
             {/* Time column */}
-            <div className="shrink-0 w-36 text-right">
+            <div className="shrink-0 w-36 sm:text-right">
               <span
                 className="font-mono text-teal-400 font-semibold"
                 style={{ fontSize: '20px' }}
               >
                 {time.split('–')[0].trim()}
               </span>
-              <span className="block text-slate-500 font-mono text-base">
+              <span className="block text-slate-400 font-mono text-base">
                 – {time.split('–')[1].trim()}
               </span>
             </div>
 
             {/* Divider */}
-            <div className="w-px bg-slate-700 self-stretch shrink-0" />
+            <div className="hidden sm:block w-px bg-slate-700 self-stretch shrink-0" />
 
             {/* Content */}
             <div className="flex-1 min-w-0">

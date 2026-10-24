@@ -152,6 +152,18 @@ describe('keyToAction', () => {
     expect(keyToAction('l')).toBe(Action.LOCK)
   })
 
+  it('maps uppercase and single letter shortcuts', () => {
+    expect(keyToAction('H')).toBe(Action.HOME)
+    expect(keyToAction('S')).toBe(Action.SCHEDULE)
+    expect(keyToAction('M')).toBe(Action.MAP)
+    expect(keyToAction('L')).toBe(Action.LOCK)
+    expect(keyToAction('b')).toBe(Action.BACK)
+    expect(keyToAction('B')).toBe(Action.BACK)
+    expect(keyToAction('c')).toBe(Action.CONFIRM)
+    expect(keyToAction('C')).toBe(Action.CONFIRM)
+    expect(keyToAction('/')).toBe(Action.HELP)
+  })
+
   it('returns null for unmapped key', () => {
     expect(keyToAction('x')).toBeNull()
   })

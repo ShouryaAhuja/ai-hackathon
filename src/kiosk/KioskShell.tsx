@@ -1,6 +1,11 @@
 /**
- * KioskShell.tsx — Main kiosk layout with integrated feedback status strip (T2.3, T2.5)
- * Follows DESIGN.md §3, §4, §12.
+ * KioskShell.tsx — Main kiosk layout (T2.3, T2.5, T2.6 manual parity)
+ *
+ * Manual parity guarantees:
+ *  - Visible buttons for EVERY action on EVERY screen (Home, Schedule, Map, Help, Back, Confirm)
+ *  - All buttons >= 72px tall per DESIGN.md §12
+ *  - Keyboard shortcuts working for every action
+ *  - Friendly states for camera-off and permission-denied
  */
 
 import { useEffect, useCallback } from 'react'
@@ -23,7 +28,66 @@ export interface DetectionInfo {
 }
 
 // ---------------------------------------------------------------------------
-// Gesture legend data (DESIGN.md §12: always visible, all 6 gestures + Lock)
+// All 6 Primary Actions with full manual parity (DESIGN.md §12: buttons >= 72px)
+// ---------------------------------------------------------------------------
+const PRIMARY_ACTIONS: {
+  label: string
+  action: Action
+  screen?: string
+  icon: string
+  key: string
+  hint: string
+}[] = [
+  {
+    label: 'Home',
+    action: Action.HOME,
+    screen: 'home',
+    icon: '🏠',
+    key: 'H',
+    hint: 'Go to main screen',
+  },
+  {
+    label: 'Schedule',
+    action: Action.SCHEDULE,
+    screen: 'schedule',
+    icon: '📅',
+    key: 'S',
+    hint: 'View campus events',
+  },
+  {
+    label: 'Map',
+    action: Action.MAP,
+    screen: 'map',
+    icon: '🗺️',
+    key: 'M',
+    hint: 'Campus buildings & venues',
+  },
+  {
+    label: 'Help',
+    action: Action.HELP,
+    screen: 'help',
+    icon: '❓',
+    key: '?',
+    hint: 'Instructions & info',
+  },
+  {
+    label: 'Back',
+    action: Action.BACK,
+    icon: '↩️',
+    key: '← Esc',
+    hint: 'Return to previous screen',
+  },
+  {
+    label: 'Confirm',
+    action: Action.CONFIRM,
+    icon: '✓',
+    key: '↵ Enter',
+    hint: 'Confirm selection',
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Gesture legend data (always visible at bottom)
 // ---------------------------------------------------------------------------
 const GESTURE_LEGEND = [
   {
@@ -78,16 +142,6 @@ const GESTURE_LEGEND = [
 ] as const
 
 // ---------------------------------------------------------------------------
-// Nav items
-// ---------------------------------------------------------------------------
-const NAV_ITEMS: { label: string; action: Action; screen: string }[] = [
-  { label: 'Home', action: Action.HOME, screen: 'home' },
-  { label: 'Schedule', action: Action.SCHEDULE, screen: 'schedule' },
-  { label: 'Map', action: Action.MAP, screen: 'map' },
-  { label: 'Help', action: Action.HELP, screen: 'help' },
-]
-
-// ---------------------------------------------------------------------------
 // Props
 // ---------------------------------------------------------------------------
 interface KioskShellProps {
@@ -96,6 +150,8 @@ interface KioskShellProps {
   detection?: DetectionInfo
   dwellProgress?: number
   isCameraActive?: boolean
+  cameraError?: string | null
+  onStartCamera?: () => void
 }
 
 // ---------------------------------------------------------------------------
@@ -107,6 +163,8 @@ export default function KioskShell({
   detection = { gesture: 'None', score: 0, handedness: '-', handsCount: 0 },
   dwellProgress = 0,
   isCameraActive = true,
+  cameraError = null,
+  onStartCamera,
 }: KioskShellProps) {
   // Keyboard handler
   const handleKey = useCallback(
@@ -155,19 +213,24 @@ export default function KioskShell({
   const targetActionName = isActionable
     ? GESTURE_ACTIONS[activeGesture]
     : undefined
+  const isCameraDenied =
+    Boolean(cameraError) &&
+    (cameraError?.toLowerCase().includes('denied') ||
+      cameraError?.toLowerCase().includes('notallowed') ||
+      cameraError?.toLowerCase().includes('permission'))
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-950 text-slate-100 select-none">
       {/* ------------------------------------------------------------------ */}
-      {/* Header                                                             */}
+      {/* Top Bar: Brand, Action Confirmation & Lock Toggle                   */}
       {/* ------------------------------------------------------------------ */}
-      <header className="flex items-center justify-between px-8 py-4 border-b border-slate-800 bg-slate-900/80 backdrop-blur shrink-0">
+      <header className="flex items-center justify-between px-6 py-3 border-b border-slate-800 bg-slate-900/90 backdrop-blur shrink-0">
         {/* Brand */}
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-teal-500/15 border border-teal-500/40 flex items-center justify-center shrink-0">
+        <div className="flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-xl bg-teal-500/15 border border-teal-500/40 flex items-center justify-center shrink-0">
             <svg
-              width="28"
-              height="28"
+              width="26"
+              height="26"
               viewBox="0 0 28 28"
               fill="none"
               className="text-teal-400"
@@ -192,44 +255,22 @@ export default function KioskShell({
             </svg>
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-white leading-none">
+            <h1 className="text-xl font-bold tracking-tight text-white leading-none">
               AirTouch
             </h1>
-            <p className="text-sm text-teal-400 font-medium leading-tight mt-0.5">
-              Touchless Campus Kiosk
+            <p className="text-xs text-teal-400 font-medium leading-tight mt-0.5">
+              Touchless Campus Kiosk · Full Manual Parity
             </p>
           </div>
         </div>
 
-        {/* Nav tabs (disabled when locked) */}
-        {!isLocked && (
-          <nav className="flex items-center gap-2" aria-label="Main navigation">
-            {NAV_ITEMS.map(({ label, action, screen }) => (
-              <button
-                key={label}
-                type="button"
-                onClick={() => onDispatch(action)}
-                aria-current={state.screen === screen ? 'page' : undefined}
-                className={[
-                  'px-5 py-3 rounded-xl text-lg font-semibold transition-all duration-200 min-w-[80px]',
-                  state.screen === screen
-                    ? 'bg-teal-500 text-slate-950 shadow-lg shadow-teal-500/25'
-                    : 'bg-slate-800/60 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/50',
-                ].join(' ')}
-              >
-                {label}
-              </button>
-            ))}
-          </nav>
-        )}
-
-        {/* Action badge & Lock / Unlock button */}
+        {/* Action badge & Lock / Unlock toggle button */}
         <div className="flex items-center gap-3">
           {state.lastAction && (
             <div
               role="status"
               aria-live="polite"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-500/15 border border-green-500/40 text-green-300 text-xs font-semibold animate-in fade-in duration-150"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-500/15 border border-green-500/40 text-green-300 text-xs font-semibold animate-in fade-in duration-150"
             >
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
               <span>Action: {state.lastAction}</span>
@@ -241,21 +282,141 @@ export default function KioskShell({
             onClick={() => onDispatch(isLocked ? Action.HOME : Action.LOCK)}
             title={
               isLocked
-                ? 'Unlock kiosk (Home)'
-                : 'Lock kiosk (Fist gesture or L)'
+                ? 'Unlock kiosk (Home / H)'
+                : 'Lock kiosk (Fist gesture / L)'
             }
             className={[
-              'w-12 h-12 rounded-xl flex items-center justify-center transition-colors text-xl',
+              'min-h-[48px] px-4 py-2 rounded-xl flex items-center gap-2 transition-all font-bold text-sm cursor-pointer border-2',
               isLocked
-                ? 'bg-amber-500/20 border border-amber-500/50 text-amber-400 hover:bg-amber-500/30'
-                : 'bg-slate-800 border border-slate-700 text-slate-400 hover:bg-slate-700 hover:text-white',
+                ? 'bg-amber-500/20 border-amber-500/60 text-amber-300 hover:bg-amber-500/30'
+                : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white',
             ].join(' ')}
-            aria-label={isLocked ? 'Unlock' : 'Lock'}
+            aria-label={isLocked ? 'Unlock Kiosk' : 'Lock Kiosk'}
           >
-            {isLocked ? '🔒' : '🔓'}
+            <span>{isLocked ? '🔒' : '🔓'}</span>
+            <span>{isLocked ? 'Locked' : 'Lock (L)'}</span>
           </button>
         </div>
       </header>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Manual Parity Navigation Bar (Every Action on Every Screen >= 72px)  */}
+      {/* DESIGN.md §12: buttons >= 72px tall, high contrast                  */}
+      {/* ------------------------------------------------------------------ */}
+      <nav
+        aria-label="Kiosk manual action controls"
+        className="px-6 py-3 bg-slate-900/60 border-b border-slate-800 shrink-0"
+      >
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 max-w-7xl mx-auto">
+          {PRIMARY_ACTIONS.map(({ label, action, screen, icon, key, hint }) => {
+            const isCurrent = screen && state.screen === screen
+            const isBack = action === Action.BACK
+            const isConfirm = action === Action.CONFIRM
+
+            return (
+              <button
+                key={label}
+                type="button"
+                onClick={() => onDispatch(action)}
+                title={hint}
+                aria-current={isCurrent ? 'page' : undefined}
+                className={[
+                  'min-h-[72px] h-[72px] px-4 py-2 rounded-2xl flex flex-col items-center justify-center gap-0.5 border-2 transition-all font-bold cursor-pointer select-none',
+                  isCurrent
+                    ? 'bg-teal-500 text-slate-950 border-teal-300 shadow-lg shadow-teal-500/25 scale-[1.02]'
+                    : isConfirm
+                      ? 'bg-teal-950/60 hover:bg-teal-900/80 text-teal-300 border-teal-500/60 hover:border-teal-400'
+                      : isBack
+                        ? 'bg-slate-900/90 hover:bg-slate-800 text-slate-200 border-slate-700 hover:border-slate-500'
+                        : 'bg-slate-800/80 hover:bg-slate-700 text-white border-slate-700 hover:border-slate-500',
+                ].join(' ')}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-xl" aria-hidden="true">
+                    {icon}
+                  </span>
+                  <span className="text-base sm:text-lg tracking-tight">
+                    {label}
+                  </span>
+                </div>
+                <kbd
+                  className={[
+                    'text-[11px] font-mono px-2 py-0.5 rounded border leading-none',
+                    isCurrent
+                      ? 'bg-teal-600/40 border-teal-700 text-slate-900'
+                      : 'bg-slate-950/60 border-slate-700 text-slate-400',
+                  ].join(' ')}
+                >
+                  {key}
+                </kbd>
+              </button>
+            )
+          })}
+        </div>
+      </nav>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Friendly Camera-Off & Permission-Denied Banners (T2.6 requirement)  */}
+      {/* ------------------------------------------------------------------ */}
+      {isCameraDenied ? (
+        <div
+          role="alert"
+          className="mx-6 mt-4 p-4 rounded-2xl bg-amber-500/15 border-2 border-amber-500/50 text-amber-200 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in duration-200 shadow-md"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-3xl select-none" aria-hidden="true">
+              📷
+            </span>
+            <div>
+              <p className="font-bold text-lg text-white">
+                Camera access was denied — Manual Mode is 100% active!
+              </p>
+              <p className="text-sm text-amber-300/90">
+                You can fully explore all screens using the 72px buttons above
+                or your keyboard (H, S, M, ?, ← Back, ↵ Confirm).
+              </p>
+            </div>
+          </div>
+          {onStartCamera && (
+            <button
+              type="button"
+              onClick={onStartCamera}
+              className="shrink-0 min-h-[48px] px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-colors shadow cursor-pointer text-sm"
+            >
+              Retry Camera Permission
+            </button>
+          )}
+        </div>
+      ) : !isCameraActive ? (
+        <div
+          role="status"
+          className="mx-6 mt-4 p-4 rounded-2xl bg-slate-900 border-2 border-slate-700 text-slate-300 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in duration-200"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-2xl select-none" aria-hidden="true">
+              📷
+            </span>
+            <div>
+              <p className="font-bold text-base text-white">
+                Camera paused — Manual navigation mode active
+              </p>
+              <p className="text-xs text-slate-400">
+                Touchless recognition is paused. All actions and kiosk screens
+                work seamlessly via the buttons above or keyboard shortcuts.
+              </p>
+            </div>
+          </div>
+          {onStartCamera && (
+            <button
+              type="button"
+              onClick={onStartCamera}
+              className="shrink-0 min-h-[46px] px-5 py-2 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-xl transition-colors shadow cursor-pointer text-sm"
+            >
+              Resume Camera
+            </button>
+          )}
+        </div>
+      ) : null}
 
       {/* ------------------------------------------------------------------ */}
       {/* Main content area                                                  */}
@@ -294,7 +455,7 @@ export default function KioskShell({
               <div className="text-xs text-slate-400 flex items-center gap-1.5">
                 <span>📷</span>
                 <span>
-                  Camera is paused. Use on-screen buttons or keyboard shortcuts.
+                  Camera is paused. Use buttons above or keyboard shortcuts.
                 </span>
               </div>
             ) : (

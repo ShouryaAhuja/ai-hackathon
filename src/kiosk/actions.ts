@@ -161,16 +161,25 @@ export const KEYBOARD_SHORTCUTS: Record<string, Action> = {
   ArrowLeft: Action.BACK,
   Backspace: Action.BACK,
   Escape: Action.BACK,
+  b: Action.BACK,
+  B: Action.BACK,
   // CONFIRM
   ArrowRight: Action.CONFIRM,
   Enter: Action.CONFIRM,
+  c: Action.CONFIRM,
+  C: Action.CONFIRM,
   // Navigation
   Home: Action.HOME,
   h: Action.HOME,
+  H: Action.HOME,
   s: Action.SCHEDULE,
+  S: Action.SCHEDULE,
   m: Action.MAP,
+  M: Action.MAP,
   '?': Action.HELP,
+  '/': Action.HELP,
   l: Action.LOCK,
+  L: Action.LOCK,
 }
 
 /**

@@ -127,7 +127,14 @@ export default function App() {
         }
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err)
+      const isDenied =
+        err instanceof DOMException &&
+        (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError')
+      const msg = isDenied
+        ? 'Permission denied: Please allow camera access in your browser to use gestures.'
+        : err instanceof Error
+          ? err.message
+          : String(err)
       setInitError(`Camera error: ${msg}`)
       setIsCameraActive(false)
     }
@@ -286,6 +293,8 @@ export default function App() {
         detection={detection}
         dwellProgress={dwellProgress}
         isCameraActive={isCameraActive}
+        cameraError={initError}
+        onStartCamera={startCamera}
       />
 
       {/* Mirrored camera preview in corner */}

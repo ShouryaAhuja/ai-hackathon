@@ -1,6 +1,6 @@
 /**
- * MapScreen.tsx — Campus map (T2.3)
- * SVG floor-plan of a simplified campus layout.
+ * MapScreen.tsx — Campus map (T2.3, T2.6 manual parity)
+ * SVG floor-plan of a simplified campus layout with action buttons >= 72px tall.
  */
 import { Action } from '../actions'
 
@@ -12,7 +12,7 @@ interface Props {
 const CampusSVG = () => (
   <svg
     viewBox="0 0 700 480"
-    className="w-full max-w-2xl mx-auto rounded-2xl border border-slate-700"
+    className="w-full max-w-2xl mx-auto rounded-2xl border-2 border-slate-700 shadow-xl"
     style={{ background: '#0f172a' }}
     role="img"
     aria-label="VIT campus map showing key buildings"
@@ -57,7 +57,7 @@ const CampusSVG = () => (
       rx="8"
       fill="#134e4a"
       stroke="#14b8a6"
-      strokeWidth="2"
+      strokeWidth="2.5"
     />
     <text
       x="165"
@@ -80,9 +80,9 @@ const CampusSVG = () => (
     >
       G-01 G-07 225
     </text>
-    <rect x="60" y="145" width="90" height="28" rx="4" fill="#0f766e" />
+    <rect x="60" y="145" width="105" height="28" rx="4" fill="#0f766e" />
     <text
-      x="105"
+      x="112"
       y="163"
       textAnchor="middle"
       fill="#f0fdfa"
@@ -207,43 +207,65 @@ const CampusSVG = () => (
 
 export default function MapScreen({ onDispatch }: Props) {
   return (
-    <section className="min-h-full p-8 max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
+    <section className="min-h-full p-8 max-w-4xl mx-auto flex flex-col gap-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2
             className="font-extrabold text-white leading-none"
-            style={{ fontSize: 'clamp(40px, 5vw, 56px)' }}
+            style={{ fontSize: 'clamp(36px, 5vw, 52px)' }}
           >
             Campus Map
           </h2>
-          <p className="mt-1 text-slate-400" style={{ fontSize: '24px' }}>
+          <p className="mt-2 text-slate-400 text-2xl">
             Vellore Institute of Technology — Main Campus
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => onDispatch(Action.BACK)}
-          className="px-5 py-3 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 text-lg font-semibold transition-colors"
-        >
-          ← Back
-        </button>
+
+        {/* Action buttons >= 72px tall */}
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <button
+            type="button"
+            onClick={() => onDispatch(Action.BACK)}
+            className="min-h-[72px] flex-1 sm:flex-initial px-6 py-4 rounded-2xl bg-slate-800 hover:bg-slate-700 border-2 border-slate-700 text-white text-xl font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
+            aria-label="Go back to previous screen"
+          >
+            <span>←</span>
+            <span>Back</span>
+            <kbd className="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-0.5 rounded border border-slate-700">
+              Esc
+            </kbd>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onDispatch(Action.CONFIRM)}
+            className="min-h-[72px] flex-1 sm:flex-initial px-6 py-4 rounded-2xl bg-teal-600 hover:bg-teal-500 border-2 border-teal-400 text-white text-xl font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-teal-500/20"
+            aria-label="Confirm SJT Block location"
+          >
+            <span>✓</span>
+            <span>Confirm Venue</span>
+            <kbd className="text-xs font-mono bg-teal-800 text-teal-100 px-2 py-0.5 rounded border border-teal-600">
+              ↵ Enter
+            </kbd>
+          </button>
+        </div>
       </div>
 
       <CampusSVG />
 
       {/* Legend */}
-      <div className="mt-6 flex flex-wrap gap-4 justify-center">
-        <div className="flex items-center gap-2 text-lg text-teal-400">
-          <span className="w-4 h-4 rounded bg-teal-700 border border-teal-500 inline-block" />
-          Event Venue (SJT)
+      <div className="flex flex-wrap gap-6 justify-center">
+        <div className="flex items-center gap-2 text-lg text-teal-300 font-medium">
+          <span className="w-5 h-5 rounded-md bg-teal-700 border-2 border-teal-400 inline-block" />
+          Event Venue (SJT Block)
         </div>
-        <div className="flex items-center gap-2 text-lg text-slate-400">
-          <span className="w-4 h-4 rounded bg-slate-700 border border-slate-600 inline-block" />
-          Other Buildings
+        <div className="flex items-center gap-2 text-lg text-slate-300 font-medium">
+          <span className="w-5 h-5 rounded-md bg-slate-700 border-2 border-slate-500 inline-block" />
+          Campus Buildings
         </div>
-        <div className="flex items-center gap-2 text-lg text-slate-500">
-          <span className="w-4 h-4 rounded bg-slate-800 inline-block" />
-          Roads
+        <div className="flex items-center gap-2 text-lg text-slate-400 font-medium">
+          <span className="w-5 h-5 rounded-md bg-slate-800 border-2 border-slate-700 inline-block" />
+          Campus Walkways
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 /**
- * LockedScreen.tsx — Kiosk locked state (T2.3)
- * Displays a lock message; unlock via Home button or H key.
+ * LockedScreen.tsx — Kiosk locked state (T2.3, T2.6 manual parity, T2.7 idle/lock)
+ * Displays a lock message; unlock via button >= 72px tall or Open_Palm gesture / H key.
  */
 import { Action } from '../actions'
 
@@ -30,26 +30,39 @@ export default function LockedScreen({ onDispatch }: Props) {
         </h2>
         <p
           className="mt-4 text-slate-300 max-w-lg mx-auto leading-relaxed"
-          style={{ fontSize: 'clamp(24px, 2.4vw, 28px)' }}
+          style={{ fontSize: 'clamp(22px, 2.2vw, 26px)' }}
         >
-          This kiosk is temporarily locked. Press unlock to resume or use the
-          button below.
+          Gesture control is paused to prevent accidental triggers. Manual
+          buttons remain active, or press Unlock to return Home.
         </p>
       </div>
 
-      <button
-        type="button"
-        onClick={() => onDispatch(Action.HOME)}
-        className="px-10 py-5 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-bold transition-colors shadow-lg shadow-teal-500/20"
-        style={{ fontSize: '28px', minWidth: '240px' }}
-        aria-label="Unlock kiosk and go to home screen"
-      >
-        Unlock (H)
-      </button>
+      <div className="flex flex-wrap items-center justify-center gap-4">
+        <button
+          type="button"
+          onClick={() => onDispatch(Action.HOME)}
+          className="min-h-[72px] px-10 py-5 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-bold transition-all shadow-lg shadow-teal-500/20 flex items-center justify-center gap-3 border-2 border-teal-400 cursor-pointer text-2xl"
+          style={{ minWidth: '260px' }}
+          aria-label="Unlock kiosk and go to home screen"
+        >
+          <span>🔓</span>
+          <span>Unlock Kiosk (H)</span>
+        </button>
 
-      <p className="text-slate-500 text-xl">
-        Or make the{' '}
-        <span className="text-teal-400 font-semibold">Open Palm</span> gesture
+        <button
+          type="button"
+          onClick={() => onDispatch(Action.BACK)}
+          className="min-h-[72px] px-8 py-5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition-all border-2 border-slate-700 flex items-center justify-center gap-3 cursor-pointer text-2xl"
+          aria-label="Return to previous screen"
+        >
+          <span>← Back</span>
+        </button>
+      </div>
+
+      <p className="text-slate-400 text-xl text-center">
+        Or show an{' '}
+        <span className="text-teal-400 font-semibold">Open Palm ✋</span>{' '}
+        gesture to unlock
       </p>
     </section>
   )
