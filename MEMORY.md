@@ -5,8 +5,8 @@
 ## 1. Current status
 - **Phase:** 2 - Core build (MVP)
 - **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
-- **Last completed task:** T2.7 (Idle/lock: Closed_Fist toggle, camera on/off, privacy notice)
-- **Next task:** T2.8 (Sample content: Schedule 6-8 items, Map 4-5 buildings, Help legend/troubleshooting)
+- **Last completed task:** T2.8 (Sample content: Schedule 8 items, Map 5 buildings, Help 6 gestures + legend + troubleshooting)
+- **Next task:** T2.9 (Deploy, verify GitHub Actions, HEAD-check /mediapipe/ assets on live URL, tag v0.1-demo-safe)
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/
 - **Last known-good tag:** v0.0-skeleton
@@ -68,6 +68,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `24 Oct 19:11` T2.8: Authored realistic, synthetic campus event content per DESIGN.md §9/§12. Schedule populated with 8 VIT AI Innovate-A-Thon sessions (times, venues, tags, interactive selection). Map built with detailed SVG rendering 5 campus buildings (SJT Block venue, MB Block, Tech Tower, Library, Anna Auditorium) with active building inspector. Help screen structured with comprehensive 6-gesture guide (+ fist lock), visual legend, troubleshooting guide, keyboard shortcuts, and organizing committee contacts. All buttons >= 72px tall. Tests pass (47/47).
 - `24 Oct 19:09` T2.7: Implemented idle/lock and privacy features. Closed_Fist gesture and L key toggle gesture control lock (other gestures ignored while locked, clear LOCKED indicator displayed, manual controls remain active). Added Camera ON/OFF toggle in header and preview. Added required privacy notice ("Video is processed on your device and never stored or uploaded.") across footer and preview. Verified camera tracks fully stopped on unmount and stop. Tests pass (47/47).
 - `24 Oct 19:05` T2.6: Implemented full manual parity per DESIGN.md §12. All 6 actions (Home, Schedule, Map, Help, Back, Confirm) rendered on every screen via a dedicated navigation bar with buttons >= 72px tall and keyboard shortcuts indicated. Contextual Back/Confirm buttons on all screens also >= 72px tall. Camera-off and permission-denied states display reassuring guidance banners while manual mode remains 100% operational. Unit tests expanded (47/47 pass).
 - `24 Oct 18:59` T2.5: Built UI feedback suite per DESIGN.md §3/§12: ConfidenceMeter (live bar + %, teal-500 fill, amber when < 0.70 threshold), DwellRing (circular SVG filling over 800ms using dwellProgress), NeutralBanner (amber feedback on uncertain state), CameraPreview (mirrored in corner with canvas landmark overlay drawn without React re-render per frame and toggleable landmarks), and integrated status strip at bottom. Lint/format/tests clean (46/46).

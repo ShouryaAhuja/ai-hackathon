@@ -28,7 +28,7 @@ Deadline anchor: work backwards from the **official submission time (confirm: li
 - [x] T2.5 UI feedback: ConfidenceMeter, DwellRing, NeutralBanner ("Not sure - try again or use the buttons"), mirrored preview + landmark overlay toggle
 - [x] T2.6 Manual alternative: buttons for every action; works with camera off; camera permission-denied state
 - [x] T2.7 Idle/lock behaviour (optional fist lock); camera on/off; privacy notice
-- [ ] T2.8 Sample campus-event content (schedule, map SVG, help text) - synthetic, realistic
+- [x] T2.8 Sample campus-event content (schedule, map SVG, help text) - synthetic, realistic
 - [ ] T2.9 Deploy; full smoke test on **live URL**; tag `v0.1-demo-safe`
 
 ## Phase 3 - Test mode + evaluation (target 2-3 h)
