@@ -160,3 +160,43 @@ describe('keyToAction', () => {
     expect(keyToAction('h', { alt: true })).toBeNull()
   })
 })
+
+// ---------------------------------------------------------------------------
+// KioskAction compatibility (T2.4 wiring: gesture event -> kioskReducer)
+// ---------------------------------------------------------------------------
+describe('kioskReducer — KioskAction compatibility', () => {
+  it('handles "Schedule" KioskAction string', () => {
+    const next = kioskReducer(INITIAL_STATE, 'Schedule')
+    expect(next.screen).toBe('schedule')
+    expect(next.history).toEqual(['home'])
+    expect(next.lastAction).toBe(Action.SCHEDULE)
+  })
+
+  it('handles "Map" KioskAction string', () => {
+    const next = kioskReducer(INITIAL_STATE, 'Map')
+    expect(next.screen).toBe('map')
+    expect(next.history).toEqual(['home'])
+    expect(next.lastAction).toBe(Action.MAP)
+  })
+
+  it('handles "Back" KioskAction string to unwind navigation', () => {
+    const state = kioskReducer(INITIAL_STATE, 'Schedule')
+    const back = kioskReducer(state, 'Back')
+    expect(back.screen).toBe('home')
+    expect(back.history).toEqual([])
+  })
+
+  it('handles "Home", "Confirm", "Lock" KioskAction strings', () => {
+    const lock = kioskReducer(INITIAL_STATE, 'Lock')
+    expect(lock.screen).toBe('locked')
+    expect(lock.lastAction).toBe(Action.LOCK)
+
+    const confirm = kioskReducer(INITIAL_STATE, 'Confirm')
+    expect(confirm.lastAction).toBe(Action.CONFIRM)
+
+    const home = kioskReducer({ ...INITIAL_STATE, screen: 'map', history: ['home'] }, 'Home')
+    expect(home.screen).toBe('home')
+    expect(home.lastAction).toBe(Action.HOME)
+  })
+})
+

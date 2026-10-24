@@ -21,10 +21,10 @@ Deadline anchor: work backwards from the **official submission time (confirm: li
 - [x] T1.3 Confirm submission requirements (report/PPT/video/link) and write them into `MEMORY.md`
 
 ## Phase 2 - Core build (target 3-4 h)
-- [ ] T2.1 `decision.ts`: threshold -> neutral, smoothing, dwell, cooldown (pure) + Vitest unit tests
-- [ ] T2.2 `actions.ts`: Action enum + dispatcher + kiosk state reducer; keyboard shortcuts
-- [ ] T2.3 Kiosk shell: Home screen + header + nav; large, readable typography (DESIGN.md)
-- [ ] T2.4 Wire gestures -> decision -> dispatcher; Home / Schedule / Map / Help / Back / Confirm work end-to-end
+- [x] T2.1 `decision.ts`: threshold -> neutral, smoothing, dwell, cooldown (pure) + Vitest unit tests
+- [x] T2.2 `actions.ts`: Action enum + dispatcher + kiosk state reducer; keyboard shortcuts
+- [x] T2.3 Kiosk shell: Home screen + header + nav; large, readable typography (DESIGN.md)
+- [x] T2.4 Wire gestures -> decision -> dispatcher; Home / Schedule / Map / Help / Back / Confirm work end-to-end
 - [ ] T2.5 UI feedback: ConfidenceMeter, DwellRing, NeutralBanner ("Not sure - try again or use the buttons"), mirrored preview + landmark overlay toggle
 - [ ] T2.6 Manual alternative: buttons for every action; works with camera off; camera permission-denied state
 - [ ] T2.7 Idle/lock behaviour (optional fist lock); camera on/off; privacy notice

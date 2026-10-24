@@ -21,6 +21,8 @@
  * visible button (accessibility parity per DESIGN.md section 12).
  */
 
+import type { KioskAction } from '../config'
+
 // ---------------------------------------------------------------------------
 // Action "enum" (const object — compatible with erasableSyntaxOnly TS mode)
 // ---------------------------------------------------------------------------
@@ -36,6 +38,28 @@ export const Action = {
 } as const
 
 export type Action = (typeof Action)[keyof typeof Action]
+
+export type KioskDispatchAction = Action | KioskAction
+
+const KIOSK_ACTION_TO_ACTION: Record<KioskAction, Action> = {
+  Home: Action.HOME,
+  Schedule: Action.SCHEDULE,
+  Map: Action.MAP,
+  Confirm: Action.CONFIRM,
+  Back: Action.BACK,
+  Lock: Action.LOCK,
+}
+
+export function isKioskAction(action: unknown): action is KioskAction {
+  return typeof action === 'string' && action in KIOSK_ACTION_TO_ACTION
+}
+
+export function toAction(action: Action | KioskAction): Action {
+  if (isKioskAction(action)) {
+    return KIOSK_ACTION_TO_ACTION[action]
+  }
+  return action
+}
 
 // ---------------------------------------------------------------------------
 // Screen type + navigation graph
@@ -79,7 +103,8 @@ export const INITIAL_STATE: KioskState = {
 // Reducer (pure — no side-effects, no DOM, no refs)
 // ---------------------------------------------------------------------------
 
-export function kioskReducer(state: KioskState, action: Action): KioskState {
+export function kioskReducer(state: KioskState, rawAction: Action | KioskAction): KioskState {
+  const action = toAction(rawAction)
   switch (action) {
     case Action.BACK: {
       if (state.history.length === 0) {

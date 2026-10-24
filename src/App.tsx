@@ -1,10 +1,11 @@
 /**
- * App.tsx — Root component (T2.3 shell + camera infrastructure from T0.6)
+ * App.tsx — Root component (T2.3 shell + T2.4 gesture wiring)
  *
  * Responsibilities:
  *  - Manage kiosk state via kioskReducer
  *  - Initialize MediaPipe GestureRecognizer (self-hosted WASM)
- *  - Run continuous camera loop (T2.4 will wire gestures → dispatch)
+ *  - Run continuous camera loop, feed frames into DecisionEngine
+ *  - Dispatch GestureEvents and keyboard actions to kioskReducer
  *  - Render KioskShell with camera preview in corner overlay
  */
 
@@ -16,6 +17,7 @@ import {
 } from '@mediapipe/tasks-vision'
 import KioskShell from './kiosk/KioskShell'
 import { kioskReducer, INITIAL_STATE } from './kiosk/actions'
+import { DecisionEngine } from './vision/decision'
 
 interface DetectionInfo {
   gesture: string
@@ -31,8 +33,10 @@ export default function App() {
   const animFrameIdRef = useRef<number | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const lastVideoTimeRef = useRef<number>(-1)
+  const decisionEngineRef = useRef<DecisionEngine>(new DecisionEngine())
 
   const [kioskState, dispatch] = useReducer(kioskReducer, INITIAL_STATE)
+  const [dwellProgress, setDwellProgress] = useState<number>(0)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [initError, setInitError] = useState<string | null>(null)
@@ -144,6 +148,8 @@ export default function App() {
     }
     setIsCameraActive(false)
     setDetection({ gesture: 'None', score: 0, handedness: '-', handsCount: 0 })
+    decisionEngineRef.current.reset()
+    setDwellProgress(0)
   }, [])
 
   // Auto-start camera when model is ready
@@ -207,8 +213,22 @@ export default function App() {
                 handedness: hand,
                 handsCount: results.landmarks?.length ?? 1,
               })
+
+              // Feed into decision engine
+              const gestureEvent = decisionEngineRef.current.update(
+                top.categoryName,
+                top.score,
+                timestamp,
+                true,
+              )
+              if (gestureEvent) {
+                dispatch(gestureEvent.action)
+              }
+              setDwellProgress(decisionEngineRef.current.dwellProgress(timestamp))
             } else {
               setDetection({ gesture: 'No hand', score: 0, handedness: '-', handsCount: 0 })
+              decisionEngineRef.current.update('', 0, timestamp, false)
+              setDwellProgress(0)
             }
           } catch (e) {
             console.warn('Frame recognition error:', e)
@@ -292,6 +312,7 @@ export default function App() {
           {isCameraActive && detection.handsCount > 0 && (
             <div className="absolute bottom-2 left-2 right-2 bg-black/70 rounded px-2 py-1 text-center text-[11px] text-teal-200 font-medium truncate">
               {detection.gesture} {(detection.score * 100).toFixed(0)}%
+              {dwellProgress > 0 ? ` (${Math.round(dwellProgress * 100)}%)` : ''}
             </div>
           )}
         </div>

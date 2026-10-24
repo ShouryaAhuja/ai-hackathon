@@ -5,10 +5,11 @@
 ## 1. Current status
 - **Phase:** 2 - Core build (MVP)
 - **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
-- **Last completed task:** T1.3 (confirmed deliverables logged in MEMORY.md)
-- **Next task:** T2.1
+- **Last completed task:** T2.4 (wire decision engine into kiosk dispatcher end-to-end)
+- **Next task:** T2.5 (UI feedback: ConfidenceMeter, DwellRing, NeutralBanner)
 - **Blockers:** none
-- **Live URL:** https://shouryaahuja.github.io/ai-hackathon/  - **Last known-good tag:** v0.0-skeleton
+- **Live URL:** https://shouryaahuja.github.io/ai-hackathon/
+- **Last known-good tag:** v0.0-skeleton
 
 ## 2. Project facts
 - **Event:** VIT AI Innovate-A-Thon (School of CSE & IS, Dept. of Cybersecurity and Intelligent Systems)
@@ -66,6 +67,10 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `24 Oct 18:28` T2.4: Wired DecisionEngine into App.tsx frame loop and connected emitted GestureEvents to kioskReducer. Mapped KioskAction compatibility in actions.ts, keyboard shortcuts and gestures unified under one dispatcher. 44/44 unit tests pass, lint passes, build passes.
+- `24 Oct 18:14` T2.3: Built kiosk shell per DESIGN.md §12: Home/Schedule/Map/Help/Locked screens, responsive header, nav cards, permanent gesture legend, keyboard shortcuts.
+- `24 Oct 18:13` T2.2: Created src/kiosk/actions.ts with Action enum, pure kioskReducer, keyboard shortcut mapper, and unit tests (40/40 tests).
+- `24 Oct 18:11` T2.1: Created src/vision/decision.ts pure DecisionEngine (threshold, smoothing, dwell, cooldown, no-hand grace) + Vitest unit tests (19/19 tests).
 - `24 Oct 18:03` T1.3: Confirmed submission deliverables in MEMORY.md section 7: (1) working demo/recorded PoC, (2) gesture-action mapping, (3) evaluation table (correct + incorrect), (4) report file, (5) PPT. Deadline 25 Oct 09:00, presentation at SJT-G07 from 09:00. Phase 1 complete.
 - `24 Oct 18:01` T1.2: Created src/config.ts with frozen gesture-action map and decision parameters.
 - `24 Oct 18:00` T1.1: Gesture-action map in PRD.md section 6 confirmed and marked FROZEN 24 Oct, pre-evaluation, per owner's local test (no swaps needed, 5/5 recognised). Logged in decisions.
