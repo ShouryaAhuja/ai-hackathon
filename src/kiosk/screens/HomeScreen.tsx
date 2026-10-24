@@ -13,10 +13,11 @@ const NAV_CARDS = [
     action: Action.SCHEDULE,
     icon: '📅',
     title: 'Schedule',
-    desc: 'Today\'s events and upcoming campus activities',
+    desc: "Today's events and upcoming campus activities",
     gesture: '☝️ Point Up',
     key: 'S',
-    color: 'from-teal-500/20 to-teal-600/5 border-teal-500/30 hover:border-teal-400/60',
+    color:
+      'from-teal-500/20 to-teal-600/5 border-teal-500/30 hover:border-teal-400/60',
     accent: 'text-teal-400',
   },
   {
@@ -26,7 +27,8 @@ const NAV_CARDS = [
     desc: 'Buildings, classrooms, parking and facilities',
     gesture: '✌️ Victory',
     key: 'M',
-    color: 'from-blue-500/20 to-blue-600/5 border-blue-500/30 hover:border-blue-400/60',
+    color:
+      'from-blue-500/20 to-blue-600/5 border-blue-500/30 hover:border-blue-400/60',
     accent: 'text-blue-400',
   },
   {
@@ -36,7 +38,8 @@ const NAV_CARDS = [
     desc: 'Contact details, FAQs and kiosk instructions',
     gesture: '🤟 ILY',
     key: '?',
-    color: 'from-violet-500/20 to-violet-600/5 border-violet-500/30 hover:border-violet-400/60',
+    color:
+      'from-violet-500/20 to-violet-600/5 border-violet-500/30 hover:border-violet-400/60',
     accent: 'text-violet-400',
   },
 ] as const
@@ -63,43 +66,46 @@ export default function HomeScreen({ onDispatch }: Props) {
 
       {/* Nav cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-4xl">
-        {NAV_CARDS.map(({ action, icon, title, desc, gesture, key, color, accent }) => (
-          <button
-            key={title}
-            type="button"
-            onClick={() => onDispatch(action)}
-            className={[
-              'flex flex-col items-start gap-3 p-7 rounded-2xl border bg-gradient-to-b transition-all duration-200',
-              'text-left hover:scale-[1.02] hover:shadow-xl active:scale-[0.99]',
-              color,
-            ].join(' ')}
-            style={{ minHeight: '200px' }}
-          >
-            <span className="text-4xl">{icon}</span>
-            <div>
-              <h3
-                className={`font-bold text-white ${accent}`}
-                style={{ fontSize: 'clamp(24px, 2.5vw, 30px)' }}
-              >
-                {title}
-              </h3>
-              <p className="mt-1 text-slate-400" style={{ fontSize: '18px' }}>
-                {desc}
-              </p>
-            </div>
-            <div className="mt-auto flex items-center gap-2 text-sm text-slate-500">
-              <span>{gesture}</span>
-              <kbd className="bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-xs font-mono border border-slate-700">
-                {key}
-              </kbd>
-            </div>
-          </button>
-        ))}
+        {NAV_CARDS.map(
+          ({ action, icon, title, desc, gesture, key, color, accent }) => (
+            <button
+              key={title}
+              type="button"
+              onClick={() => onDispatch(action)}
+              className={[
+                'flex flex-col items-start gap-3 p-7 rounded-2xl border bg-gradient-to-b transition-all duration-200',
+                'text-left hover:scale-[1.02] hover:shadow-xl active:scale-[0.99]',
+                color,
+              ].join(' ')}
+              style={{ minHeight: '200px' }}
+            >
+              <span className="text-4xl">{icon}</span>
+              <div>
+                <h3
+                  className={`font-bold text-white ${accent}`}
+                  style={{ fontSize: 'clamp(24px, 2.5vw, 30px)' }}
+                >
+                  {title}
+                </h3>
+                <p className="mt-1 text-slate-400" style={{ fontSize: '18px' }}>
+                  {desc}
+                </p>
+              </div>
+              <div className="mt-auto flex items-center gap-2 text-sm text-slate-500">
+                <span>{gesture}</span>
+                <kbd className="bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded text-xs font-mono border border-slate-700">
+                  {key}
+                </kbd>
+              </div>
+            </button>
+          ),
+        )}
       </div>
 
       {/* Privacy note */}
       <p className="text-slate-500 text-base text-center">
-        🔒 All gesture recognition runs entirely in your browser. No video leaves this device.
+        🔒 All gesture recognition runs entirely in your browser. No video
+        leaves this device.
       </p>
     </section>
   )

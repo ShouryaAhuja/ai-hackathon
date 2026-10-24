@@ -14,13 +14,7 @@ export type GestureLabel =
   | 'None'
 
 export type KioskAction =
-  | 'Home'
-  | 'Schedule'
-  | 'Map'
-  | 'Help'
-  | 'Confirm'
-  | 'Back'
-  | 'Lock'
+  'Home' | 'Schedule' | 'Map' | 'Help' | 'Confirm' | 'Back' | 'Lock'
 
 export const GESTURE_ACTIONS: Record<string, KioskAction> = {
   Open_Palm: 'Home',

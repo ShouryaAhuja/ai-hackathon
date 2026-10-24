@@ -16,7 +16,9 @@ export default function LockedScreen({ onDispatch }: Props) {
     >
       {/* Lock icon */}
       <div className="w-28 h-28 rounded-3xl bg-amber-500/10 border-2 border-amber-500/50 flex items-center justify-center">
-        <span className="text-6xl" aria-hidden="true">🔒</span>
+        <span className="text-6xl" aria-hidden="true">
+          🔒
+        </span>
       </div>
 
       <div className="text-center">
@@ -30,7 +32,8 @@ export default function LockedScreen({ onDispatch }: Props) {
           className="mt-4 text-slate-300 max-w-lg mx-auto leading-relaxed"
           style={{ fontSize: 'clamp(24px, 2.4vw, 28px)' }}
         >
-          This kiosk is temporarily locked. Press unlock to resume or use the button below.
+          This kiosk is temporarily locked. Press unlock to resume or use the
+          button below.
         </p>
       </div>
 
@@ -45,7 +48,8 @@ export default function LockedScreen({ onDispatch }: Props) {
       </button>
 
       <p className="text-slate-500 text-xl">
-        Or make the <span className="text-teal-400 font-semibold">Open Palm</span> gesture
+        Or make the{' '}
+        <span className="text-teal-400 font-semibold">Open Palm</span> gesture
       </p>
     </section>
   )

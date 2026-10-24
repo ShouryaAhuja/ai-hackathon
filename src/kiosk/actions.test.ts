@@ -88,16 +88,16 @@ describe('kioskReducer — BACK', () => {
   })
 
   it('supports multi-level navigation and unwinding', () => {
-    let state = kioskReducer(INITIAL_STATE, Action.SCHEDULE)  // home → schedule
-    state = kioskReducer(state, Action.MAP)                    // schedule → map
+    let state = kioskReducer(INITIAL_STATE, Action.SCHEDULE) // home → schedule
+    state = kioskReducer(state, Action.MAP) // schedule → map
     expect(state.screen).toBe('map')
     expect(state.history).toEqual(['home', 'schedule'])
 
-    state = kioskReducer(state, Action.BACK)                   // → schedule
+    state = kioskReducer(state, Action.BACK) // → schedule
     expect(state.screen).toBe('schedule')
     expect(state.history).toEqual(['home'])
 
-    state = kioskReducer(state, Action.BACK)                   // → home
+    state = kioskReducer(state, Action.BACK) // → home
     expect(state.screen).toBe('home')
     expect(state.history).toHaveLength(0)
   })
@@ -108,7 +108,11 @@ describe('kioskReducer — BACK', () => {
 // ---------------------------------------------------------------------------
 describe('kioskReducer — CONFIRM', () => {
   it('records lastAction but does not change screen or history', () => {
-    const state: KioskState = { screen: 'schedule', history: ['home'], lastAction: null }
+    const state: KioskState = {
+      screen: 'schedule',
+      history: ['home'],
+      lastAction: null,
+    }
     const next = kioskReducer(state, Action.CONFIRM)
     expect(next.screen).toBe('schedule')
     expect(next.history).toEqual(['home'])
@@ -194,7 +198,10 @@ describe('kioskReducer — KioskAction compatibility', () => {
     const confirm = kioskReducer(INITIAL_STATE, 'Confirm')
     expect(confirm.lastAction).toBe(Action.CONFIRM)
 
-    const home = kioskReducer({ ...INITIAL_STATE, screen: 'map', history: ['home'] }, 'Home')
+    const home = kioskReducer(
+      { ...INITIAL_STATE, screen: 'map', history: ['home'] },
+      'Home',
+    )
     expect(home.screen).toBe('home')
     expect(home.lastAction).toBe(Action.HOME)
   })
@@ -206,4 +213,3 @@ describe('kioskReducer — KioskAction compatibility', () => {
     expect(next.lastAction).toBe(Action.HELP)
   })
 })
-

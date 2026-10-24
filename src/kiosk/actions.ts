@@ -104,7 +104,10 @@ export const INITIAL_STATE: KioskState = {
 // Reducer (pure — no side-effects, no DOM, no refs)
 // ---------------------------------------------------------------------------
 
-export function kioskReducer(state: KioskState, rawAction: Action | KioskAction): KioskState {
+export function kioskReducer(
+  state: KioskState,
+  rawAction: Action | KioskAction,
+): KioskState {
   const action = toAction(rawAction)
   switch (action) {
     case Action.BACK: {

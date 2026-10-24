@@ -64,14 +64,29 @@ describe('majorityLabel', () => {
 
   it('returns the majority when one label dominates', () => {
     // 4× Open_Palm vs 3× Victory in a buffer of SMOOTHING_FRAMES (7)
-    const buf = ['Open_Palm', 'Victory', 'Open_Palm', 'Victory', 'Open_Palm', 'Victory', 'Open_Palm']
+    const buf = [
+      'Open_Palm',
+      'Victory',
+      'Open_Palm',
+      'Victory',
+      'Open_Palm',
+      'Victory',
+      'Open_Palm',
+    ]
     expect(buf.length).toBe(SMOOTHING_FRAMES)
     expect(majorityLabel(buf)).toBe('Open_Palm')
   })
 
   it('resolves a tie by favouring the most recent (last) entry', () => {
     // 3× Open_Palm vs 3× Victory — last entry is Victory
-    const buf = ['Open_Palm', 'Open_Palm', 'Open_Palm', 'Victory', 'Victory', 'Victory']
+    const buf = [
+      'Open_Palm',
+      'Open_Palm',
+      'Open_Palm',
+      'Victory',
+      'Victory',
+      'Victory',
+    ]
     expect(majorityLabel(buf)).toBe('Victory')
   })
 })
@@ -99,7 +114,11 @@ describe('pushFrame', () => {
 // ---------------------------------------------------------------------------
 // Helper: build an engine with a full smoothing buffer of one label
 // ---------------------------------------------------------------------------
-function fillBuffer(engine: DecisionEngine, label: string, score: number): void {
+function fillBuffer(
+  engine: DecisionEngine,
+  label: string,
+  score: number,
+): void {
   // Feed SMOOTHING_FRAMES frames so the buffer is saturated (no dwell yet)
   for (let i = 0; i < SMOOTHING_FRAMES - 1; i++) {
     engine.update(label, score, i, true)
@@ -123,7 +142,12 @@ describe('DecisionEngine — dwell expiry', () => {
       t++
     }
     // Now feed a frame at dwellStart + DWELL_MS - 1 (one ms before expiry)
-    const almostDone = engine.update('Open_Palm', 0.95, dwellStart + DWELL_MS - 1, true)
+    const almostDone = engine.update(
+      'Open_Palm',
+      0.95,
+      dwellStart + DWELL_MS - 1,
+      true,
+    )
     expect(almostDone).toBeNull()
   })
 
@@ -160,7 +184,6 @@ describe('DecisionEngine — dwell expiry', () => {
     expect(typeof event?.confidence).toBe('number')
   })
 })
-
 
 // ---------------------------------------------------------------------------
 // 5. Cooldown lockout

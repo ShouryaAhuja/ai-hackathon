@@ -92,7 +92,9 @@ export function majorityLabel(buffer: string[]): string {
  */
 export function pushFrame(buffer: string[], label: string): string[] {
   const next = [...buffer, label]
-  return next.length > SMOOTHING_FRAMES ? next.slice(next.length - SMOOTHING_FRAMES) : next
+  return next.length > SMOOTHING_FRAMES
+    ? next.slice(next.length - SMOOTHING_FRAMES)
+    : next
 }
 
 // ---------------------------------------------------------------------------

@@ -5,8 +5,8 @@
 ## 1. Current status
 - **Phase:** 2 - Core build (MVP)
 - **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
-- **Last completed task:** T2.4 (wire decision engine into kiosk dispatcher end-to-end)
-- **Next task:** T2.5 (UI feedback: ConfidenceMeter, DwellRing, NeutralBanner)
+- **Last completed task:** T2.5 (UI feedback: ConfidenceMeter, DwellRing, NeutralBanner)
+- **Next task:** T2.6 (Manual parity: buttons for every action, >= 72px tall, camera-off/denied friendly states)
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/
 - **Last known-good tag:** v0.0-skeleton
@@ -68,6 +68,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `24 Oct 18:59` T2.5: Built UI feedback suite per DESIGN.md §3/§12: ConfidenceMeter (live bar + %, teal-500 fill, amber when < 0.70 threshold), DwellRing (circular SVG filling over 800ms using dwellProgress), NeutralBanner (amber feedback on uncertain state), CameraPreview (mirrored in corner with canvas landmark overlay drawn without React re-render per frame and toggleable landmarks), and integrated status strip at bottom. Lint/format/tests clean (46/46).
 - `24 Oct 18:42` MAP-AMEND-1: Pre-evaluation gesture map amendment: ILoveYou -> Help added as 6th gesture across PRD.md, config.ts, actions.ts, KioskShell legend, with unit tests in decision.test.ts and actions.test.ts.
 - `24 Oct 18:28` T2.4: Wired DecisionEngine into App.tsx frame loop and connected emitted GestureEvents to kioskReducer. Mapped KioskAction compatibility in actions.ts, keyboard shortcuts and gestures unified under one dispatcher. 44/44 unit tests pass, lint passes, build passes.
 - `24 Oct 18:14` T2.3: Built kiosk shell per DESIGN.md §12: Home/Schedule/Map/Help/Locked screens, responsive header, nav cards, permanent gesture legend, keyboard shortcuts.

@@ -1,12 +1,12 @@
 /**
- * App.tsx — Root component (T2.3 shell + T2.4 gesture wiring)
+ * App.tsx — Root component (T2.3 kiosk shell, T2.4 decision wiring, T2.5 feedback components)
  *
  * Responsibilities:
  *  - Manage kiosk state via kioskReducer
  *  - Initialize MediaPipe GestureRecognizer (self-hosted WASM)
- *  - Run continuous camera loop, feed frames into DecisionEngine
- *  - Dispatch GestureEvents and keyboard actions to kioskReducer
- *  - Render KioskShell with camera preview in corner overlay
+ *  - Run continuous camera loop with native canvas drawing (no React re-render per frame)
+ *  - Feed frames into DecisionEngine and dispatch events
+ *  - Render KioskShell with live status strip + CameraPreview in corner
  */
 
 import { useEffect, useRef, useState, useCallback, useReducer } from 'react'
@@ -15,16 +15,10 @@ import {
   FilesetResolver,
   GestureRecognizer,
 } from '@mediapipe/tasks-vision'
-import KioskShell from './kiosk/KioskShell'
+import KioskShell, { type DetectionInfo } from './kiosk/KioskShell'
+import CameraPreview from './ui/CameraPreview'
 import { kioskReducer, INITIAL_STATE } from './kiosk/actions'
 import { DecisionEngine } from './vision/decision'
-
-interface DetectionInfo {
-  gesture: string
-  score: number
-  handedness: string
-  handsCount: number
-}
 
 export default function App() {
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -33,6 +27,7 @@ export default function App() {
   const animFrameIdRef = useRef<number | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const lastVideoTimeRef = useRef<number>(-1)
+  const lastUiUpdateRef = useRef<number>(0)
   const decisionEngineRef = useRef<DecisionEngine>(new DecisionEngine())
 
   const [kioskState, dispatch] = useReducer(kioskReducer, INITIAL_STATE)
@@ -116,7 +111,11 @@ export default function App() {
     try {
       setInitError(null)
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' },
+        video: {
+          width: { ideal: 640 },
+          height: { ideal: 480 },
+          facingMode: 'user',
+        },
         audio: false,
       })
       streamRef.current = stream
@@ -160,7 +159,7 @@ export default function App() {
   }, [isLoading, initError, isCameraActive, startCamera])
 
   // ---------------------------------------------------------------------------
-  // Frame recognition loop
+  // Frame recognition loop (native canvas drawing, no React re-render per frame)
   // ---------------------------------------------------------------------------
   useEffect(() => {
     if (!isCameraActive) return
@@ -180,8 +179,12 @@ export default function App() {
           try {
             const results = recognizer.recognizeForVideo(video, timestamp)
 
+            // Direct canvas 2D manipulation — NO React state for landmarks
             if (canvas) {
-              if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+              if (
+                canvas.width !== video.videoWidth ||
+                canvas.height !== video.videoHeight
+              ) {
                 canvas.width = video.videoWidth
                 canvas.height = video.videoHeight
               }
@@ -195,40 +198,65 @@ export default function App() {
                       color: '#14b8a6',
                       lineWidth: 3,
                     })
-                    du.drawLandmarks(lm, { color: '#0f766e', lineWidth: 1, radius: 3 })
+                    du.drawLandmarks(lm, {
+                      color: '#0f766e',
+                      lineWidth: 1,
+                      radius: 3,
+                    })
                   }
                 }
               }
             }
 
+            // Feed into DecisionEngine
             if (results.gestures?.length && results.gestures[0].length) {
               const top = results.gestures[0][0]
               const hand =
                 results.handedness?.[0]?.[0]?.displayName ||
                 results.handedness?.[0]?.[0]?.categoryName ||
                 '-'
-              setDetection({
-                gesture: top.categoryName,
-                score: top.score,
-                handedness: hand,
-                handsCount: results.landmarks?.length ?? 1,
-              })
 
-              // Feed into decision engine
               const gestureEvent = decisionEngineRef.current.update(
                 top.categoryName,
                 top.score,
                 timestamp,
                 true,
               )
+
               if (gestureEvent) {
                 dispatch(gestureEvent.action)
               }
-              setDwellProgress(decisionEngineRef.current.dwellProgress(timestamp))
+
+              const progress =
+                decisionEngineRef.current.dwellProgress(timestamp)
+
+              // Throttle React state update to ~20fps (50ms) to eliminate render overhead
+              if (
+                timestamp - lastUiUpdateRef.current >= 50 ||
+                gestureEvent ||
+                progress === 0
+              ) {
+                lastUiUpdateRef.current = timestamp
+                setDetection({
+                  gesture: top.categoryName,
+                  score: top.score,
+                  handedness: hand,
+                  handsCount: results.landmarks?.length ?? 1,
+                })
+                setDwellProgress(progress)
+              }
             } else {
-              setDetection({ gesture: 'No hand', score: 0, handedness: '-', handsCount: 0 })
               decisionEngineRef.current.update('', 0, timestamp, false)
-              setDwellProgress(0)
+              if (timestamp - lastUiUpdateRef.current >= 50) {
+                lastUiUpdateRef.current = timestamp
+                setDetection({
+                  gesture: 'No hand',
+                  score: 0,
+                  handedness: '-',
+                  handsCount: 0,
+                })
+                setDwellProgress(0)
+              }
             }
           } catch (e) {
             console.warn('Frame recognition error:', e)
@@ -243,7 +271,7 @@ export default function App() {
     return () => cancelAnimationFrame(animId)
   }, [isCameraActive, showLandmarks])
 
-  // Cleanup on unmount
+  // Stop camera tracks when unmounting (RULES.md §11)
   useEffect(() => () => stopCamera(), [stopCamera])
 
   // ---------------------------------------------------------------------------
@@ -251,108 +279,31 @@ export default function App() {
   // ---------------------------------------------------------------------------
   return (
     <div className="relative min-h-screen">
-      {/* Main kiosk UI */}
-      <KioskShell state={kioskState} onDispatch={dispatch} />
+      {/* Main kiosk shell with status strip */}
+      <KioskShell
+        state={kioskState}
+        onDispatch={dispatch}
+        detection={detection}
+        dwellProgress={dwellProgress}
+        isCameraActive={isCameraActive}
+      />
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Corner camera preview                                               */}
-      {/* ------------------------------------------------------------------ */}
-      <div
-        className={[
-          'fixed bottom-20 right-4 z-50 flex flex-col gap-1 transition-all duration-300',
-          showPreview ? 'opacity-100' : 'opacity-0 pointer-events-none',
-        ].join(' ')}
-        style={{ width: '220px' }}
-      >
-        {/* Preview window */}
-        <div className="relative rounded-xl overflow-hidden border border-slate-700 bg-slate-950 shadow-2xl aspect-[4/3]">
-          <video
-            ref={videoRef}
-            playsInline
-            muted
-            autoPlay
-            className="absolute inset-0 w-full h-full object-cover scale-x-[-1]"
-          />
-          <canvas
-            ref={canvasRef}
-            className="absolute inset-0 w-full h-full object-cover scale-x-[-1] pointer-events-none"
-          />
-
-          {/* Loading overlay */}
-          {isLoading && (
-            <div className="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center gap-2 p-3">
-              <div className="w-6 h-6 border-2 border-teal-500/30 border-t-teal-400 rounded-full animate-spin" />
-              <p className="text-xs text-slate-300 text-center">Loading model…</p>
-            </div>
-          )}
-
-          {/* Error overlay */}
-          {!isLoading && initError && (
-            <div className="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center gap-2 p-3">
-              <p className="text-xs text-red-300 text-center">{initError}</p>
-              <button
-                type="button"
-                onClick={startCamera}
-                className="text-xs px-2 py-1 bg-slate-700 hover:bg-slate-600 rounded text-white"
-              >
-                Retry
-              </button>
-            </div>
-          )}
-
-          {/* Live badge */}
-          {isCameraActive && (
-            <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/60 px-2 py-0.5 rounded text-[10px] text-teal-300 font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-              LIVE
-            </div>
-          )}
-
-          {/* Gesture label */}
-          {isCameraActive && detection.handsCount > 0 && (
-            <div className="absolute bottom-2 left-2 right-2 bg-black/70 rounded px-2 py-1 text-center text-[11px] text-teal-200 font-medium truncate">
-              {detection.gesture} {(detection.score * 100).toFixed(0)}%
-              {dwellProgress > 0 ? ` (${Math.round(dwellProgress * 100)}%)` : ''}
-            </div>
-          )}
-        </div>
-
-        {/* Controls row */}
-        <div className="flex gap-1">
-          <button
-            type="button"
-            onClick={() => setShowLandmarks((p) => !p)}
-            title="Toggle landmark overlay"
-            className="flex-1 py-1 text-[11px] bg-slate-800 hover:bg-slate-700 rounded border border-slate-700 text-slate-300 transition-colors"
-          >
-            {showLandmarks ? 'Hide LM' : 'Show LM'}
-          </button>
-          <button
-            type="button"
-            onClick={isCameraActive ? stopCamera : startCamera}
-            disabled={isLoading}
-            className={[
-              'flex-1 py-1 text-[11px] rounded border transition-colors disabled:opacity-50',
-              isCameraActive
-                ? 'bg-red-900/30 border-red-700/50 text-red-300 hover:bg-red-900/50'
-                : 'bg-teal-700/30 border-teal-600/50 text-teal-300 hover:bg-teal-700/50',
-            ].join(' ')}
-          >
-            {isCameraActive ? 'Stop Cam' : 'Start Cam'}
-          </button>
-        </div>
-      </div>
-
-      {/* Toggle preview visibility button */}
-      <button
-        type="button"
-        onClick={() => setShowPreview((p) => !p)}
-        title={showPreview ? 'Hide camera preview' : 'Show camera preview'}
-        className="fixed bottom-20 right-[236px] z-50 w-7 h-7 flex items-center justify-center bg-slate-800 border border-slate-700 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors text-sm"
-        aria-label={showPreview ? 'Hide camera' : 'Show camera'}
-      >
-        {showPreview ? '◁' : '▷'}
-      </button>
+      {/* Mirrored camera preview in corner */}
+      <CameraPreview
+        videoRef={videoRef}
+        canvasRef={canvasRef}
+        isCameraActive={isCameraActive}
+        isLoading={isLoading}
+        initError={initError}
+        showLandmarks={showLandmarks}
+        onToggleLandmarks={() => setShowLandmarks((prev) => !prev)}
+        onToggleCamera={isCameraActive ? stopCamera : startCamera}
+        showPreview={showPreview}
+        onTogglePreview={() => setShowPreview((prev) => !prev)}
+        currentGesture={detection.gesture}
+        currentScore={detection.score}
+        dwellProgress={dwellProgress}
+      />
     </div>
   )
 }
