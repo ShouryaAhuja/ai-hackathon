@@ -16,7 +16,7 @@ Deadline anchor: work backwards from the **official submission time (confirm: li
 - [x] T0.9 Tag `v0.0-skeleton`
 
 ## Phase 1 - Freeze the spec (~20 min)
-- [ ] T1.1 Confirm gesture-action map in `PRD.md` section 6 using T0.7 observations; swap any unreliable gesture now
+- [x] T1.1 Confirm gesture-action map in `PRD.md` section 6 using T0.7 observations; swap any unreliable gesture now
 - [ ] T1.2 Write `src/config.ts` (map + thresholds); fill project name, palette, kiosk content outline in PRD/DESIGN
 - [ ] T1.3 Confirm submission requirements (report/PPT/video/link) and write them into `MEMORY.md`
 

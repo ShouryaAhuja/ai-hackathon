@@ -62,6 +62,8 @@ Judging criteria (official): Innovation & creativity - Functionality & implement
 - Not sign-language translation. Not a security/authentication system. No live integration with any real kiosk hardware (simulated kiosk UI in browser). Do not claim performance beyond what the evaluation shows.
 
 ## 6. Gesture-to-action mapping (DEFINED BEFORE TESTING - freeze this)
+FROZEN 24 Oct, pre-evaluation, per owner's local test.
+
 | # | Gesture | MediaPipe label | Kiosk action | Notes |
 |---|---|---|---|---|
 | 1 | Open palm | `Open_Palm` | **Home** | Also "wake" from idle |
