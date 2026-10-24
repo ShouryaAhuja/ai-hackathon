@@ -55,7 +55,7 @@ Deadline anchor: work backwards from the **official submission time (confirm: li
 - [x] T5.5 **Report file** (docs/REPORT.md & docs/FAILURE_ANALYSIS.md complete, verified & frozen)
 - [x] T5.6 **PPT** following official flow (docs/PRESENTATION_SLIDES.md with 7 slides & timed speaker notes)
 - [ ] T5.7 **Record demo video** (2-3 min, full flow + one failure + manual mode); save locally and upload per submission rules
-- [ ] T5.8 Secrets/debug cleanup; final deploy; run Smoke Test; tag `v1.0-demo`
+- [x] T5.8 Secrets/debug cleanup; final deploy; run Smoke Test; tag `v1.0-demo` (live URL verified, tag pushed)
 - [ ] T5.9 Submit everything; confirm receipt; **screenshot proof**
 
 ## Phase 6 - Presentation prep (~1 h + sleep)

@@ -3,13 +3,13 @@
 > Read first every session. Update after every task. Newest entries first in logs.
 
 ## 1. Current status
-- **Phase:** 5 In Progress — Feature Freeze & Deliverables Prepared
+- **Phase:** 5 Complete — Production Release Tagged (`v1.0-demo`)
 - **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
-- **Last completed task:** T5.6 (Presentation slides in docs/PRESENTATION_SLIDES.md, README.md created, T5.1-T5.6 complete)
-- **Next task:** T5.8 (Deploy, smoke test, tag v1.0-demo) / T5.7 (Owner demo recording)
+- **Last completed task:** T5.8 (Tagged and pushed v1.0-demo, live URL smoke-tested, all deliverables indexed)
+- **Next task:** T5.7 (Owner demo video recording / presentation rehearsal at SJT-G07)
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/
-- **Last known-good tag:** v0.2-evaluated
+- **Last known-good tag:** v1.0-demo
 
 ## 2. Project facts
 - **Event:** VIT AI Innovate-A-Thon (School of CSE & IS, Dept. of Cybersecurity and Intelligent Systems)
@@ -74,9 +74,10 @@
   4. Report file (`docs/REPORT.md`)
   5. Presentation slides (PPT)
 - **Deadlines & Venue:** Deadline 25 Oct 09:00, presentation at SJT-G07 from 09:00.
-- [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
+- [x] Working demo / recorded PoC  - [x] Gesture-to-action mapping  - [x] Evaluation table  - [x] Report file  - [x] PPT  - [x] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `25 Oct 00:50` T5.8: Completed final deploy sequence and tagged 'v1.0-demo'. Verified live production URL (https://shouryaahuja.github.io/ai-hackathon/) and confirmed HTTP 200 on /mediapipe/gesture_recognizer.task (8.37 MB) and /mediapipe/vision_wasm_internal.wasm (13.52 MB). Evaluation summary: 324 unique trials across 4 environmental conditions (C1 baseline: 80, C2 dim: 84, C3 backlit: 80, C4 cluttered: 80), covering 6 gestures + fist lock + idle None. Final metrics: 78.70% overall accuracy (255/324, including 40 idle rejections), 21.30% neutral abstention (69/324), 0 misreads in 284 gesture trials (95% CI upper bound ~1%), 0 triggers during 200s idle observation (<=0.9/min at 95% CI). Strict freeze maintained: src/config.ts (tau=0.70), ml/data/ (32 CSVs), and results docs (per_class.csv, condition_table.csv, confusion_matrix.png, threshold_curve.png). All deliverables ready in repository.
 - `25 Oct 00:48` T5.1-T5.6: Enforced strict Feature Freeze on logic and data. Completed UI polish with updated title and meta description in index.html. Authored comprehensive README.md with live links, architecture diagram, gesture mapping, honest evaluation metrics, and local reproduction commands. Authored docs/PRESENTATION_SLIDES.md with 7-section official flow and timed speaker notes. Verified unit tests (59/59), ESLint, and build.
 - `25 Oct 00:45` PATCH-3C-R1 Part D & Sweep: Created docs/DEMO_NOTES.md with opening gesture recommendation (ILoveYou/Closed_Fist/Pointing_Up at 97-100%, avoid opening with Open_Palm), and complete lock/unlock mechanism. Updated docs/HOW_IT_WORKS.md documenting that kiosk unlocks touchlessly ONLY via Closed_Fist toggle (Open_Palm is suppressed while locked), or via manual 'Unlock Kiosk (H)' button and keyboard keys ('L', 'H', 'Esc'). Executed repository-wide regex sweep for forbidden phrases (0 matches across all .md, .ts, .tsx files). Vitest (59/59), ESLint, and build all passed.
 - `25 Oct 00:43` PATCH-3C-R1 Part B: Passed all verification gates. Confirmed 32 CSV trial datasets tracked in `ml/data/`. Unit tests: 59/59 passed (vitest). Linter: clean (eslint). Build: client bundle generated cleanly in 403ms (tsc + vite).
