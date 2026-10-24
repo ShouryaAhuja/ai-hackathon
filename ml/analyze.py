@@ -41,6 +41,7 @@ CANONICAL_GESTURES = [
     "Thumb_Up",
     "Thumb_Down",
     "ILoveYou",
+    "Closed_Fist",
     "None",
 ]
 
@@ -51,6 +52,7 @@ PREDICTED_CLASSES = [
     "Thumb_Up",
     "Thumb_Down",
     "ILoveYou",
+    "Closed_Fist",
     "NEUTRAL",
 ]
 
@@ -62,10 +64,10 @@ def parse_args() -> argparse.Namespace:
         description="Analyze AirTouch trials.csv and output metrics to docs/"
     )
     parser.add_argument(
-        "csv_path",
-        nargs="?",
-        default="trials.csv",
-        help="Path to trials.csv file (default: trials.csv)",
+        "csv_paths",
+        nargs="*",
+        default=["trials.csv"],
+        help="One or more paths to trials CSV files (default: trials.csv)",
     )
     parser.add_argument(
         "--output-dir",
@@ -75,7 +77,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--mock",
         action="store_true",
-        help="Generate synthetic trials if input file does not exist (for pipeline testing)",
+        help="Generate synthetic trials if input files do not exist (for pipeline testing)",
     )
     return parser.parse_args()
 
@@ -162,47 +164,75 @@ def generate_mock_trials() -> pd.DataFrame:
     return pd.DataFrame(records)
 
 
-def load_trials_data(csv_path: str, allow_mock: bool = False) -> pd.DataFrame:
-    """Load and validate trials.csv dataset."""
-    if not os.path.exists(csv_path):
+def load_trials_data(csv_paths: List[str], allow_mock: bool = False) -> pd.DataFrame:
+    """Load, validate, and concatenate one or more trials CSV datasets, dropping duplicates."""
+    if not csv_paths:
+        csv_paths = ["trials.csv"]
+
+    existing_files = [p for p in csv_paths if os.path.exists(p)]
+
+    if not existing_files:
         if allow_mock:
-            print(f"[INFO] '{csv_path}' not found. Generating mock evaluation trials (--mock).")
+            print(f"[INFO] None of '{csv_paths}' found. Generating mock evaluation trials (--mock).")
             return generate_mock_trials()
-        print(f"[ERROR] Trials file '{csv_path}' does not exist.")
+        print(f"[ERROR] None of the specified trials files exist: {csv_paths}")
         print("  Run Test Mode in the AirTouch Kiosk UI (press key 'T' on Home) to record trials,")
         print("  or pass '--mock' to test the evaluation pipeline with synthetic data.")
         sys.exit(1)
 
-    df = pd.read_csv(csv_path)
-    required_cols = {"condition", "true_gesture", "predicted", "raw_score"}
-    missing = required_cols - set(df.columns)
-    if missing:
-        print(f"[ERROR] Missing required columns in {csv_path}: {missing}")
+    dfs = []
+    total_raw_rows = 0
+    for file_path in existing_files:
+        try:
+            curr_df = pd.read_csv(file_path)
+            total_raw_rows += len(curr_df)
+            dfs.append(curr_df)
+            print(f"[INFO] Loaded {len(curr_df)} rows from '{file_path}'.")
+        except Exception as e:
+            print(f"[WARNING] Could not read '{file_path}': {e}")
+
+    if not dfs:
+        print("[ERROR] No valid CSV files could be loaded.")
         sys.exit(1)
 
-    if len(df) == 0:
-        print(f"[ERROR] '{csv_path}' contains zero trials.")
+    combined_df = pd.concat(dfs, ignore_index=True)
+
+    required_cols = {"condition", "true_gesture", "predicted", "raw_score"}
+    missing = required_cols - set(combined_df.columns)
+    if missing:
+        print(f"[ERROR] Missing required columns in datasets: {missing}")
+        sys.exit(1)
+
+    # Drop exact duplicate rows (PRE-COLLECTION-FIX Task D)
+    initial_count = len(combined_df)
+    combined_df = combined_df.drop_duplicates()
+    dropped_count = initial_count - len(combined_df)
+    if dropped_count > 0:
+        print(f"[INFO] Dropped {dropped_count} exact duplicate rows ({initial_count} -> {len(combined_df)} unique trials).")
+
+    if len(combined_df) == 0:
+        print("[ERROR] Combined datasets contain zero trials.")
         sys.exit(1)
 
     # Standardize column types
-    df["condition"] = df["condition"].astype(str)
-    df["true_gesture"] = df["true_gesture"].astype(str)
-    df["predicted"] = df["predicted"].astype(str)
-    df["raw_score"] = pd.to_numeric(df["raw_score"], errors="coerce").fillna(0.0)
+    combined_df["condition"] = combined_df["condition"].astype(str)
+    combined_df["true_gesture"] = combined_df["true_gesture"].astype(str)
+    combined_df["predicted"] = combined_df["predicted"].astype(str)
+    combined_df["raw_score"] = pd.to_numeric(combined_df["raw_score"], errors="coerce").fillna(0.0)
 
-    if "raw_label" not in df.columns:
-        df["raw_label"] = df["predicted"]
-    if "latency_ms" not in df.columns:
-        df["latency_ms"] = 25.0
+    if "raw_label" not in combined_df.columns:
+        combined_df["raw_label"] = combined_df["predicted"]
+    if "latency_ms" not in combined_df.columns:
+        combined_df["latency_ms"] = 25.0
     else:
-        df["latency_ms"] = pd.to_numeric(df["latency_ms"], errors="coerce").fillna(25.0)
+        combined_df["latency_ms"] = pd.to_numeric(combined_df["latency_ms"], errors="coerce").fillna(25.0)
 
-    if "triggers_fired" not in df.columns:
-        df["triggers_fired"] = 0
+    if "triggers_fired" not in combined_df.columns:
+        combined_df["triggers_fired"] = 0
     else:
-        df["triggers_fired"] = pd.to_numeric(df["triggers_fired"], errors="coerce").fillna(0).astype(int)
+        combined_df["triggers_fired"] = pd.to_numeric(combined_df["triggers_fired"], errors="coerce").fillna(0).astype(int)
 
-    return df
+    return combined_df
 
 
 def compute_per_class_metrics(df: pd.DataFrame) -> pd.DataFrame:
@@ -560,7 +590,7 @@ def print_console_summary(
     all_row = cond_df[cond_df["condition"] == "ALL_CONDITIONS"].iloc[0]
 
     print("\n" + "=" * 70)
-    print("  AIRTOUCH KIOSK (Q15) — EMPIRICAL EVALUATION SUMMARY (T3.2)")
+    print("  AIRTOUCH KIOSK (Q15) -- EMPIRICAL EVALUATION SUMMARY (T3.2)")
     print("=" * 70)
     print(f"  Total Trials Evaluated : {total}")
     print(f"  Overall Accuracy       : {all_row['accuracy'] * 100:.2f}%")
@@ -573,7 +603,7 @@ def print_console_summary(
     for _, r in cond_df.iterrows():
         c_name = r["condition"].ljust(18)
         print(
-            f"   • {c_name} | Acc: {r['accuracy']*100:5.1f}% | Neutral: {r['neutral_rate']*100:5.1f}% | False Trig: {r['false_triggers']:2d} | N={r['total_trials']}"
+            f"   - {c_name} | Acc: {r['accuracy']*100:5.1f}% | Neutral: {r['neutral_rate']*100:5.1f}% | False Trig: {r['false_triggers']:2d} | N={r['total_trials']}"
         )
     print("-" * 70)
     print("  PER-GESTURE F1 SCORES:")
@@ -582,12 +612,12 @@ def print_console_summary(
             continue
         g_name = r["gesture"].ljust(15)
         print(
-            f"   • {g_name} | Prec: {r['precision']:0.3f} | Recall: {r['recall']:0.3f} | F1: {r['f1_score']:0.3f} | Support: {r['support']}"
+            f"   - {g_name} | Prec: {r['precision']:0.3f} | Recall: {r['recall']:0.3f} | F1: {r['f1_score']:0.3f} | Support: {r['support']}"
         )
     print("=" * 70)
     print("  GENERATED ARTIFACTS:")
     for f in output_files:
-        print(f"   ✓ {f}")
+        print(f"   [OK] {f}")
     print("=" * 70 + "\n")
 
 
@@ -596,7 +626,7 @@ def main() -> None:
     os.makedirs(args.output_dir, exist_ok=True)
 
     # 1. Load trials
-    df = load_trials_data(args.csv_path, allow_mock=args.mock)
+    df = load_trials_data(args.csv_paths, allow_mock=args.mock)
 
     # 2. Compute per-class metrics
     per_class_df = compute_per_class_metrics(df)

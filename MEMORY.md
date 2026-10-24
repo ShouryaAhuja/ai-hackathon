@@ -36,6 +36,7 @@
 | 24 Oct | Hold-to-confirm + neutral state + manual parity | Trust, accessibility, responsible AI |
 | 24 Oct | Custom landmark classifier = stretch only | Depth upgrade after MVP + evaluation exist |
 | 24 Oct | Amendment (pre-evaluation): ILoveYou -> Help added as 6th gesture | Reason: Help screen had no gesture path; ILoveYou unused and visually distinct. Owner reliability test passed. |
+| 24 Oct | Python 3.12.15 venv created for `ml/` evaluation (`.venv`) | Python 3.15 has no pre-built wheels for pandas/matplotlib; Python 3.12 provides official stable wheels for pandas, numpy, and matplotlib |
 
 ## 5. Gotchas (verify as you go)
 - Camera needs HTTPS or localhost: GitHub Pages OK.
@@ -68,6 +69,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `24 Oct 20:53` PRE-COLLECTION-FIX Task D: Configured Python 3.12.15 venv (`.venv`) via `uv` with pandas, matplotlib, numpy. Updated `ml/analyze.py` to accept one or more CSV paths (`nargs='*'`), concatenate them, and drop exact duplicate rows. Added Closed_Fist to CANONICAL_GESTURES and PREDICTED_CLASSES. Verified execution with `.\.venv\Scripts\python.exe ml/analyze.py --mock`.
 - `24 Oct 20:13` T3.2: Created ml/analyze.py and ml/requirements.txt (pandas, matplotlib, numpy). Python evaluation script reads trials.csv and generates docs/per_class.csv (precision/recall/F1/support), docs/confusion_matrix.png (annotated counts with NEUTRAL handling), docs/condition_table.csv (accuracy/neutral rate across C1-C4), and docs/threshold_curve.png (accuracy vs abstention curve across 0.5-0.9 thresholds). Verified syntax with python -m py_compile. Ready for owner-driven data collection (T3.3).
 - `24 Oct 20:09` T3.1: Built Test Mode UI & empirical trial pipeline (src/testmode/). Pre-trial selection of true gesture (7 options: 6 mapped + None/other) and condition (C1-C4), 3s countdown, 5s live capture window, in-memory trial log with correct/neutral/incorrect verdict, CSV export (trials.csv) with zero image/frame storage. Added Test Mode button to Home and header (and key T). Unit tests for pure trial evaluation, CSV conversion, and metrics (57/57 pass). Lint/build pass.
 - `24 Oct 19:13` T2.9: Production deployment verified on live GitHub Pages. GitHub Actions CI/CD completed successfully. Verified live HEAD checks on `/mediapipe/gesture_recognizer.task` and `/mediapipe/vision_wasm_internal.wasm` (HTTP 200). Tagged milestone release `v0.1-demo-safe` and pushed tags. Phase 2 (MVP) complete.
