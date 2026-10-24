@@ -61,7 +61,7 @@
 | Thresholds (score / frames / dwell / cooldown) | 0.70 / 7 / 800 ms / 1200 ms (frozen in config.ts) |
 | Conditions completed | C1 (80), C2 (84), C3 (80), C4 (80) = 324 unique trials |
 | Overall accuracy / neutral rate | 78.70% (255/324) / 21.30% (69/324) |
-| False-trigger rate (per min) | 0.00 / min (0 triggers across 40 No-Gesture trials / 200s total) |
+| False-trigger rate (per min) | 0 triggers in 200s idle observation; <=0.9/min at 95% CI |
 | Weakest gesture | Open_Palm (Recall: 30.2%, F1: 0.464, 30 abstentions) |
 | Custom classifier vs pretrained | - |
 
@@ -77,6 +77,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `25 Oct 00:42` PATCH-3C-R1 Part A: Completed honesty revisions in docs/REPORT.md and docs/FAILURE_ANALYSIS.md. Renamed tau=0.60 to Post-hoc Sensitivity Point with explicit disclaimer; added threshold-curve approximation note; added Gesture-only results table (284 trials, 215 correct, 69 abstained, 0 misreads, 40/40 idle rejected, 0 triggers in 200s idle / <=0.9/min 95% CI upper bound); applied rule-of-three 95% CI misread wording; reframed Open_Palm sub-threshold clustering (0.53-0.69); prefixed untested failure explanations with 'Likely cause (not tested):' and stripped speculative words; added comprehensive Limitations & threats to validity sections. Freezing REPORT.md results and FAILURE_ANALYSIS.md.
 - `25 Oct 00:24` T3.7: Completed Phase 3 evaluation milestone. Filled Section 4 [RESULTS] in docs/REPORT.md with verified condition breakdown, per-class metrics, false trigger analysis, and threshold trade-offs. Updated evaluation tracking in MEMORY.md. Ticked TASKS.md. Tagged milestone release `v0.2-evaluated` and pushed.
 - `25 Oct 00:22` T3.6: Authored docs/FAILURE_ANALYSIS.md analyzing 5 concrete, data-backed failure modes from 324 real trials: (1) Open_Palm sub-threshold clustering at 0.53-0.69, (2) C3 backlight silhouette blindness, (3) thumb joint occlusion in Thumb_Up/Down, (4) Victory palmar vs dorsal orientation sensitivity, and (5) the 0.70 vs 0.60 threshold safety trade-off. Grounded in owner's real environmental conditions with zero invented numbers.
 - `25 Oct 00:20` T3.5: Verified all 4 evaluation artifacts in docs/ (per_class.csv, confusion_matrix.png, condition_table.csv, threshold_curve.png) at frozen 0.70 threshold. Computed empirical sensitivity: 0.50=93.5% acc (0.3% err), 0.60=91.7% acc (0.3% err), 0.70=78.7% acc (0.0% err), 0.80=63.6% acc (0.0% err). Retained frozen 0.70 threshold in src/config.ts per protocol; documented trade-off in MEMORY.md for oral presentation.

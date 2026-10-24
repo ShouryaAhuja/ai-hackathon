@@ -112,13 +112,22 @@ Testing was conducted across four distinct, realistic environmental conditions r
 - **Handedness & Orientation:** Alternating left/right hand in C1–C2, consistent dominant hand in C3–C4. Victory was tested with front-facing palmar orientation.
 
 ### 4.2 Overall Performance Summary
-- **Total Unique Trials:** 324
-- **Overall System Accuracy:** **78.70%** (255 / 324 correct)
-- **Neutral Abstention Rate:** **21.30%** (69 / 324 safely abstained)
-- **Misclassification Rate:** **0.00%** (0 false activations)
-- **Total False Triggers:** **0**
-- **False-Trigger Rate:** **0.00 triggers / minute** (evaluated across 40 No-Gesture trials / 200 seconds total observation)
+- **Total Unique Trials:** 324 (Note: the 78.70% overall system accuracy figure includes the 40 No-Gesture trials, where safely predicting NEUTRAL is evaluated as correct).
+- **Overall System Accuracy:** **78.70%** (255 / 324 correct across all trials)
+- **Neutral Abstention Rate:** **21.30%** (69 / 324 safely abstained into `NEUTRAL`)
+- **Gesture Reliability:** No 5-second steady hold was majority-labelled as the wrong gesture: 0 misreads in 284 gesture trials, with a 95% confidence upper bound near 1% (rule of three).
+- **Idle False Triggers:** 0 triggers in 200 seconds of idle observation; upper bound ~0.9 per minute at 95% confidence.
 - **Mean Frame Inference Latency:** **93.3 ms**
+
+#### Gesture-Only Results (Excluding Idle No-Gesture Trials)
+| Metric | Value |
+|---|---|
+| Gesture trials | 284 |
+| Recognised correctly | 215 (75.7%) |
+| Safely abstained | 69 (24.3%) |
+| Misread as a different gesture | 0 of 284 |
+| No-Gesture trials correctly rejected | 40 of 40 |
+| Triggers during 200 s idle | 0 (<=0.9/min, 95% CI upper bound) |
 
 ### 4.3 Condition Breakdown Table (`docs/condition_table.csv`)
 
@@ -134,22 +143,30 @@ Testing was conducted across four distinct, realistic environmental conditions r
 
 | Gesture Class | Kiosk Action | Precision | Recall | F1-Score | Support | Abstentions | Notes |
 |---|---|:---:|:---:|:---:|:---:|:---:|---|
-| `Open_Palm` | Home | 1.000 | 0.302 | **0.464** | 43 | 30 | **Weakest gesture**: raw scores clustered at 0.53–0.69 |
+| `Open_Palm` | Home | 1.000 | 0.302 | **0.464** | 43 | 30 | Our most natural gesture is our least reliable (30 of 43 trials abstained, 30% recall); the safe fallback means users get the button, not a wrong action. Raw scores clustered at 0.53-0.69, all safely below the 0.70 threshold. |
 | `Pointing_Up` | Schedule | 1.000 | 0.775 | **0.873** | 40 | 9 | Robust; occasional silhouette dropout in C3 |
 | `Victory` | Campus Map | 1.000 | 0.925 | **0.961** | 40 | 3 | High reliability when palm faces lens |
 | `Thumb_Up` | Confirm | 1.000 | 0.600 | **0.750** | 40 | 16 | C3 backlight occluded thumb silhouette |
 | `Thumb_Down` | Back | 1.000 | 0.750 | **0.857** | 40 | 10 | High precision; C3 backlighting caused abstentions |
-| `ILoveYou` | Help | 1.000 | 1.000 | **1.000** | 41 | 0 | **Strongest gesture**: 100% precision & recall across all conditions |
+| `ILoveYou` | Help | 1.000 | 1.000 | **1.000** | 41 | 0 | Strongest gesture: 100% precision & recall across all conditions |
 | `Closed_Fist` | Lock | 1.000 | 0.975 | **0.987** | 40 | 1 | Exceptional clutter and dim-light resistance |
-| `None` (Idle) | Neutral | 0.367 | 1.000 | **0.537** | 40 | 0 | 100% safe rejection (40/40 trials stayed neutral) |
+| `None` (Idle) | Neutral | 0.367 | 1.000 | **0.537** | 40 | 0 | Correctly rejected (40/40 trials stayed neutral) |
 | **Macro Average** | — | **0.921** | **0.791** | **0.804** | 324 | 69 | — |
 | **Weighted Average** | — | **0.922** | **0.787** | **0.801** | 324 | 69 | — |
 
 ### 4.5 Key Observations & Threshold Sensitivity
-1. **Zero Accidental Actions:** Across all 324 trials and 40 No-Gesture trials, the three-stage filter (0.70 threshold + 7-frame smoothing + 800ms dwell) achieved **zero false triggers**.
+1. **Zero Accidental Actions:** No 5-second steady hold was majority-labelled as the wrong gesture: 0 misreads in 284 gesture trials, with a 95% confidence upper bound near 1% (rule of three). In idle observation, there were 0 triggers in 200 seconds of idle observation; upper bound ~0.9 per minute at 95% confidence.
 2. **First-Class Neutral State:** When recognition degraded in C3 (backlit condition), the system safely abstained 40.0% of trials into `NEUTRAL`, never triggering an unintended navigation.
-3. **Threshold Sensitivity Analysis:** Plotting performance across operating thresholds ($0.50 \le \tau \le 0.90$, see `docs/threshold_curve.png`) demonstrated that lowering the threshold from 0.70 to 0.60 boosts overall accuracy to **91.7%** (abstentions drop to 8.0%) with only a 0.3% error rate. In adherence to scientific rigor, the threshold was maintained at 0.70 in `src/config.ts`.
+3. **Threshold Sensitivity Analysis:** Plotting performance across operating thresholds ($0.50 \le \tau \le 0.90$, see `docs/threshold_curve.png`) demonstrated that lowering the threshold from 0.70 to a Post-hoc Sensitivity Point of $\tau=0.60$ shifts overall accuracy to **91.7%** (abstentions drop to 8.0%) with only a 0.3% error rate. $\tau=0.60$ is a post-hoc observation from already-collected data, not an achieved result. The evaluation threshold remains the pre-registered $\tau=0.70$. Validating 0.60 would require fresh data collected after this freeze.
+   *Note: the threshold curve is approximate — the CSV stores one aggregated score per trial, not frame-level scores, so this is a reconstruction rather than a frame-level re-run.*
 4. **Detailed Failure Analysis:** See [docs/FAILURE_ANALYSIS.md](file:///d:/work/AI_Hackathon/docs/FAILURE_ANALYSIS.md) for root-cause analyses on `Open_Palm` sub-threshold clustering, C3 backlight silhouette blindness, thumb occlusions, and Victory angle sensitivity.
+
+### 4.6 Limitations & Threats to Validity
+- **Sample Scope:** One participant, one recording session, 10 trials per cell; trials are not independent (numbers are indicative rather than population-level statistical claims).
+- **Environmental Confounds:** C3 combined backlighting with desk clutter; C1 had mild newspaper clutter rather than a pristine backdrop.
+- **Gesture Protocol Scope:** Fist was evaluated primarily across C1 and C4 in targeted scope trials (though 10 trials per cell were recorded, evaluation scope focused on C1 and C4).
+- **Interaction Variables:** Handedness was not controlled in C1/C2 (alternating hands); distance (~0.5m vs 1.5m) and a second background person were untested.
+- **Metric Inclusions:** All per-condition accuracy figures (C1=80.0%, C2=88.1%, C3=60.0%, C4=86.2%) include the 10 No-Gesture trials per condition (where staying NEUTRAL is judged correct).
 
 ---
 
