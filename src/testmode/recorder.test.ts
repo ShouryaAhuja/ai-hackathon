@@ -98,6 +98,8 @@ describe('recorder — aggregateCaptureWindow', () => {
       'Pointing_Up',
       'C2_dim',
       'sess-02',
+      '2026-10-24T18:00:00Z',
+      1,
     )
     expect(trial.predicted).toBe('Pointing_Up')
     expect(trial.raw_label).toBe('Pointing_Up')
@@ -105,6 +107,7 @@ describe('recorder — aggregateCaptureWindow', () => {
     expect(trial.condition).toBe('C2_dim')
     expect(trial.latency_ms).toBe(25) // (25+30+20+25)/4 = 25
     expect(trial.raw_score).toBeCloseTo((0.9 + 0.85 + 0.92) / 3, 2)
+    expect(trial.triggers_fired).toBe(1)
   })
 
   it('identifies neutral when majority frames are below threshold', () => {
@@ -155,6 +158,7 @@ describe('recorder — trialsToCsv', () => {
         raw_label: 'Open_Palm',
         raw_score: 0.8842,
         latency_ms: 24.5,
+        triggers_fired: 2,
         verdict: 'correct',
       },
       {
@@ -166,6 +170,7 @@ describe('recorder — trialsToCsv', () => {
         raw_label: 'Victory',
         raw_score: 0.621,
         latency_ms: 30.1,
+        triggers_fired: 0,
         verdict: 'neutral',
       },
     ]
@@ -174,15 +179,15 @@ describe('recorder — trialsToCsv', () => {
     const lines = csv.trim().split('\n')
 
     expect(lines[0]).toBe(
-      'timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,verdict',
+      'timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,triggers_fired,verdict',
     )
     expect(lines).toHaveLength(3)
 
     expect(lines[1]).toBe(
-      '2026-10-24T18:00:00.000Z,session-alpha,C1_baseline,Open_Palm,Open_Palm,Open_Palm,0.8842,25,correct',
+      '2026-10-24T18:00:00.000Z,session-alpha,C1_baseline,Open_Palm,Open_Palm,Open_Palm,0.8842,25,2,correct',
     )
     expect(lines[2]).toBe(
-      '2026-10-24T18:00:10.000Z,session-alpha,C2_dim,Victory,NEUTRAL,Victory,0.6210,30,neutral',
+      '2026-10-24T18:00:10.000Z,session-alpha,C2_dim,Victory,NEUTRAL,Victory,0.6210,30,0,neutral',
     )
   })
 })
@@ -199,6 +204,7 @@ describe('recorder — computeMetrics', () => {
         raw_label: 'Open_Palm',
         raw_score: 0.9,
         latency_ms: 20,
+        triggers_fired: 1,
         verdict: 'correct',
       },
       {
@@ -210,6 +216,7 @@ describe('recorder — computeMetrics', () => {
         raw_label: 'Pointing_Up',
         raw_score: 0.6,
         latency_ms: 22,
+        triggers_fired: 0,
         verdict: 'neutral',
       },
       {
@@ -221,6 +228,7 @@ describe('recorder — computeMetrics', () => {
         raw_label: 'Thumb_Up',
         raw_score: 0.8,
         latency_ms: 24,
+        triggers_fired: 1,
         verdict: 'incorrect',
       },
       {
@@ -232,6 +240,7 @@ describe('recorder — computeMetrics', () => {
         raw_label: 'None',
         raw_score: 0.1,
         latency_ms: 18,
+        triggers_fired: 0,
         verdict: 'correct',
       },
     ]

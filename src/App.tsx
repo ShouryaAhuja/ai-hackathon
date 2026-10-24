@@ -246,6 +246,8 @@ export default function App() {
                   if (gestureEvent.action === 'Lock') {
                     dispatch(Action.LOCK)
                   }
+                } else if (kioskScreenRef.current === 'test') {
+                  // Suppress gesture dispatch during test mode (PRE-COLLECTION-FIX Task B: no navigation)
                 } else {
                   dispatch(gestureEvent.action)
                 }

@@ -15,7 +15,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Action } from '../kiosk/actions'
 import { SCORE_THRESHOLD } from '../config'
-import { applyThreshold } from '../vision/decision'
+import { applyThreshold, DecisionEngine } from '../vision/decision'
 import {
   type TrueGesture,
   type ConditionTag,
@@ -100,6 +100,8 @@ export default function TestModeScreen({
   const capturedFramesRef = useRef<FrameSample[]>([])
   const timerIntervalRef = useRef<number | null>(null)
   const lastFrameTimestampRef = useRef<number>(0)
+  const trialDecisionEngineRef = useRef<DecisionEngine>(new DecisionEngine())
+  const triggersFiredCountRef = useRef<number>(0)
 
   // Sample incoming video frames during active 5-second capture window
   useEffect(() => {
@@ -115,6 +117,21 @@ export default function TestModeScreen({
     const rawLabel = currentDetection.gesture || 'None'
     const rawScore = currentDetection.score || 0
     const predictedLabel = applyThreshold(rawLabel, rawScore)
+    const isHandPresent =
+      currentDetection.handsCount > 0 &&
+      rawLabel !== 'No hand' &&
+      rawLabel !== 'None'
+
+    // Update trial-scoped DecisionEngine to monitor if/when an action triggers
+    const event = trialDecisionEngineRef.current.update(
+      rawLabel,
+      rawScore,
+      now,
+      isHandPresent,
+    )
+    if (event) {
+      triggersFiredCountRef.current += 1
+    }
 
     capturedFramesRef.current.push({
       timestamp: now,
@@ -153,6 +170,8 @@ export default function TestModeScreen({
         setPhase('capturing')
         setCaptureTimeRemaining(5.0)
         capturedFramesRef.current = []
+        trialDecisionEngineRef.current.reset()
+        triggersFiredCountRef.current = 0
 
         let captureLeftMs = 5000
         const stepMs = 100
@@ -170,6 +189,8 @@ export default function TestModeScreen({
               trueGesture,
               condition,
               sessionId,
+              new Date().toISOString(),
+              triggersFiredCountRef.current,
             )
 
             setTrials((prev) => [trialResult, ...prev])
@@ -539,7 +560,10 @@ export default function TestModeScreen({
                     True: <strong>{lastTrial.true_gesture}</strong> · Predicted:{' '}
                     <strong>{lastTrial.predicted}</strong> (raw:{' '}
                     {lastTrial.raw_label} @{' '}
-                    {(lastTrial.raw_score * 100).toFixed(0)}%)
+                    {(lastTrial.raw_score * 100).toFixed(0)}%) · Actions fired:{' '}
+                    <strong className="font-mono text-teal-300">
+                      {lastTrial.triggers_fired ?? 0}
+                    </strong>
                   </p>
                 </div>
               </div>
@@ -547,6 +571,9 @@ export default function TestModeScreen({
               <div className="text-right text-xs font-mono opacity-80">
                 <span className="block">{lastTrial.latency_ms} ms</span>
                 <span className="block">{lastTrial.condition}</span>
+                <span className="block text-teal-400 font-bold">
+                  {lastTrial.triggers_fired ?? 0} trig
+                </span>
               </div>
             </div>
 
@@ -661,6 +688,7 @@ export default function TestModeScreen({
                 <th className="py-2.5 px-3">Raw Label</th>
                 <th className="py-2.5 px-3">Raw Score</th>
                 <th className="py-2.5 px-3">Latency</th>
+                <th className="py-2.5 px-3">Triggers</th>
                 <th className="py-2.5 px-3">Verdict</th>
               </tr>
             </thead>
@@ -668,7 +696,7 @@ export default function TestModeScreen({
               {trials.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={8}
+                    colSpan={9}
                     className="text-center py-6 text-slate-500 font-sans"
                   >
                     No trials recorded yet. Select True Gesture &amp; Condition
@@ -696,6 +724,9 @@ export default function TestModeScreen({
                       {(t.raw_score * 100).toFixed(0)}%
                     </td>
                     <td className="py-2 px-3">{Math.round(t.latency_ms)} ms</td>
+                    <td className="py-2 px-3 font-bold text-teal-300">
+                      {t.triggers_fired ?? 0}
+                    </td>
                     <td className="py-2 px-3">
                       <span
                         className={[

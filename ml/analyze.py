@@ -134,13 +134,17 @@ def generate_mock_trials() -> pd.DataFrame:
                 # Compute verdict
                 if is_none:
                     verdict = "correct" if pred == "NEUTRAL" else "incorrect"
+                    triggers_fired = 0 if pred == "NEUTRAL" else 1
                 else:
                     if pred == gesture:
                         verdict = "correct"
+                        triggers_fired = 1
                     elif pred == "NEUTRAL":
                         verdict = "neutral"
+                        triggers_fired = 0
                     else:
                         verdict = "incorrect"
+                        triggers_fired = 1
 
                 records.append({
                     "timestamp": f"2026-10-24T18:{np.random.randint(10,59)}:{np.random.randint(10,59)}Z",
@@ -151,6 +155,7 @@ def generate_mock_trials() -> pd.DataFrame:
                     "raw_label": raw_label,
                     "raw_score": round(raw_score, 4),
                     "latency_ms": round(float(np.random.uniform(18.0, 32.0)), 1),
+                    "triggers_fired": triggers_fired,
                     "verdict": verdict,
                 })
 
@@ -191,6 +196,11 @@ def load_trials_data(csv_path: str, allow_mock: bool = False) -> pd.DataFrame:
         df["latency_ms"] = 25.0
     else:
         df["latency_ms"] = pd.to_numeric(df["latency_ms"], errors="coerce").fillna(25.0)
+
+    if "triggers_fired" not in df.columns:
+        df["triggers_fired"] = 0
+    else:
+        df["triggers_fired"] = pd.to_numeric(df["triggers_fired"], errors="coerce").fillna(0).astype(int)
 
     return df
 
@@ -386,12 +396,20 @@ def compute_condition_table(df: pd.DataFrame) -> pd.DataFrame:
         incorrect = int(incorrect_mask.sum())
         mean_lat = float(cdf["latency_ms"].mean()) if "latency_ms" in cdf.columns else 25.0
 
+        # False triggers: actions emitted when true gesture is None/Other
+        false_trig_mask = cdf["true_gesture"].isin(["None", "Other", "no_gesture"])
+        if "triggers_fired" in cdf.columns:
+            false_trig_count = int(cdf[false_trig_mask]["triggers_fired"].sum())
+        else:
+            false_trig_count = int((false_trig_mask & (cdf["predicted"] != "NEUTRAL")).sum())
+
         rows.append({
             "condition": c,
             "total_trials": total,
             "correct": correct,
             "neutral": neutral,
             "incorrect": incorrect,
+            "false_triggers": false_trig_count,
             "accuracy": round(correct / total, 4) if total > 0 else 0.0,
             "neutral_rate": round(neutral / total, 4) if total > 0 else 0.0,
             "error_rate": round(incorrect / total, 4) if total > 0 else 0.0,
@@ -403,6 +421,7 @@ def compute_condition_table(df: pd.DataFrame) -> pd.DataFrame:
     corr_all = sum(r["correct"] for r in rows)
     neut_all = sum(r["neutral"] for r in rows)
     err_all = sum(r["incorrect"] for r in rows)
+    false_all = sum(r["false_triggers"] for r in rows)
     lat_all = float(df["latency_ms"].mean()) if "latency_ms" in df.columns else 25.0
 
     rows.append({
@@ -411,6 +430,7 @@ def compute_condition_table(df: pd.DataFrame) -> pd.DataFrame:
         "correct": corr_all,
         "neutral": neut_all,
         "incorrect": err_all,
+        "false_triggers": false_all,
         "accuracy": round(corr_all / total_all, 4) if total_all > 0 else 0.0,
         "neutral_rate": round(neut_all / total_all, 4) if total_all > 0 else 0.0,
         "error_rate": round(err_all / total_all, 4) if total_all > 0 else 0.0,
@@ -545,14 +565,15 @@ def print_console_summary(
     print(f"  Total Trials Evaluated : {total}")
     print(f"  Overall Accuracy       : {all_row['accuracy'] * 100:.2f}%")
     print(f"  Neutral / Abstain Rate : {all_row['neutral_rate'] * 100:.2f}%")
-    print(f"  Error / False Triggers : {all_row['error_rate'] * 100:.2f}%")
+    print(f"  Error / Misclassified  : {all_row['error_rate'] * 100:.2f}%")
+    print(f"  Total False Triggers   : {all_row['false_triggers']}")
     print(f"  Mean Frame Latency     : {all_row['mean_latency_ms']:.1f} ms")
     print("-" * 70)
     print("  PER-CONDITION PERFORMANCE:")
     for _, r in cond_df.iterrows():
         c_name = r["condition"].ljust(18)
         print(
-            f"   • {c_name} | Acc: {r['accuracy']*100:5.1f}% | Neutral: {r['neutral_rate']*100:5.1f}% | Err: {r['error_rate']*100:5.1f}% | N={r['total_trials']}"
+            f"   • {c_name} | Acc: {r['accuracy']*100:5.1f}% | Neutral: {r['neutral_rate']*100:5.1f}% | False Trig: {r['false_triggers']:2d} | N={r['total_trials']}"
         )
     print("-" * 70)
     print("  PER-GESTURE F1 SCORES:")

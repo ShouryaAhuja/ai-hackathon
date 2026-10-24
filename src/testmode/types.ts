@@ -95,6 +95,8 @@ export interface TrialRecord {
   raw_score: number
   /** Recognition latency in milliseconds */
   latency_ms: number
+  /** Number of actions emitted by DecisionEngine during the 5s capture window */
+  triggers_fired: number
   /** Evaluated verdict */
   verdict: TrialVerdict
 }

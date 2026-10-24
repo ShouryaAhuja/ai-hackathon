@@ -68,6 +68,7 @@ export function aggregateCaptureWindow(
   condition: ConditionTag | string,
   sessionId: string,
   trialTimestamp: string = new Date().toISOString(),
+  triggersFired: number = 0,
 ): TrialRecord {
   if (frames.length === 0) {
     const verdict = computeVerdict(trueGesture, 'NEUTRAL')
@@ -80,6 +81,7 @@ export function aggregateCaptureWindow(
       raw_label: 'None',
       raw_score: 0,
       latency_ms: 0,
+      triggers_fired: triggersFired,
       verdict,
     }
   }
@@ -135,6 +137,7 @@ export function aggregateCaptureWindow(
     raw_label: topRawLabel,
     raw_score: Number(avgScore.toFixed(4)),
     latency_ms: Number(avgLatency.toFixed(1)),
+    triggers_fired: triggersFired,
     verdict,
   }
 }
@@ -142,7 +145,7 @@ export function aggregateCaptureWindow(
 /**
  * Converts an array of TrialRecords into RFC-compliant CSV string.
  *
- * Headers: timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,verdict
+ * Headers: timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,triggers_fired,verdict
  */
 export function trialsToCsv(trials: TrialRecord[]): string {
   const headers = [
@@ -154,6 +157,7 @@ export function trialsToCsv(trials: TrialRecord[]): string {
     'raw_label',
     'raw_score',
     'latency_ms',
+    'triggers_fired',
     'verdict',
   ]
 
@@ -174,6 +178,7 @@ export function trialsToCsv(trials: TrialRecord[]): string {
     escapeCell(t.raw_label),
     t.raw_score.toFixed(4),
     Math.round(t.latency_ms),
+    t.triggers_fired ?? 0,
     escapeCell(t.verdict),
   ])
 
