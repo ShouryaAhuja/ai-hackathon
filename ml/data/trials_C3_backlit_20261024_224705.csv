@@ -1,0 +1,11 @@
+timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,triggers_fired,verdict
+2026-10-24T17:17:02.289Z,session-20261024-215212,C3_backlit,Pointing_Up,NEUTRAL,No hand,0.0000,67,0,neutral
+2026-10-24T17:16:52.393Z,session-20261024-215212,C3_backlit,Pointing_Up,Pointing_Up,Pointing_Up,0.8653,95,7,correct
+2026-10-24T17:16:38.361Z,session-20261024-215212,C3_backlit,Pointing_Up,Pointing_Up,Pointing_Up,0.8590,100,6,correct
+2026-10-24T17:16:24.691Z,session-20261024-215212,C3_backlit,Pointing_Up,NEUTRAL,No hand,0.0000,67,0,neutral
+2026-10-24T17:16:06.645Z,session-20261024-215212,C3_backlit,Pointing_Up,NEUTRAL,No hand,0.0000,71,0,neutral
+2026-10-24T17:15:56.161Z,session-20261024-215212,C3_backlit,Pointing_Up,Pointing_Up,Pointing_Up,0.8818,100,6,correct
+2026-10-24T17:15:43.061Z,session-20261024-215212,C3_backlit,Pointing_Up,NEUTRAL,No hand,0.0000,70,0,neutral
+2026-10-24T17:15:30.879Z,session-20261024-215212,C3_backlit,Pointing_Up,NEUTRAL,Pointing_Up,0.6280,83,0,neutral
+2026-10-24T17:15:19.495Z,session-20261024-215212,C3_backlit,Pointing_Up,Pointing_Up,Pointing_Up,0.9057,99,5,correct
+2026-10-24T17:15:06.666Z,session-20261024-215212,C3_backlit,Pointing_Up,Pointing_Up,Pointing_Up,0.9112,100,7,correct

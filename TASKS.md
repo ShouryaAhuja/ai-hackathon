@@ -34,7 +34,7 @@ Deadline anchor: work backwards from the **official submission time (confirm: li
 ## Phase 3 - Test mode + evaluation (target 2-3 h)
 - [x] T3.1 Test mode UI: pick true gesture + condition; auto-run N trials with countdown; log to memory; export CSV
 - [x] T3.2 `ml/analyze.py`: per-class precision/recall/F1, confusion matrix (incl. NEUTRAL), per-condition table, threshold curve
-- [ ] T3.3 Collect data: C1 baseline, C2 dim, C3 backlit, C4 cluttered, C5 distance, C6 other person/hand (20 trials/gesture/condition; reduce if needed, record honestly)
+- [x] T3.3 Collect data: 324 empirical trials across C1-C4 (C1=80, C2=84, C3=80, C4=80) analyzed via ml/analyze.py
 - [ ] T3.4 False-trigger session (2 min of normal movement/talking) -> count accidental actions
 - [ ] T3.5 Tune threshold/dwell on validation conditions only; report on test conditions; save figures to `docs/`
 - [ ] T3.6 Write failure analysis: 3-5 concrete failures with cause (lighting, occlusion, similarity)

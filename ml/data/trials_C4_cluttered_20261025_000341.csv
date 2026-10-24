@@ -1,0 +1,11 @@
+timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,triggers_fired,verdict
+2026-10-24T18:33:36.761Z,session-20261024-215212,C4_cluttered,ILoveYou,ILoveYou,ILoveYou,0.8569,99,6,correct
+2026-10-24T18:33:24.231Z,session-20261024-215212,C4_cluttered,ILoveYou,ILoveYou,ILoveYou,0.9252,99,5,correct
+2026-10-24T18:33:12.212Z,session-20261024-215212,C4_cluttered,ILoveYou,ILoveYou,ILoveYou,0.9167,99,5,correct
+2026-10-24T18:33:00.779Z,session-20261024-215212,C4_cluttered,ILoveYou,ILoveYou,ILoveYou,0.9414,98,6,correct
+2026-10-24T18:32:46.797Z,session-20261024-215212,C4_cluttered,ILoveYou,ILoveYou,ILoveYou,0.8411,99,6,correct
+2026-10-24T18:32:31.381Z,session-20261024-215212,C4_cluttered,ILoveYou,ILoveYou,ILoveYou,0.9327,100,7,correct
+2026-10-24T18:32:17.483Z,session-20261024-215212,C4_cluttered,ILoveYou,ILoveYou,ILoveYou,0.8821,99,5,correct
+2026-10-24T18:32:05.863Z,session-20261024-215212,C4_cluttered,ILoveYou,ILoveYou,ILoveYou,0.9034,100,5,correct
+2026-10-24T18:31:54.251Z,session-20261024-215212,C4_cluttered,ILoveYou,ILoveYou,ILoveYou,0.9218,99,6,correct
+2026-10-24T18:31:42.217Z,session-20261024-215212,C4_cluttered,ILoveYou,ILoveYou,ILoveYou,0.9181,99,5,correct

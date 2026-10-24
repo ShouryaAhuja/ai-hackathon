@@ -1,0 +1,11 @@
+timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,triggers_fired,verdict
+2026-10-24T17:25:00.494Z,session-20261024-215212,C3_backlit,Thumb_Up,NEUTRAL,Thumb_Up,0.6786,96,0,neutral
+2026-10-24T17:24:48.465Z,session-20261024-215212,C3_backlit,Thumb_Up,NEUTRAL,Thumb_Up,0.6785,92,0,neutral
+2026-10-24T17:24:35.366Z,session-20261024-215212,C3_backlit,Thumb_Up,NEUTRAL,Thumb_Up,0.6239,99,0,neutral
+2026-10-24T17:24:16.647Z,session-20261024-215212,C3_backlit,Thumb_Up,NEUTRAL,Thumb_Up,0.6437,100,0,neutral
+2026-10-24T17:24:05.498Z,session-20261024-215212,C3_backlit,Thumb_Up,NEUTRAL,Thumb_Up,0.6218,99,0,neutral
+2026-10-24T17:23:52.532Z,session-20261024-215212,C3_backlit,Thumb_Up,NEUTRAL,Thumb_Up,0.6240,99,0,neutral
+2026-10-24T17:23:28.500Z,session-20261024-215212,C3_backlit,Thumb_Up,NEUTRAL,No hand,0.0000,69,0,neutral
+2026-10-24T17:23:17.837Z,session-20261024-215212,C3_backlit,Thumb_Up,NEUTRAL,No hand,0.0000,67,0,neutral
+2026-10-24T17:23:07.371Z,session-20261024-215212,C3_backlit,Thumb_Up,NEUTRAL,Thumb_Up,0.6326,100,0,neutral
+2026-10-24T17:22:50.755Z,session-20261024-215212,C3_backlit,Thumb_Up,NEUTRAL,Thumb_Up,0.6233,100,0,neutral

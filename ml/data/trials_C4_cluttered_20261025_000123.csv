@@ -1,0 +1,11 @@
+timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,triggers_fired,verdict
+2026-10-24T18:31:20.699Z,session-20261024-215212,C4_cluttered,Victory,Victory,Victory,0.8590,98,7,correct
+2026-10-24T18:30:13.236Z,session-20261024-215212,C4_cluttered,Victory,Victory,Victory,0.8200,98,5,correct
+2026-10-24T18:30:01.722Z,session-20261024-215212,C4_cluttered,Victory,Victory,Victory,0.8739,99,7,correct
+2026-10-24T18:29:47.958Z,session-20261024-215212,C4_cluttered,Victory,Victory,Victory,0.8152,99,5,correct
+2026-10-24T18:29:36.758Z,session-20261024-215212,C4_cluttered,Victory,Victory,Victory,0.9039,97,6,correct
+2026-10-24T18:29:24.363Z,session-20261024-215212,C4_cluttered,Victory,Victory,Victory,0.8124,96,5,correct
+2026-10-24T18:29:13.175Z,session-20261024-215212,C4_cluttered,Victory,Victory,Victory,0.9017,97,6,correct
+2026-10-24T18:29:00.643Z,session-20261024-215212,C4_cluttered,Victory,Victory,Victory,0.8893,99,7,correct
+2026-10-24T18:28:47.343Z,session-20261024-215212,C4_cluttered,Victory,Victory,Victory,0.8863,97,6,correct
+2026-10-24T18:28:34.507Z,session-20261024-215212,C4_cluttered,Victory,Victory,Victory,0.8361,98,5,correct

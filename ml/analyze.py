@@ -184,7 +184,8 @@ def load_trials_data(csv_paths: List[str], allow_mock: bool = False) -> pd.DataF
     total_raw_rows = 0
     for file_path in existing_files:
         try:
-            curr_df = pd.read_csv(file_path)
+            # keep_default_na=False preserves the literal string 'None' for no-gesture trials
+            curr_df = pd.read_csv(file_path, keep_default_na=False)
             total_raw_rows += len(curr_df)
             dfs.append(curr_df)
             print(f"[INFO] Loaded {len(curr_df)} rows from '{file_path}'.")
@@ -214,10 +215,10 @@ def load_trials_data(csv_paths: List[str], allow_mock: bool = False) -> pd.DataF
         print("[ERROR] Combined datasets contain zero trials.")
         sys.exit(1)
 
-    # Standardize column types
+    # Standardize column types and ensure literal "None" is preserved
     combined_df["condition"] = combined_df["condition"].astype(str)
-    combined_df["true_gesture"] = combined_df["true_gesture"].astype(str)
-    combined_df["predicted"] = combined_df["predicted"].astype(str)
+    combined_df["true_gesture"] = combined_df["true_gesture"].astype(str).replace({"nan": "None", "": "None"})
+    combined_df["predicted"] = combined_df["predicted"].astype(str).replace({"nan": "NEUTRAL", "": "NEUTRAL"})
     combined_df["raw_score"] = pd.to_numeric(combined_df["raw_score"], errors="coerce").fillna(0.0)
 
     if "raw_label" not in combined_df.columns:

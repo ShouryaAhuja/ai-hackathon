@@ -1,0 +1,11 @@
+timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,triggers_fired,verdict
+2026-10-24T17:19:18.652Z,session-20261024-215212,C3_backlit,Victory,Victory,Victory,0.9049,98,7,correct
+2026-10-24T17:19:04.685Z,session-20261024-215212,C3_backlit,Victory,Victory,Victory,0.9080,98,5,correct
+2026-10-24T17:18:53.719Z,session-20261024-215212,C3_backlit,Victory,Victory,Victory,0.8990,100,6,correct
+2026-10-24T17:18:40.986Z,session-20261024-215212,C3_backlit,Victory,Victory,Victory,0.9046,99,6,correct
+2026-10-24T17:18:28.321Z,session-20261024-215212,C3_backlit,Victory,Victory,Victory,0.8964,100,6,correct
+2026-10-24T17:18:14.675Z,session-20261024-215212,C3_backlit,Victory,Victory,Victory,0.8972,100,7,correct
+2026-10-24T17:18:01.186Z,session-20261024-215212,C3_backlit,Victory,Victory,Victory,0.8996,100,5,correct
+2026-10-24T17:17:49.290Z,session-20261024-215212,C3_backlit,Victory,Victory,Victory,0.8941,100,5,correct
+2026-10-24T17:17:37.107Z,session-20261024-215212,C3_backlit,Victory,Victory,Victory,0.9102,100,7,correct
+2026-10-24T17:17:22.623Z,session-20261024-215212,C3_backlit,Victory,NEUTRAL,No hand,0.0000,67,0,neutral

@@ -1,0 +1,11 @@
+timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,triggers_fired,verdict
+2026-10-24T17:14:43.619Z,session-20261024-215212,C3_backlit,Open_Palm,NEUTRAL,Open_Palm,0.6171,98,0,neutral
+2026-10-24T17:14:30.502Z,session-20261024-215212,C3_backlit,Open_Palm,NEUTRAL,Open_Palm,0.6026,100,0,neutral
+2026-10-24T17:14:17.885Z,session-20261024-215212,C3_backlit,Open_Palm,NEUTRAL,Open_Palm,0.6442,100,0,neutral
+2026-10-24T17:14:05.235Z,session-20261024-215212,C3_backlit,Open_Palm,NEUTRAL,Open_Palm,0.6396,99,0,neutral
+2026-10-24T17:13:53.454Z,session-20261024-215212,C3_backlit,Open_Palm,NEUTRAL,Open_Palm,0.6618,100,0,neutral
+2026-10-24T17:13:39.221Z,session-20261024-215212,C3_backlit,Open_Palm,NEUTRAL,Open_Palm,0.5288,96,0,neutral
+2026-10-24T17:13:24.023Z,session-20261024-215212,C3_backlit,Open_Palm,Open_Palm,Open_Palm,0.7149,100,8,correct
+2026-10-24T17:13:09.139Z,session-20261024-215212,C3_backlit,Open_Palm,Open_Palm,Open_Palm,0.7282,100,5,correct
+2026-10-24T17:12:57.076Z,session-20261024-215212,C3_backlit,Open_Palm,Open_Palm,Open_Palm,0.7254,100,7,correct
+2026-10-24T17:12:41.558Z,session-20261024-215212,C3_backlit,Open_Palm,NEUTRAL,Open_Palm,0.6921,92,0,neutral

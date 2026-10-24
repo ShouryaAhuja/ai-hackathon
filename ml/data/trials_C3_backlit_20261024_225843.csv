@@ -1,0 +1,11 @@
+timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,triggers_fired,verdict
+2026-10-24T17:28:40.998Z,session-20261024-215212,C3_backlit,Thumb_Down,NEUTRAL,No hand,0.0000,67,0,neutral
+2026-10-24T17:28:31.366Z,session-20261024-215212,C3_backlit,Thumb_Down,NEUTRAL,No hand,0.0000,67,0,neutral
+2026-10-24T17:28:21.633Z,session-20261024-215212,C3_backlit,Thumb_Down,NEUTRAL,No hand,0.0000,67,0,neutral
+2026-10-24T17:28:12.337Z,session-20261024-215212,C3_backlit,Thumb_Down,NEUTRAL,No hand,0.0000,67,0,neutral
+2026-10-24T17:27:55.354Z,session-20261024-215212,C3_backlit,Thumb_Down,NEUTRAL,No hand,0.0000,67,0,neutral
+2026-10-24T17:27:43.485Z,session-20261024-215212,C3_backlit,Thumb_Down,NEUTRAL,No hand,0.0000,67,0,neutral
+2026-10-24T17:27:32.922Z,session-20261024-215212,C3_backlit,Thumb_Down,NEUTRAL,No hand,0.0000,67,0,neutral
+2026-10-24T17:27:23.442Z,session-20261024-215212,C3_backlit,Thumb_Down,Thumb_Down,Thumb_Down,0.8237,95,5,correct
+2026-10-24T17:27:11.988Z,session-20261024-215212,C3_backlit,Thumb_Down,NEUTRAL,No hand,0.0000,67,0,neutral
+2026-10-24T17:27:01.726Z,session-20261024-215212,C3_backlit,Thumb_Down,Thumb_Down,Thumb_Down,0.8654,98,6,correct

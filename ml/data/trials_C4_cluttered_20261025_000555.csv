@@ -1,0 +1,11 @@
+timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,triggers_fired,verdict
+2026-10-24T18:35:53.332Z,session-20261024-215212,C4_cluttered,Thumb_Up,Thumb_Up,Thumb_Up,0.7995,98,5,correct
+2026-10-24T18:35:42.121Z,session-20261024-215212,C4_cluttered,Thumb_Up,NEUTRAL,Thumb_Up,0.6539,97,0,neutral
+2026-10-24T18:35:30.120Z,session-20261024-215212,C4_cluttered,Thumb_Up,Thumb_Up,Thumb_Up,0.7177,98,5,correct
+2026-10-24T18:35:15.575Z,session-20261024-215212,C4_cluttered,Thumb_Up,Thumb_Up,Thumb_Up,0.7371,98,5,correct
+2026-10-24T18:35:04.471Z,session-20261024-215212,C4_cluttered,Thumb_Up,Thumb_Up,Thumb_Up,0.7323,86,3,correct
+2026-10-24T18:34:53.457Z,session-20261024-215212,C4_cluttered,Thumb_Up,Thumb_Up,Thumb_Up,0.7259,98,5,correct
+2026-10-24T18:34:42.158Z,session-20261024-215212,C4_cluttered,Thumb_Up,NEUTRAL,Thumb_Up,0.6404,98,0,neutral
+2026-10-24T18:34:29.991Z,session-20261024-215212,C4_cluttered,Thumb_Up,Thumb_Up,Thumb_Up,0.7271,98,6,correct
+2026-10-24T18:34:17.943Z,session-20261024-215212,C4_cluttered,Thumb_Up,NEUTRAL,Thumb_Up,0.6562,99,0,neutral
+2026-10-24T18:34:04.489Z,session-20261024-215212,C4_cluttered,Thumb_Up,Thumb_Up,Thumb_Up,0.7308,96,5,correct

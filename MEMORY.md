@@ -3,10 +3,10 @@
 > Read first every session. Update after every task. Newest entries first in logs.
 
 ## 1. Current status
-- **Phase:** 2 - Core build (MVP)
+- **Phase:** 3 - Test mode + evaluation
 - **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
-- **Last completed task:** T3.2 (Create ml/analyze.py, ml/requirements.txt, confusion matrix, per_class.csv, condition_table.csv, threshold curve)
-- **Next task:** T3.3 (Collect data: C1 baseline, C2 dim, C3 backlit, C4 cluttered — owner-driven)
+- **Last completed task:** T3.3 (Collect data: 324 empirical trials across C1-C4 analyzed via ml/analyze.py)
+- **Next task:** T3.4 (Compute false triggers per minute from No Gesture trials)
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/
 - **Last known-good tag:** v0.1-demo-safe
@@ -38,7 +38,14 @@
 | 24 Oct | Amendment (pre-evaluation): ILoveYou -> Help added as 6th gesture | Reason: Help screen had no gesture path; ILoveYou unused and visually distinct. Owner reliability test passed. |
 | 24 Oct | Python 3.12.15 venv created for `ml/` evaluation (`.venv`) | Python 3.15 has no pre-built wheels for pandas/matplotlib; Python 3.12 provides official stable wheels for pandas, numpy, and matplotlib |
 
-## 5. Gotchas (verify as you go)
+## 5. Gotchas & Empirical Context (verify as you go)
+- **Owner's real collection conditions (CRITICAL - do not describe as ideal lab conditions):**
+  - C1: normal light, mildly cluttered (newspapers in background)
+  - C2: dim light (low ambient light, overheads off)
+  - C3: backlit + cluttered (lamp behind owner causing silhouette, desk area in frame)
+  - C4: heavy clutter (layered newspapers, boxes, clothes)
+  - Handedness not controlled in C1-C2; one consistent hand in C3-C4
+  - Owner reports Victory is orientation-sensitive (reliable only when palm faces camera)
 - Camera needs HTTPS or localhost: GitHub Pages OK.
 - Vite `base` must equal `/<repo>/`; load assets using `import.meta.env.BASE_URL`.
 - Built-in gesture labels expected: `None, Closed_Fist, Open_Palm, Pointing_Up, Thumb_Down, Thumb_Up, Victory, ILoveYou` - confirm in current docs.
@@ -50,11 +57,11 @@
 ## 6. Evaluation tracking
 | Item | Value |
 |---|---|
-| Thresholds (score / frames / dwell / cooldown) | 0.70 / 7 / 800 ms / 1200 ms (initial) |
-| Conditions completed | none |
-| Overall accuracy / neutral rate | - |
-| False-trigger rate (per min) | - |
-| Weakest gesture | - |
+| Thresholds (score / frames / dwell / cooldown) | 0.70 / 7 / 800 ms / 1200 ms (frozen in config.ts) |
+| Conditions completed | C1 (80), C2 (84), C3 (80), C4 (80) = 324 unique trials |
+| Overall accuracy / neutral rate | 78.70% (255/324) / 21.30% (69/324) |
+| False-trigger rate (per min) | pending T3.4 |
+| Weakest gesture | Open_Palm (Recall: 30.2%, F1: 0.464, 30 abstentions) |
 | Custom classifier vs pretrained | - |
 
 ## 7. Submission checklist (confirmed deliverables)
@@ -69,6 +76,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `25 Oct 00:18` T3.3: Ingested 32 empirical CSV runs from ml/data/ into ml/analyze.py. Preserved literal "None" labels across pandas ingestion. Total unique trials = 324 (C1=80, C2=84, C3=80, C4=80). Overall accuracy: 78.70%, Neutral rate: 21.30%, Error/misclassification: 0.00%, False triggers: 0. Recorded real context notes (lighting, clutter, handedness, Victory orientation) in MEMORY.md.
 - `24 Oct 20:57` PRE-COLLECTION-FIX Task E: Verified docs/HOW_IT_WORKS.md and docs/REPORT.md did not previously exist; created 1-page oral Q&A guide (HOW_IT_WORKS.md) and full factual REPORT.md skeleton with [RESULTS] placeholder. Verified PRD §6 already contains ILoveYou->Help (row 6) and Closed_Fist->Lock (row 7) and confirmed no duplicates were added.
 - `24 Oct 20:53` PRE-COLLECTION-FIX Task D: Configured Python 3.12.15 venv (`.venv`) via `uv` with pandas, matplotlib, numpy. Updated `ml/analyze.py` to accept one or more CSV paths (`nargs='*'`), concatenate them, and drop exact duplicate rows. Added Closed_Fist to CANONICAL_GESTURES and PREDICTED_CLASSES. Verified execution with `.\.venv\Scripts\python.exe ml/analyze.py --mock`.
 - `24 Oct 20:51` PRE-COLLECTION-FIX Task C: Added Closed_Fist as 8th selectable true gesture in Test Mode UI (evaluates Lock action). Added Evaluation Scope toggle: Full Protocol (10 trials x 4 conditions) vs Time-Boxed Fallback (10 trials x C1 & C4). Added unit tests in recorder.test.ts (59/59 pass).

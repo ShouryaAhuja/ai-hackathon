@@ -1,0 +1,14 @@
+timestamp,session_id,condition,true_gesture,predicted,raw_label,raw_score,latency_ms,triggers_fired,verdict
+2026-10-24T16:51:14.932Z,session-20261024-215212,C2_dim,Open_Palm,NEUTRAL,Open_Palm,0.6812,98,0,neutral
+2026-10-24T16:51:00.517Z,session-20261024-215212,C2_dim,Open_Palm,Open_Palm,Open_Palm,0.7077,90,5,correct
+2026-10-24T16:50:47.063Z,session-20261024-215212,C2_dim,Open_Palm,NEUTRAL,Open_Palm,0.5961,99,0,neutral
+2026-10-24T16:50:34.684Z,session-20261024-215212,C2_dim,Open_Palm,NEUTRAL,Open_Palm,0.6482,99,0,neutral
+2026-10-24T16:50:23.103Z,session-20261024-215212,C2_dim,Open_Palm,Open_Palm,Open_Palm,0.7717,99,5,correct
+2026-10-24T16:48:44.874Z,session-20261024-215212,C2_dim,Open_Palm,NEUTRAL,Open_Palm,0.6584,99,0,neutral
+2026-10-24T16:48:31.008Z,session-20261024-215212,C2_dim,Open_Palm,NEUTRAL,Open_Palm,0.6240,98,0,neutral
+2026-10-24T16:48:15.192Z,session-20261024-215212,C2_dim,Open_Palm,NEUTRAL,Open_Palm,0.6849,97,0,neutral
+2026-10-24T16:48:00.843Z,session-20261024-215212,C2_dim,Open_Palm,NEUTRAL,Open_Palm,0.5853,100,0,neutral
+2026-10-24T16:47:44.111Z,session-20261024-215212,C2_dim,Open_Palm,NEUTRAL,Open_Palm,0.6735,99,0,neutral
+2026-10-24T16:47:28.127Z,session-20261024-215212,C2_dim,Open_Palm,Open_Palm,Open_Palm,0.7337,96,6,correct
+2026-10-24T16:47:14.078Z,session-20261024-215212,C2_dim,Open_Palm,NEUTRAL,Open_Palm,0.6286,99,0,neutral
+2026-10-24T16:46:58.898Z,session-20261024-215212,C2_dim,Open_Palm,Open_Palm,Open_Palm,0.7283,97,5,correct
