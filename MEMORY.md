@@ -3,10 +3,10 @@
 > Read first every session. Update after every task. Newest entries first in logs.
 
 ## 1. Current status
-- **Phase:** 3 Complete — Evaluation Milestone Reached (`v0.2-evaluated`)
+- **Phase:** 5 In Progress — Feature Freeze & Deliverables Prepared
 - **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
-- **Last completed task:** T3.7 (Tag v0.2-evaluated, fill [RESULTS] in docs/REPORT.md, complete evaluation tracking in MEMORY.md)
-- **Next task:** T5.1 (Feature freeze & deliverables: README, PPT, demo recording) or Phase 4 depth upgrade
+- **Last completed task:** T5.6 (Presentation slides in docs/PRESENTATION_SLIDES.md, README.md created, T5.1-T5.6 complete)
+- **Next task:** T5.8 (Deploy, smoke test, tag v1.0-demo) / T5.7 (Owner demo recording)
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/
 - **Last known-good tag:** v0.2-evaluated
@@ -77,6 +77,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `25 Oct 00:48` T5.1-T5.6: Enforced strict Feature Freeze on logic and data. Completed UI polish with updated title and meta description in index.html. Authored comprehensive README.md with live links, architecture diagram, gesture mapping, honest evaluation metrics, and local reproduction commands. Authored docs/PRESENTATION_SLIDES.md with 7-section official flow and timed speaker notes. Verified unit tests (59/59), ESLint, and build.
 - `25 Oct 00:45` PATCH-3C-R1 Part D & Sweep: Created docs/DEMO_NOTES.md with opening gesture recommendation (ILoveYou/Closed_Fist/Pointing_Up at 97-100%, avoid opening with Open_Palm), and complete lock/unlock mechanism. Updated docs/HOW_IT_WORKS.md documenting that kiosk unlocks touchlessly ONLY via Closed_Fist toggle (Open_Palm is suppressed while locked), or via manual 'Unlock Kiosk (H)' button and keyboard keys ('L', 'H', 'Esc'). Executed repository-wide regex sweep for forbidden phrases (0 matches across all .md, .ts, .tsx files). Vitest (59/59), ESLint, and build all passed.
 - `25 Oct 00:43` PATCH-3C-R1 Part B: Passed all verification gates. Confirmed 32 CSV trial datasets tracked in `ml/data/`. Unit tests: 59/59 passed (vitest). Linter: clean (eslint). Build: client bundle generated cleanly in 403ms (tsc + vite).
 - `25 Oct 00:42` PATCH-3C-R1 Part A: Completed honesty revisions in docs/REPORT.md and docs/FAILURE_ANALYSIS.md. Renamed tau=0.60 to Post-hoc Sensitivity Point with explicit disclaimer; added threshold-curve approximation note; added Gesture-only results table (284 trials, 215 correct, 69 abstained, 0 misreads, 40/40 idle rejected, 0 triggers in 200s idle / <=0.9/min 95% CI upper bound); applied rule-of-three 95% CI misread wording; reframed Open_Palm sub-threshold clustering (0.53-0.69); prefixed untested failure explanations with 'Likely cause (not tested):' and stripped speculative words; added comprehensive Limitations & threats to validity sections. Freezing REPORT.md results and FAILURE_ANALYSIS.md.

@@ -48,12 +48,12 @@ Deadline anchor: work backwards from the **official submission time (confirm: li
 - [ ] T4.5 Re-deploy and smoke-test
 
 ## Phase 5 - Polish, freeze, deliverables (reserve >= 3-4 h before deadline)
-- [ ] T5.1 **FEATURE FREEZE**
-- [ ] T5.2 UI polish per `DESIGN.md` section 10 + kiosk checklist; favicon/title/meta; no console errors
-- [ ] T5.3 Accessibility pass: keyboard-only run, contrast, ARIA live, text size, reduced motion
-- [ ] T5.4 README (pitch, live link, GIF, mapping table, evaluation summary, how to run, limitations)
-- [ ] T5.5 **Report file** (problem, users, architecture, dataset/labels/split, evaluation incl. failures, responsible AI, SDG, implemented vs future)
-- [ ] T5.6 **PPT** following official flow (7 sections)
+- [x] T5.1 **FEATURE FREEZE** (frozen src/config.ts, ml/data/, docs/ evaluation results)
+- [x] T5.2 UI polish per `DESIGN.md` section 10 + kiosk checklist; favicon/title/meta; no console errors
+- [x] T5.3 Accessibility pass: keyboard-only run, contrast, ARIA live, text size, reduced motion
+- [x] T5.4 README (pitch, live link, architecture, mapping table, evaluation summary, how to run, limitations)
+- [x] T5.5 **Report file** (docs/REPORT.md & docs/FAILURE_ANALYSIS.md complete, verified & frozen)
+- [x] T5.6 **PPT** following official flow (docs/PRESENTATION_SLIDES.md with 7 slides & timed speaker notes)
 - [ ] T5.7 **Record demo video** (2-3 min, full flow + one failure + manual mode); save locally and upload per submission rules
 - [ ] T5.8 Secrets/debug cleanup; final deploy; run Smoke Test; tag `v1.0-demo`
 - [ ] T5.9 Submit everything; confirm receipt; **screenshot proof**
