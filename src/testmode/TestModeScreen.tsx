@@ -29,6 +29,7 @@ import {
   trialsToCsv,
   computeMetrics,
   downloadCsv,
+  formatTimestampForFilename,
 } from './recorder'
 
 interface Props {
@@ -68,8 +69,32 @@ export default function TestModeScreen({
   const [phase, setPhase] = useState<TestPhase>('idle')
   const [countdownSeconds, setCountdownSeconds] = useState<number>(3)
   const [captureTimeRemaining, setCaptureTimeRemaining] = useState<number>(5.0)
-  const [trials, setTrials] = useState<TrialRecord[]>([])
+  const [trials, setTrials] = useState<TrialRecord[]>(() => {
+    try {
+      const stored = localStorage.getItem('airtouch_trials')
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        if (Array.isArray(parsed)) return parsed
+      }
+    } catch (e) {
+      console.warn('Failed to load trials from localStorage:', e)
+    }
+    return []
+  })
   const [lastTrial, setLastTrial] = useState<TrialRecord | null>(null)
+
+  // Persist trials to localStorage on change (labels, scores, timestamps only - never frames)
+  useEffect(() => {
+    try {
+      if (trials.length > 0) {
+        localStorage.setItem('airtouch_trials', JSON.stringify(trials))
+      } else {
+        localStorage.removeItem('airtouch_trials')
+      }
+    } catch (e) {
+      console.warn('Failed to persist trials to localStorage:', e)
+    }
+  }, [trials])
 
   // In-flight capture samples
   const capturedFramesRef = useRef<FrameSample[]>([])
@@ -156,21 +181,31 @@ export default function TestModeScreen({
     }, 1000)
   }, [phase, trueGesture, condition, sessionId])
 
-  // Export CSV handler
+  // Export CSV handler with sortable timestamped filename
   const handleExportCsv = useCallback(() => {
     if (trials.length === 0) return
     const csvContent = trialsToCsv(trials)
-    const filename = `trials_${condition}_${new Date().toISOString().slice(0, 10)}.csv`
+    const timestamp = formatTimestampForFilename(new Date())
+    const filename = `trials_${condition}_${timestamp}.csv`
     downloadCsv(csvContent, filename)
   }, [trials, condition])
 
-  // Clear trial log handler
+  // Clear trial log handler with explicit confirmation modal
   const handleClearTrials = useCallback(() => {
     if (trials.length === 0) return
-    if (window.confirm('Clear all logged trials in memory?')) {
+    if (
+      window.confirm(
+        'Clear all recorded trials? This will delete all saved trial records from local storage on this device.',
+      )
+    ) {
       setTrials([])
       setLastTrial(null)
       setPhase('idle')
+      try {
+        localStorage.removeItem('airtouch_trials')
+      } catch (e) {
+        console.warn('Failed to remove trials from localStorage:', e)
+      }
     }
   }, [trials.length])
 
@@ -558,8 +593,9 @@ export default function TestModeScreen({
               onClick={handleClearTrials}
               disabled={trials.length === 0}
               className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-rose-900/40 text-slate-400 hover:text-rose-300 border border-slate-700 text-xs font-semibold transition-colors disabled:opacity-30 cursor-pointer"
+              aria-label="Clear all recorded trials from memory and local storage"
             >
-              Clear Log
+              Clear All Trials
             </button>
           </div>
         </div>

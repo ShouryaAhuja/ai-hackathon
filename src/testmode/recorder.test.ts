@@ -8,6 +8,7 @@ import {
   aggregateCaptureWindow,
   trialsToCsv,
   computeMetrics,
+  formatTimestampForFilename,
 } from './recorder'
 import { type FrameSample, type TrialRecord } from './types'
 
@@ -252,5 +253,17 @@ describe('recorder — computeMetrics', () => {
     // Check gesture breakdown
     expect(metrics.byGesture['Open_Palm'].correct).toBe(1)
     expect(metrics.byGesture['None'].correct).toBe(1)
+  })
+})
+
+describe('recorder — formatTimestampForFilename', () => {
+  it('formats Date into sortable YYYYMMDD_HHMMSS string', () => {
+    const fixedDate = new Date(2026, 9, 24, 20, 45, 12) // Oct 24, 2026 20:45:12
+    expect(formatTimestampForFilename(fixedDate)).toBe('20261024_204512')
+  })
+
+  it('pads single-digit month, day, hour, minute, second with zero', () => {
+    const d = new Date(2026, 0, 5, 4, 3, 2) // Jan 5, 2026 04:03:02
+    expect(formatTimestampForFilename(d)).toBe('20260105_040302')
   })
 })
