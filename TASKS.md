@@ -12,8 +12,8 @@ Deadline anchor: work backwards from the **official submission time (confirm: li
 - [x] T0.5 Download MediaPipe model + WASM into `public/mediapipe/` (follow current docs); commit — TIP: WASM files ship inside the npm package; copy from node_modules/@mediapipe/tasks-vision/wasm/ into public/mediapipe/. Only the .task model file needs a one-time download.
 - [x] T0.6 Minimal page: camera on, mirrored preview, live `label + score` text via GestureRecognizer
 - [x] T0.7 Deploy; open **live URL**; test the 5 gestures (and Network -> Offline reload)
-- [ ] **T0.8 GO/NO-GO (30 min max):** GO if live URL runs, camera works, >= 4 of 5 gestures recognised clearly in your room. NO-GO -> switch to Q19 (tell me; I'll regenerate docs). Log decision in `MEMORY.md`
-- [ ] T0.9 Tag `v0.0-skeleton`
+- [x] **T0.8 GO/NO-GO (30 min max):** GO if live URL runs, camera works, >= 4 of 5 gestures recognised clearly in your room. NO-GO -> switch to Q19 (tell me; I'll regenerate docs). Log decision in `MEMORY.md`
+- [x] T0.9 Tag `v0.0-skeleton`
 
 ## Phase 1 - Freeze the spec (~20 min)
 - [ ] T1.1 Confirm gesture-action map in `PRD.md` section 6 using T0.7 observations; swap any unreliable gesture now

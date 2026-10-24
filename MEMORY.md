@@ -3,12 +3,12 @@
 > Read first every session. Update after every task. Newest entries first in logs.
 
 ## 1. Current status
-- **Phase:** 0 - Setup + Go/No-Go
-- **Selected problem:** **Q15 Gesture-Based Interface (conditional on T0.8 Go/No-Go)**. Fallback: Q19 Water Quality (or Q11).
-- **Last completed task:** T0.7 (live URL verified, 5/5 gestures recognised)
-- **Next task:** T0.8
+- **Phase:** 1 - Freeze the spec
+- **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
+- **Last completed task:** T0.9 (v0.0-skeleton tagged)
+- **Next task:** T1.1
 - **Blockers:** none
-- **Live URL:** https://shouryaahuja.github.io/ai-hackathon/  - **Last known-good tag:** none
+- **Live URL:** https://shouryaahuja.github.io/ai-hackathon/  - **Last known-good tag:** v0.0-skeleton
 
 ## 2. Project facts
 - **Event:** VIT AI Innovate-A-Thon (School of CSE & IS, Dept. of Cybersecurity and Intelligent Systems)
@@ -29,6 +29,7 @@
 | Date | Decision | Reason |
 |---|---|---|
 | 24 Oct | Q15 chosen, subject to T0.8 Go/No-Go | Memorable demo, fully in-browser, no API risk |
+| 24 Oct | T0.8 GO — 5/5 gestures local, live URL verified, offline reload OK | Local camera test 5/5, live URL running, Pages deploy verified |
 | 24 Oct | Self-host MediaPipe model + WASM in repo | Venue wifi risk; offline-capable |
 | 24 Oct | Gesture map frozen in PRD section 6 before formal evaluation | Official requirement: define before testing |
 | 24 Oct | Hold-to-confirm + neutral state + manual parity | Trust, accessibility, responsible AI |
@@ -57,6 +58,7 @@
 - [ ] Report file  - [ ] PPT  - [ ] Demo link/video  - [ ] Repo link  - [ ] Submitted before deadline (time: ASSUME 25 Oct 9:00 AM — owner to confirm exact deadline/format on Teams before 5 PM)
 
 ## 8. Session log
+- `24 Oct 17:58` T0.8 & T0.9: Logged T0.8 GO — 5/5 gestures local, live URL verified, offline reload OK (24 Oct). Phase 0 closed, tagged v0.0-skeleton.
 - `24 Oct 17:52` T0.7: PS text verified by owner — matches PRD section 1, no changes needed. Local test: 5/5 gestures recognised. Live GitHub Actions deployment verified (run #40093162405 passed). Live HEAD requests to gesture_recognizer.task (200 OK, application/octet-stream) and vision_wasm_internal.wasm (200 OK, application/wasm) verified.
 - `24 Oct 17:44` T0.6: Implemented minimal page with webcam stream, mirrored preview, live GestureRecognizer telemetry (label, confidence score, handedness, hands count) and landmark canvas overlay. Tested with Vite dev server and verified HTTP 200 on model & WASM.
 - `24 Oct 17:38` T0.5: Installed @mediapipe/tasks-vision, copied WASM files to public/mediapipe/, downloaded official gesture_recognizer.task model (7.98MB). Added Section 11 Night protocol.
