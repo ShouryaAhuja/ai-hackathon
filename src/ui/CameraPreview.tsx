@@ -188,6 +188,11 @@ export default function CameraPreview({
             {isCameraActive ? 'Stop' : 'Start'}
           </button>
         </div>
+
+        {/* Privacy notice (T2.7 exact string) */}
+        <p className="text-[10px] text-slate-400 text-center leading-tight">
+          Video is processed on your device and never stored or uploaded.
+        </p>
       </aside>
 
       {/* Floating toggle pill to show/hide the preview */}

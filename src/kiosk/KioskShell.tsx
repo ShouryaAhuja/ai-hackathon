@@ -152,6 +152,7 @@ interface KioskShellProps {
   isCameraActive?: boolean
   cameraError?: string | null
   onStartCamera?: () => void
+  onToggleCamera?: () => void
 }
 
 // ---------------------------------------------------------------------------
@@ -165,6 +166,7 @@ export default function KioskShell({
   isCameraActive = true,
   cameraError = null,
   onStartCamera,
+  onToggleCamera,
 }: KioskShellProps) {
   // Keyboard handler
   const handleKey = useCallback(
@@ -264,13 +266,55 @@ export default function KioskShell({
           </div>
         </div>
 
-        {/* Action badge & Lock / Unlock toggle button */}
-        <div className="flex items-center gap-3">
+        {/* Controls: Camera Toggle, Action Confirmation & Lock Toggle */}
+        <div className="flex items-center gap-2.5">
+          {/* Clear Locked Indicator (T2.7) */}
+          {isLocked && (
+            <div
+              role="alert"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-amber-500/20 border-2 border-amber-500/80 text-amber-300 font-extrabold text-xs sm:text-sm shadow-md animate-pulse"
+            >
+              <span aria-hidden="true">🔒</span>
+              <span>LOCKED · GESTURES PAUSED</span>
+            </div>
+          )}
+
+          {/* Camera ON/OFF Button (T2.7) */}
+          {onToggleCamera && (
+            <button
+              type="button"
+              onClick={onToggleCamera}
+              title={
+                isCameraActive
+                  ? 'Turn camera off (manual mode)'
+                  : 'Turn camera on (gesture control)'
+              }
+              className={[
+                'min-h-[46px] px-3.5 py-2 rounded-xl flex items-center gap-2 transition-all font-semibold text-xs sm:text-sm border-2 cursor-pointer',
+                isCameraActive
+                  ? 'bg-teal-500/15 border-teal-500/50 text-teal-300 hover:bg-teal-500/25'
+                  : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white',
+              ].join(' ')}
+              aria-label={
+                isCameraActive
+                  ? 'Camera active - click to turn off'
+                  : 'Camera paused - click to turn on'
+              }
+            >
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  isCameraActive ? 'bg-teal-400 animate-pulse' : 'bg-slate-500'
+                }`}
+              />
+              <span>{isCameraActive ? 'Camera ON' : 'Camera OFF'}</span>
+            </button>
+          )}
+
           {state.lastAction && (
             <div
               role="status"
               aria-live="polite"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-500/15 border border-green-500/40 text-green-300 text-xs font-semibold animate-in fade-in duration-150"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-500/15 border border-green-500/40 text-green-300 text-xs font-semibold animate-in fade-in duration-150"
             >
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
               <span>Action: {state.lastAction}</span>
@@ -279,22 +323,24 @@ export default function KioskShell({
 
           <button
             type="button"
-            onClick={() => onDispatch(isLocked ? Action.HOME : Action.LOCK)}
+            onClick={() => onDispatch(Action.LOCK)}
             title={
               isLocked
-                ? 'Unlock kiosk (Home / H)'
-                : 'Lock kiosk (Fist gesture / L)'
+                ? 'Unlock gesture control (Closed Fist / L)'
+                : 'Lock gesture control (Closed Fist / L)'
             }
             className={[
-              'min-h-[48px] px-4 py-2 rounded-xl flex items-center gap-2 transition-all font-bold text-sm cursor-pointer border-2',
+              'min-h-[46px] px-4 py-2 rounded-xl flex items-center gap-2 transition-all font-bold text-sm cursor-pointer border-2',
               isLocked
-                ? 'bg-amber-500/20 border-amber-500/60 text-amber-300 hover:bg-amber-500/30'
+                ? 'bg-amber-500 text-slate-950 border-amber-400 hover:bg-amber-400 shadow-lg shadow-amber-500/30'
                 : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white',
             ].join(' ')}
-            aria-label={isLocked ? 'Unlock Kiosk' : 'Lock Kiosk'}
+            aria-label={
+              isLocked ? 'Unlock Kiosk Gestures' : 'Lock Kiosk Gestures'
+            }
           >
-            <span>{isLocked ? '🔒' : '🔓'}</span>
-            <span>{isLocked ? 'Locked' : 'Lock (L)'}</span>
+            <span>{isLocked ? '🔓' : '🔒'}</span>
+            <span>{isLocked ? 'Unlock (L)' : 'Lock (L)'}</span>
           </button>
         </div>
       </header>
@@ -530,6 +576,12 @@ export default function KioskShell({
             )
           })}
         </div>
+
+        {/* Privacy Notice (T2.7 exact string) */}
+        <p className="text-center text-[11px] text-slate-400">
+          🔒 Privacy Notice: Video is processed on your device and never stored
+          or uploaded.
+        </p>
       </footer>
     </div>
   )

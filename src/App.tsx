@@ -17,7 +17,7 @@ import {
 } from '@mediapipe/tasks-vision'
 import KioskShell, { type DetectionInfo } from './kiosk/KioskShell'
 import CameraPreview from './ui/CameraPreview'
-import { kioskReducer, INITIAL_STATE } from './kiosk/actions'
+import { kioskReducer, INITIAL_STATE, Action } from './kiosk/actions'
 import { DecisionEngine } from './vision/decision'
 
 export default function App() {
@@ -31,6 +31,11 @@ export default function App() {
   const decisionEngineRef = useRef<DecisionEngine>(new DecisionEngine())
 
   const [kioskState, dispatch] = useReducer(kioskReducer, INITIAL_STATE)
+  const kioskScreenRef = useRef<string>(kioskState.screen)
+
+  useEffect(() => {
+    kioskScreenRef.current = kioskState.screen
+  }, [kioskState.screen])
   const [dwellProgress, setDwellProgress] = useState<number>(0)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -145,9 +150,14 @@ export default function App() {
       cancelAnimationFrame(animFrameIdRef.current)
       animFrameIdRef.current = null
     }
-    streamRef.current?.getTracks().forEach((t) => t.stop())
-    streamRef.current = null
-    if (videoRef.current) videoRef.current.srcObject = null
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((t) => t.stop())
+      streamRef.current = null
+    }
+    if (videoRef.current) {
+      videoRef.current.pause()
+      videoRef.current.srcObject = null
+    }
     const ctx = canvasRef.current?.getContext('2d')
     if (ctx && canvasRef.current) {
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
@@ -231,7 +241,14 @@ export default function App() {
               )
 
               if (gestureEvent) {
-                dispatch(gestureEvent.action)
+                if (kioskScreenRef.current === 'locked') {
+                  // Closed_Fist toggles gesture-control lock (ignore all other gestures when locked)
+                  if (gestureEvent.action === 'Lock') {
+                    dispatch(Action.LOCK)
+                  }
+                } else {
+                  dispatch(gestureEvent.action)
+                }
               }
 
               const progress =
@@ -295,6 +312,7 @@ export default function App() {
         isCameraActive={isCameraActive}
         cameraError={initError}
         onStartCamera={startCamera}
+        onToggleCamera={isCameraActive ? stopCamera : startCamera}
       />
 
       {/* Mirrored camera preview in corner */}

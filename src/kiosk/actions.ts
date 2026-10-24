@@ -130,11 +130,30 @@ export function kioskReducer(
       return { ...state, lastAction: action }
     }
 
+    case Action.LOCK: {
+      if (state.screen === 'locked') {
+        // Toggle unlock: restore previous screen or fall back to home
+        const prev =
+          state.history.length > 0
+            ? state.history[state.history.length - 1]
+            : 'home'
+        return {
+          screen: prev,
+          history: state.history.slice(0, -1),
+          lastAction: Action.LOCK,
+        }
+      }
+      return {
+        screen: 'locked',
+        history: [...state.history, state.screen],
+        lastAction: Action.LOCK,
+      }
+    }
+
     case Action.HOME:
     case Action.SCHEDULE:
     case Action.MAP:
-    case Action.HELP:
-    case Action.LOCK: {
+    case Action.HELP: {
       const targetScreen = SCREEN_MAP[action]!
       if (state.screen === targetScreen) {
         // Already here — just record the action

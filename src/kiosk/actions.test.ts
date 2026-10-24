@@ -41,10 +41,25 @@ describe('kioskReducer — navigation', () => {
     expect(next.screen).toBe('help')
   })
 
-  it('navigates to locked via LOCK', () => {
-    const next = kioskReducer(INITIAL_STATE, Action.LOCK)
-    expect(next.screen).toBe('locked')
-    expect(next.history).toEqual(['home'])
+  it('navigates to locked via LOCK, and toggles back to previous screen on second LOCK', () => {
+    const lockedFromHome = kioskReducer(INITIAL_STATE, Action.LOCK)
+    expect(lockedFromHome.screen).toBe('locked')
+    expect(lockedFromHome.history).toEqual(['home'])
+
+    // Second LOCK toggles back to home
+    const unlockedHome = kioskReducer(lockedFromHome, Action.LOCK)
+    expect(unlockedHome.screen).toBe('home')
+    expect(unlockedHome.history).toEqual([])
+
+    // From schedule to locked and back
+    const onSchedule = kioskReducer(INITIAL_STATE, Action.SCHEDULE)
+    const lockedFromSchedule = kioskReducer(onSchedule, Action.LOCK)
+    expect(lockedFromSchedule.screen).toBe('locked')
+    expect(lockedFromSchedule.history).toEqual(['home', 'schedule'])
+
+    const unlockedSchedule = kioskReducer(lockedFromSchedule, Action.LOCK)
+    expect(unlockedSchedule.screen).toBe('schedule')
+    expect(unlockedSchedule.history).toEqual(['home'])
   })
 
   it('navigates to home from any screen via HOME', () => {
