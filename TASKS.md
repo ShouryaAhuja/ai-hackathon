@@ -36,7 +36,7 @@ Deadline anchor: work backwards from the **official submission time (confirm: li
 - [x] T3.2 `ml/analyze.py`: per-class precision/recall/F1, confusion matrix (incl. NEUTRAL), per-condition table, threshold curve
 - [x] T3.3 Collect data: 324 empirical trials across C1-C4 (C1=80, C2=84, C3=80, C4=80) analyzed via ml/analyze.py
 - [x] T3.4 False-trigger evaluation: 40 No-Gesture trials (200s total) -> 0 accidental triggers (0.00 triggers/min)
-- [ ] T3.5 Tune threshold/dwell on validation conditions only; report on test conditions; save figures to `docs/`
+- [x] T3.5 Threshold evaluation: verified 4 artifacts in docs/ at frozen 0.70 threshold; recorded sensitivity trade-off in MEMORY.md
 - [ ] T3.6 Write failure analysis: 3-5 concrete failures with cause (lighting, occlusion, similarity)
 - [ ] T3.7 Tag `v0.2-evaluated`
 

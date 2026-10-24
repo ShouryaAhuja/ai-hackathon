@@ -1,0 +1,11 @@
+gesture,precision,recall,f1_score,support,abstentions,abstention_rate
+Open_Palm,1.0,0.3023,0.4643,43,30,0.6977
+Pointing_Up,1.0,0.775,0.8732,40,9,0.225
+Victory,1.0,0.925,0.961,40,3,0.075
+Thumb_Up,1.0,0.6,0.75,40,16,0.4
+Thumb_Down,1.0,0.75,0.8571,40,10,0.25
+ILoveYou,1.0,1.0,1.0,41,0,0.0
+Closed_Fist,1.0,0.975,0.9873,40,1,0.025
+None,0.367,1.0,0.5369,40,0,0.0
+MACRO_AVG,0.9209,0.7909,0.8037,324,69,0.213
+WEIGHTED_AVG,0.9219,0.787,0.8012,324,69,0.213

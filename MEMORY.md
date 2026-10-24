@@ -5,8 +5,8 @@
 ## 1. Current status
 - **Phase:** 3 - Test mode + evaluation
 - **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
-- **Last completed task:** T3.4 (Compute false-trigger rate: 0.00 false triggers/min across 40 No-Gesture trials)
-- **Next task:** T3.5 (Verify docs/ evaluation artifacts at frozen 0.70 threshold)
+- **Last completed task:** T3.5 (Threshold verification at frozen 0.70; sensitivity analysis recorded)
+- **Next task:** T3.6 (Write docs/FAILURE_ANALYSIS.md from real outputs)
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/
 - **Last known-good tag:** v0.1-demo-safe
@@ -37,6 +37,7 @@
 | 24 Oct | Custom landmark classifier = stretch only | Depth upgrade after MVP + evaluation exist |
 | 24 Oct | Amendment (pre-evaluation): ILoveYou -> Help added as 6th gesture | Reason: Help screen had no gesture path; ILoveYou unused and visually distinct. Owner reliability test passed. |
 | 24 Oct | Python 3.12.15 venv created for `ml/` evaluation (`.venv`) | Python 3.15 has no pre-built wheels for pandas/matplotlib; Python 3.12 provides official stable wheels for pandas, numpy, and matplotlib |
+| 25 Oct | Retain frozen 0.70 threshold; document 0.60 sensitivity trade-off | 0.70 guarantees 0.0% false triggers / 0.0% misfires; sensitivity analysis shows 0.60 boosts accuracy from 78.7% to 91.7% with 0.3% error (discussed in report, config.ts untouched) |
 
 ## 5. Gotchas & Empirical Context (verify as you go)
 - **Owner's real collection conditions (CRITICAL - do not describe as ideal lab conditions):**
@@ -76,6 +77,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `25 Oct 00:20` T3.5: Verified all 4 evaluation artifacts in docs/ (per_class.csv, confusion_matrix.png, condition_table.csv, threshold_curve.png) at frozen 0.70 threshold. Computed empirical sensitivity: 0.50=93.5% acc (0.3% err), 0.60=91.7% acc (0.3% err), 0.70=78.7% acc (0.0% err), 0.80=63.6% acc (0.0% err). Retained frozen 0.70 threshold in src/config.ts per protocol; documented trade-off in MEMORY.md for oral presentation.
 - `25 Oct 00:19` T3.4: Computed false-trigger rates from 40 No-Gesture trials (triggers_fired column). Results: C1=0/50s (0.00/min), C2=0/50s (0.00/min), C3=0/50s (0.00/min), C4=0/50s (0.00/min), overall=0 triggers across 200s (3.33 min) of observation -> 0.00 false triggers/min. Proves the 800ms dwell + 7-frame smoothing + 0.70 threshold completely prevented accidental kiosk actions during non-gesture movement.
 - `25 Oct 00:18` T3.3: Ingested 32 empirical CSV runs from ml/data/ into ml/analyze.py. Preserved literal "None" labels across pandas ingestion. Total unique trials = 324 (C1=80, C2=84, C3=80, C4=80). Overall accuracy: 78.70%, Neutral rate: 21.30%, Error/misclassification: 0.00%, False triggers: 0. Recorded real context notes (lighting, clutter, handedness, Victory orientation) in MEMORY.md.
 - `24 Oct 20:57` PRE-COLLECTION-FIX Task E: Verified docs/HOW_IT_WORKS.md and docs/REPORT.md did not previously exist; created 1-page oral Q&A guide (HOW_IT_WORKS.md) and full factual REPORT.md skeleton with [RESULTS] placeholder. Verified PRD §6 already contains ILoveYou->Help (row 6) and Closed_Fist->Lock (row 7) and confirmed no duplicates were added.

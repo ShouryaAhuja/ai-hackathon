@@ -1,0 +1,6 @@
+condition,total_trials,correct,neutral,incorrect,false_triggers,accuracy,neutral_rate,error_rate,mean_latency_ms
+C1_baseline,80,64,16,0,0,0.8,0.2,0.0,94.6
+C2_dim,84,74,10,0,0,0.881,0.119,0.0,95.9
+C3_backlit,80,48,32,0,0,0.6,0.4,0.0,88.5
+C4_cluttered,80,69,11,0,0,0.8625,0.1375,0.0,94.0
+ALL_CONDITIONS,324,255,69,0,0,0.787,0.213,0.0,93.3
