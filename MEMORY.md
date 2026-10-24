@@ -5,8 +5,8 @@
 ## 1. Current status
 - **Phase:** 0 - Setup + Go/No-Go
 - **Selected problem:** **Q15 Gesture-Based Interface (conditional on T0.8 Go/No-Go)**. Fallback: Q19 Water Quality (or Q11).
-- **Last completed task:** T0.5 (self-hosted MediaPipe WASM + gesture_recognizer.task)
-- **Next task:** T0.6
+- **Last completed task:** T0.6 (minimal gesture recognition page with mirrored preview & telemetry)
+- **Next task:** T0.7
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/  - **Last known-good tag:** none
 
@@ -57,6 +57,7 @@
 - [ ] Report file  - [ ] PPT  - [ ] Demo link/video  - [ ] Repo link  - [ ] Submitted before deadline (time: ASSUME 25 Oct 9:00 AM — owner to confirm exact deadline/format on Teams before 5 PM)
 
 ## 8. Session log
+- `24 Oct 17:44` T0.6: Implemented minimal page with webcam stream, mirrored preview, live GestureRecognizer telemetry (label, confidence score, handedness, hands count) and landmark canvas overlay. Tested with Vite dev server and verified HTTP 200 on model & WASM.
 - `24 Oct 17:38` T0.5: Installed @mediapipe/tasks-vision, copied WASM files to public/mediapipe/, downloaded official gesture_recognizer.task model (7.98MB). Added Section 11 Night protocol.
 - `24 Oct` Docs rewritten for Q15. Awaiting Phase 0.
 
