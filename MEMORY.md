@@ -5,8 +5,8 @@
 
 ## 1. Current status
 - **Phase:** 0 - Setup (problem statement not yet received)
-- **Last completed task:** T0.2
-- **Next task:** T0.3
+- **Last completed task:** T0.3
+- **Next task:** T0.4
 - **Blockers:** waiting for problem statement
 - **Live URL:** `https://shouryaahuja.github.io/ai-hackathon/`
 - **Last known-good tag:** none
@@ -54,6 +54,7 @@
 | (ML) dataset / split / baseline / best metric | `[FILL]` |
 
 ## 8. Session log (newest first)
+- `[2026-10-24 16:45]` T0.3: Scaffolded Vite + React + TS app, set base to `/ai-hackathon/`, installed react-router-dom and wrapped app with HashRouter. Verified production build passes cleanly.
 - `[2026-10-24 16:40]` T0.1 & T0.2: Initialized git repository with main branch and remote origin (ShouryaAhuja/ai-hackathon), added .gitignore and MIT LICENSE, committed 7 core workflow documents.
 - Docs scaffolded (PRD, ARCHITECTURE, RULES, DESIGN, TASKS, MEMORY, AGENTS). No code yet. Awaiting problem statement.
 
