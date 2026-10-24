@@ -1,77 +1,76 @@
-# TASKS.md
+# TASKS.md - Q15 Touchless Campus Kiosk (solo + agent)
 
-Rules for use: do the **first unchecked task only**. Mark `[x]` when done and verified. Add new tasks at the right phase; don't reorder
-without noting why in `MEMORY.md`. Each task = small enough to finish and commit in 15-45 min.
-Legend: `[ ]` todo, `[~]` in progress, `[x]` done, `[!]` blocked.
+Rules: do the **first unchecked task only**. Verify, commit, tick, update `MEMORY.md`.
+Legend: `[ ]` todo, `[~]` doing, `[x]` done, `[!]` blocked. Timeboxes are targets; if a task overruns 2x, simplify and log it.
+Deadline anchor: work backwards from the **official submission time (confirm: likely 25 Oct 9:00 AM)**. Sleep is a task - plan at least 4 hours.
 
-## Phase 0 - Setup (DO NOW, before the problem statement) ~30-45 min
-- [x] T0.1 Create GitHub repo (public), clone locally, `git init` if needed, add `.gitignore` (node, python, `.env*`, OS files) and MIT license
-- [x] T0.2 Copy these 7 docs into repo root (`AGENTS.md`, `RULES.md`, `PRD.md`, `ARCHITECTURE.md`, `DESIGN.md`, `TASKS.md`, `MEMORY.md`) and commit
-- [x] T0.3 Scaffold Vite + React + TS app; set `base: '/<repo-name>/'`; use `HashRouter`
-- [x] T0.4 Add Tailwind, ESLint, Prettier; add `.env.example`
-- [x] T0.5 Add GitHub Actions workflow to build + deploy to Pages; enable Pages (Source: GitHub Actions)
-- [ ] T0.6 Push a "Hello" page and **verify the live URL loads in incognito** (this de-risks deployment early)
-- [ ] T0.7 Confirm the IDE agent can read `AGENTS.md` (ask it to summarise the rules) and can run `npm run build`
-- [ ] T0.8 Create LLM provider account(s) / free API keys (at least 2 providers for redundancy); store only in local `.env`
-- [ ] T0.9 (Optional) Create serverless proxy hello-world (Cloudflare Worker) and call it from the app; confirm CORS works from the Pages origin
-- [ ] T0.10 Tag `v0.0-skeleton`
+## Phase 0 - Setup + GO/NO-GO (first ~60-75 min)
+- [x] T0.1 (you) Create public GitHub repo; clone; enable Pages (Settings -> Pages -> Source: GitHub Actions) (done in pre-Q15 skeleton, verified live)
+- [x] T0.2 Copy docs into repo root; `.gitignore` (node, python, `.env*`, `ml/data/raw/`); MIT licence; commit (done in pre-Q15 skeleton, verified live)
+- [x] T0.3 Scaffold Vite + React + TS + Tailwind; `base: '/<repo>/'`; ESLint/Prettier; commit (done in pre-Q15 skeleton, verified live)
+- [x] T0.4 GitHub Actions deploy workflow; push "Hello"; **(you) verify live URL in incognito** (done in pre-Q15 skeleton, verified live)
+- [ ] T0.5 Download MediaPipe model + WASM into `public/mediapipe/` (follow current docs); commit — TIP: WASM files ship inside the npm package; copy from node_modules/@mediapipe/tasks-vision/wasm/ into public/mediapipe/. Only the .task model file needs a one-time download.
+- [ ] T0.6 Minimal page: camera on, mirrored preview, live `label + score` text via GestureRecognizer
+- [ ] T0.7 Deploy; open **live URL**; test the 5 gestures (and Network -> Offline reload)
+- [ ] **T0.8 GO/NO-GO (30 min max):** GO if live URL runs, camera works, >= 4 of 5 gestures recognised clearly in your room. NO-GO -> switch to Q19 (tell me; I'll regenerate docs). Log decision in `MEMORY.md`
+- [ ] T0.9 Tag `v0.0-skeleton`
 
-## Phase 1 - Scope & plan (first 15-30 min after problem statement)
-- [ ] T1.1 Paste problem statement into `PRD.md`; note mandatory tech/data/rubric/deadline
-- [ ] T1.2 Choose ONE core user flow that can be demoed end to end; write it as 3-5 steps in `PRD.md`
-- [ ] T1.3 Fill `PRD.md` `[FILL]` fields: persona, pain, why AI, Must/Should/Later lists
-- [ ] T1.4 Decide AI access pattern (A/B/C/D) and model/provider; update `ARCHITECTURE.md` ADR table
-- [ ] T1.5 Decide visual direction + palette; update `DESIGN.md` tokens
-- [ ] T1.6 Break the Must-have list into concrete tasks in Phase 2 below
-- [ ] T1.7 Update `MEMORY.md` with decisions and project name; commit `docs: scope finalised`
+## Phase 1 - Freeze the spec (~20 min)
+- [ ] T1.1 Confirm gesture-action map in `PRD.md` section 6 using T0.7 observations; swap any unreliable gesture now
+- [ ] T1.2 Write `src/config.ts` (map + thresholds); fill project name, palette, kiosk content outline in PRD/DESIGN
+- [ ] T1.3 Confirm submission requirements (report/PPT/video/link) and write them into `MEMORY.md`
 
-## Phase 2 - Core build (MVP) - fill in after T1.6
-- [ ] T2.1 Build `src/ai/client.ts` with provider interface, timeout, error type, mock mode
-- [ ] T2.2 Define Zod schema(s) for model output; write prompt v1 in `prompts/`
-- [ ] T2.3 Implement core flow backend/proxy/model call, test with 3 inputs in isolation
-- [ ] T2.4 Build main workspace UI (input -> loading -> result) wired to real AI
-- [ ] T2.5 Add loading, error, empty states
-- [ ] T2.6 Add example inputs (>=3) with verified good outputs; cache them as mock fallback
-- [ ] T2.7 Add AI-disclosure label and "Demo mode" badge
-- [ ] T2.8 Build landing/hero explaining the product
-- [ ] T2.9 `[FILL]` feature-specific tasks...
-- [ ] T2.10 Deploy and verify core flow on the **live URL**; tag `v0.1-demo-safe`
+## Phase 2 - Core build (target 3-4 h)
+- [ ] T2.1 `decision.ts`: threshold -> neutral, smoothing, dwell, cooldown (pure) + Vitest unit tests
+- [ ] T2.2 `actions.ts`: Action enum + dispatcher + kiosk state reducer; keyboard shortcuts
+- [ ] T2.3 Kiosk shell: Home screen + header + nav; large, readable typography (DESIGN.md)
+- [ ] T2.4 Wire gestures -> decision -> dispatcher; Home / Schedule / Map / Help / Back / Confirm work end-to-end
+- [ ] T2.5 UI feedback: ConfidenceMeter, DwellRing, NeutralBanner ("Not sure - try again or use the buttons"), mirrored preview + landmark overlay toggle
+- [ ] T2.6 Manual alternative: buttons for every action; works with camera off; camera permission-denied state
+- [ ] T2.7 Idle/lock behaviour (optional fist lock); camera on/off; privacy notice
+- [ ] T2.8 Sample campus-event content (schedule, map SVG, help text) - synthetic, realistic
+- [ ] T2.9 Deploy; full smoke test on **live URL**; tag `v0.1-demo-safe`
 
-## Phase 3 - Quality & AI evaluation
-- [ ] T3.1 Create `evals/` with 10-20 representative inputs and expected behaviour; run and record results
-- [ ] T3.2 Iterate prompt/model once or twice based on eval failures (log versions in `MEMORY.md`)
-- [ ] T3.3 Add unit tests for output parsing/validation and key utilities
-- [ ] T3.4 Handle edge cases: empty input, very long input, offensive/injection-style input, API failure, offline
-- [ ] T3.5 (If ML) baseline vs final model comparison + metrics + model card
-- [ ] T3.6 Basic accessibility and responsive pass (keyboard, contrast, mobile)
+## Phase 3 - Test mode + evaluation (target 2-3 h)
+- [ ] T3.1 Test mode UI: pick true gesture + condition; auto-run N trials with countdown; log to memory; export CSV
+- [ ] T3.2 `ml/analyze.py`: per-class precision/recall/F1, confusion matrix (incl. NEUTRAL), per-condition table, threshold curve
+- [ ] T3.3 Collect data: C1 baseline, C2 dim, C3 backlit, C4 cluttered, C5 distance, C6 other person/hand (20 trials/gesture/condition; reduce if needed, record honestly)
+- [ ] T3.4 False-trigger session (2 min of normal movement/talking) -> count accidental actions
+- [ ] T3.5 Tune threshold/dwell on validation conditions only; report on test conditions; save figures to `docs/`
+- [ ] T3.6 Write failure analysis: 3-5 concrete failures with cause (lighting, occlusion, similarity)
+- [ ] T3.7 Tag `v0.2-evaluated`
 
-## Phase 4 - Should-have features (only if Phase 2 + 3 are done and deployed)
-- [ ] T4.1 `[FILL]`
-- [ ] T4.2 `[FILL]`
+## Phase 4 - Depth upgrade (ONLY if Phases 2-3 done and time remains; target <= 2 h)
+- [ ] T4.1 "Record samples" mode -> landmarks CSV (no images)
+- [ ] T4.2 `ml/train_classifier.py`: normalise landmarks; train LR/RF/MLP; session-based split
+- [ ] T4.3 Compare vs pretrained on identical test set; table + discussion (report honestly)
+- [ ] T4.4 Export weights JSON; integrate behind `Recognizer` interface with a settings toggle
+- [ ] T4.5 Re-deploy and smoke-test
 
-## Phase 5 - Polish & freeze (reserve last 3-4 hours before presenting)
-- [ ] T5.1 **Feature freeze.** No new features after this point
-- [ ] T5.2 Design polish using `DESIGN.md` section 10 checklist
-- [ ] T5.3 README complete: pitch, live link, GIF/screenshots, architecture diagram, run locally, limitations, team
-- [ ] T5.4 Remove debug code, unused deps, secrets scan (`git log -p | grep -i key`), check `.env` not committed
-- [ ] T5.5 Final deploy; run **Smoke Test** below on live URL (desktop + phone, incognito)
-- [ ] T5.6 Tag `v1.0-demo`; keep a second tab with the tagged build / local build as backup
-- [ ] T5.7 Record a 2-3 min screen recording of the full demo as insurance; save screenshots
+## Phase 5 - Polish, freeze, deliverables (reserve >= 3-4 h before deadline)
+- [ ] T5.1 **FEATURE FREEZE**
+- [ ] T5.2 UI polish per `DESIGN.md` section 10 + kiosk checklist; favicon/title/meta; no console errors
+- [ ] T5.3 Accessibility pass: keyboard-only run, contrast, ARIA live, text size, reduced motion
+- [ ] T5.4 README (pitch, live link, GIF, mapping table, evaluation summary, how to run, limitations)
+- [ ] T5.5 **Report file** (problem, users, architecture, dataset/labels/split, evaluation incl. failures, responsible AI, SDG, implemented vs future)
+- [ ] T5.6 **PPT** following official flow (7 sections)
+- [ ] T5.7 **Record demo video** (2-3 min, full flow + one failure + manual mode); save locally and upload per submission rules
+- [ ] T5.8 Secrets/debug cleanup; final deploy; run Smoke Test; tag `v1.0-demo`
+- [ ] T5.9 Submit everything; confirm receipt; **screenshot proof**
 
-## Phase 6 - Presentation
-- [ ] T6.1 Write demo script (time it, <= 3 min) and rehearse twice
-- [ ] T6.2 Build slides: Problem - Solution - Live demo - How it works (architecture) - Impact - What's next - Team
-- [ ] T6.3 Prepare answers: "Why AI?", "How accurate?", "What are the limits?", "How would it scale?", "What's novel?", "Cost?"
-- [ ] T6.4 Pre-flight (30 min before): warm up proxy/service, test internet, test all demo inputs, close notifications, charge laptop, open backups
+## Phase 6 - Presentation prep (~1 h + sleep)
+- [ ] T6.1 Demo script timed <= 3 min; rehearse twice (once with network off)
+- [ ] T6.2 Q&A sheet: how does it work (pipeline in your own words), why MediaPipe, accuracy and limits, bias, privacy, why neutral state, what next, cost, what is implemented vs planned
+- [ ] T6.3 Pre-flight checklist: laptop charged + charger, external USB light (if any), plain backdrop, camera permission pre-granted, offline build running, backup video open, notifications off, browser zoom set
+- [ ] T6.4 Sleep. Seriously.
 
-## Smoke test (run before every deploy and before presenting)
-- [ ] Live URL loads in incognito, no console errors, assets load (no 404s)
-- [ ] Refresh on a sub-route works (no 404)
-- [ ] Core flow works with each example input; result is correct and well formatted
-- [ ] Error state appears correctly when network is blocked/API fails
-- [ ] Mock/demo mode fallback works and is labelled
-- [ ] Mobile viewport usable
-- [ ] No secrets visible in DevTools -> Sources/Network
+## Smoke test (every deploy)
+- [ ] Live URL loads in incognito; no console errors; model + WASM load (no 404)
+- [ ] Offline reload still recognises gestures
+- [ ] Each of 5 gestures triggers correct action with dwell ring; neutral state appears for random hand shapes
+- [ ] Manual buttons + keyboard perform every action; camera-denied path works
+- [ ] Test mode logs and exports CSV
+- [ ] Works at 1440 px and on phone-sized viewport (UI at least usable)
 
-## Parking lot (ideas - do not build unless promoted to a phase)
-- 
+## Parking lot
+- Swipe gestures, voice control, multiple hands, kiosk analytics

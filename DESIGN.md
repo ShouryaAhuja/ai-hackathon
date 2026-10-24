@@ -19,12 +19,12 @@ Prefer: a distinct accent colour tied to the domain, real example content, purpo
 ## 3. Design tokens (define once in Tailwind config / CSS variables)
 | Token | Value |
 |---|---|
-| Primary / accent | `[FILL - choose one distinctive hue related to domain]` |
+| Primary / accent | Teal-500 (#14b8a6) for fills/rings/large elements; Teal-700 (#0f766e) for any text or small icons on light backgrounds |
 | Neutral scale | Slate/Zinc 50-950 |
 | Success / warning / error / info | green-600 / amber-500 / red-600 / blue-600 |
 | Background / surface / border | `--bg`, `--surface`, `--border` (light + dark values) |
 | Font - UI | Inter (or system UI stack as fallback) |
-| Font - display (optional) | `[FILL]` one display face max |
+| Font - display (optional) | Space Grotesk (headings); Inter for body — one display face max |
 | Font - code | JetBrains Mono / ui-monospace |
 | Type scale | 12 / 14 / 16 / 18 / 24 / 32 / 48 px; line-height 1.5 body, 1.2 headings |
 | Spacing | 4 px base: 4, 8, 12, 16, 24, 32, 48, 64 |
@@ -89,4 +89,18 @@ Support **light and dark** via CSS variables (dark mode is a cheap polish win; s
 - [ ] Tab titles/URLs tidy for screen sharing; notifications off
 
 ## 11. Visual direction
-`[FILL after problem statement]` - mood words (e.g. calm, clinical, playful, technical), reference products, colour story, logo concept.
+Mood: calm, clinical, precise. Reference: hospital check-in kiosks, self-checkout screens. Colour story: slate-900 text on near-white surface, teal-500 only for fills/rings/active states (teal-700 for text), amber for uncertain, green only for confirmed actions, red only for errors. Logo concept: minimal hand outline with a dwell-ring arc around the fingertip. No gradients, no glassmorphism.
+
+---
+
+## 12. Kiosk-specific design (Q15 addendum)
+- **Readable from 1-2 m:** body text >= 24 px, headings >= 40 px, buttons >= 72 px tall, high contrast; one primary content area, no dense screens.
+- **Layout:** large content on the left/centre; camera preview (small, mirrored, rounded) in a corner with landmark overlay toggle; status strip at the bottom.
+- **Gesture legend always visible:** icon + gesture name + action (e.g. "Open palm -> Home"). Judges and visitors should never guess.
+- **Feedback hierarchy:** (1) current detected gesture + confidence meter, (2) dwell ring filling around the gesture icon, (3) action confirmation toast + optional sound, (4) neutral banner "Not sure - hold your hand steady or use the buttons".
+- **States to design:** No camera / permission denied / loading model / no hand / hand detected / neutral / holding / triggered / cooldown / locked / offline.
+- **Colours:** one confident accent for "active/trigger", amber for neutral/uncertain, green only for confirmed action, red only for errors. Do not rely on colour alone (add icons/text).
+- **Motion:** smooth ring fill and screen transitions (200 ms); honour `prefers-reduced-motion`.
+- **Accessibility parity:** every gesture action has a visible button and a keyboard shortcut; announce actions via `aria-live`; text-size and high-contrast toggles in a corner menu.
+- **Branding:** short product name, simple icon (hand + sparkle is a cliche - prefer a hand outline with a ring), campus-event tone (friendly, clear).
+- **Demo polish:** pre-grant camera permission; plain backdrop; close other tabs; browser zoom for projector; "Demo mode" is NOT needed (no network dependency).

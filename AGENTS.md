@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Read MEMORY.md + TASKS.md at session start. Read PRD/ARCHITECTURE/DESIGN/RULES only when relevant to the current task."
+Read these in order at the start of EVERY session, before writing code:
 
 1. `MEMORY.md`  - current state, decisions, gotchas (source of truth for "where are we")
 2. `RULES.md`   - engineering rules you must follow

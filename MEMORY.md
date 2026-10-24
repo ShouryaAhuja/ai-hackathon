@@ -1,71 +1,69 @@
 # MEMORY.md - Project Memory (living document)
 
-> Read this first every session. Update after every task. Keep entries short, factual, dated.
-> Newest entries at the top of each log. If this file grows past ~300 lines, summarise old entries.
+> Read first every session. Update after every task. Newest entries first in logs.
 
 ## 1. Current status
-- **Phase:** 0 - Setup (problem statement not yet received)
-- **Last completed task:** T0.5
-- **Next task:** T0.6
-- **Blockers:** waiting for problem statement
-- **Live URL:** `https://shouryaahuja.github.io/ai-hackathon/`
-- **Last known-good tag:** none
+- **Phase:** 0 - Setup + Go/No-Go
+- **Selected problem:** **Q15 Gesture-Based Interface (conditional on T0.8 Go/No-Go)**. Fallback: Q19 Water Quality (or Q11).
+- **Last completed task:** pre-Q15 skeleton (repo, scaffold, Pages deploy verified)
+- **Next task:** T0.5
+- **Blockers:** none
+- **Live URL:** https://shouryaahuja.github.io/ai-hackathon/  - **Last known-good tag:** none
 
 ## 2. Project facts
-- **Project name:** `ai-hackathon`
-- **Problem statement:** see `PRD.md`
-- **Team:** `Shourya Ahuja`
-- **Deadline / presentation time:** presentation next day `[FILL exact time]`
-- **Tech decisions so far:** Vite + React + TS + Tailwind (proposed); GitHub Pages deploy (fixed); AI access pattern `[OPEN]`; LLM `[OPEN]`
+- **Event:** VIT AI Innovate-A-Thon (School of CSE & IS, Dept. of Cybersecurity and Intelligent Systems)
+- **Timeline:** build online 24 Oct 5:00 PM -> 25 Oct 9:00 AM (MS Teams); in-person presentation 25 Oct 9:00 AM-5:00 PM, SJT-G07
+- **Team:** solo + Antigravity agent
+- **Required deliverables:** working demo/recorded PoC, gesture-to-action mapping, evaluation table (correct + incorrect), **report file + PPT + demo**; show implemented vs planned; responsible-AI + SDG alignment; include failures
+- **Judging:** Innovation & creativity; Functionality & implementation; UX & design; Technical complexity; SDG alignment & presentation
+- **Stack:** Vite + React + TS + Tailwind; MediaPipe Gesture Recognizer (self-hosted, no CDN); Python analysis in `ml/`; GitHub Pages
+- **No API keys exist in this project.** No backend.
 
 ## 3. Owner profile & preferences
-- Owner is a **beginner** with AI tooling; explain non-obvious steps briefly, avoid jargon, give copy-paste commands.
-- Prefers **free** tools only (no credit card).
-- Tools available: **Antigravity IDE** (primary; agent panel Ctrl+L), Antigravity App, **VS Code + GitHub Copilot** (fallback), Claude app (planning/review).
-- Keep setup minimal: do not introduce extra frameworks/tools/plugins unless they clearly save time for the demo.
+- Beginner with AI tooling; solo. Wants a **high-quality, not rubbish** result; explain non-obvious steps briefly, give copy-paste commands.
+- Free tools only. Tools: Antigravity IDE (primary), Antigravity App, VS Code + Copilot (fallback), Claude app (planning/review).
+- Must be able to explain the pipeline in their own words during Q&A (camera -> landmarks -> classifier -> threshold -> dwell -> action).
+- Model use: cheaper model for scaffolding; stronger model for core logic and evaluation; keep the strongest for one hard problem. Verify actual quotas in the IDE.
 
-## 4. Environment notes (verify, don't assume)
-- Antigravity IDE customisation is file-based: `AGENTS.md` at repo root is expected to auto-load. Exact folder paths for skills/rules and model names mentioned earlier were **not verified** - check the IDE/docs if relying on them.
-- Flash-class models are fast but weaker on long multi-file builds; switch to a stronger model for the main build if available.
-- External repo/tool notes from earlier research (treat with caution): the `awesome-free-llm-apis` list is read-only reference, not a tool; GSD original repo reported archived (use a fork if ever needed); Impeccable (design skill) optional only for frontend polish; Ralph-loop idea (PRD + one task per iteration + progress file) is already adopted via `TASKS.md` + this file.
+## 4. Decisions
+| Date | Decision | Reason |
+|---|---|---|
+| 24 Oct | Q15 chosen, subject to T0.8 Go/No-Go | Memorable demo, fully in-browser, no API risk |
+| 24 Oct | Self-host MediaPipe model + WASM in repo | Venue wifi risk; offline-capable |
+| 24 Oct | Gesture map frozen in PRD section 6 before formal evaluation | Official requirement: define before testing |
+| 24 Oct | Hold-to-confirm + neutral state + manual parity | Trust, accessibility, responsible AI |
+| 24 Oct | Custom landmark classifier = stretch only | Depth upgrade after MVP + evaluation exist |
 
-## 5. Decision log
-| Date | Decision | Reason | Reversible? |
-|---|---|---|---|
-| (today) | Deploy as static site on GitHub Pages | Hackathon requires GitHub live link | No |
-| (today) | Use 7 root-level md docs as agent context | Keep agent aligned, cheap to maintain | Yes |
-| (today) | Default stack Vite + React + TS + Tailwind | Fast, simple Pages deploy | Yes, before Phase 2 |
-| (today) | Mock/cached fallback mode is mandatory | Free APIs may fail during demo | No |
+## 5. Gotchas (verify as you go)
+- Camera needs HTTPS or localhost: GitHub Pages OK.
+- Vite `base` must equal `/<repo>/`; load assets using `import.meta.env.BASE_URL`.
+- Built-in gesture labels expected: `None, Closed_Fist, Open_Palm, Pointing_Up, Thumb_Down, Thumb_Up, Victory, ILoveYou` - confirm in current docs.
+- Mirror the preview (selfie view) but log true (unmirrored) handedness consistently.
+- Stop camera tracks on unmount; handle permission denied and no-camera devices.
+- Evaluation must separate sessions/conditions between tuning and testing (no leakage).
+- Antigravity folder paths/model names mentioned earlier were not verified.
 
-## 6. Gotchas & lessons (add as discovered)
-- GitHub Pages is static: no server code; secrets can't live in the frontend. Use a serverless proxy or in-browser models.
-- Vite needs `base: '/<repo-name>/'` or assets 404 on Pages. Use HashRouter to avoid refresh-404s.
-- `VITE_*` env vars are bundled into public JS - never put secrets there.
-- Free LLM tiers have tight rate limits; cache and debounce.
-
-## 7. AI/ML tracking
+## 6. Evaluation tracking
 | Item | Value |
 |---|---|
-| Provider / model | `[FILL]` |
-| Prompt version | none yet |
-| Eval set size / last score | none yet |
-| Avg latency | `[FILL]` |
-| Known failure cases | `[FILL]` |
-| (ML) dataset / split / baseline / best metric | `[FILL]` |
+| Thresholds (score / frames / dwell / cooldown) | 0.70 / 7 / 800 ms / 1200 ms (initial) |
+| Conditions completed | none |
+| Overall accuracy / neutral rate | - |
+| False-trigger rate (per min) | - |
+| Weakest gesture | - |
+| Custom classifier vs pretrained | - |
 
-## 8. Session log (newest first)
-- `[2026-10-24 16:52]` T0.5: Added GitHub Actions workflow (`.github/workflows/deploy.yml`) for building and deploying to GitHub Pages with Pages permissions, concurrency controls, and artifact upload.
-- `[2026-10-24 16:50]` T0.4: Added Tailwind CSS (v4 with @tailwindcss/vite), ESLint with flat config, Prettier with config & ignore, and .env.example. Lint, format, and production build verified.
-- `[2026-10-24 16:45]` T0.3: Scaffolded Vite + React + TS app, set base to `/ai-hackathon/`, installed react-router-dom and wrapped app with HashRouter. Verified production build passes cleanly.
-- `[2026-10-24 16:40]` T0.1 & T0.2: Initialized git repository with main branch and remote origin (ShouryaAhuja/ai-hackathon), added .gitignore and MIT LICENSE, committed 7 core workflow documents.
-- Docs scaffolded (PRD, ARCHITECTURE, RULES, DESIGN, TASKS, MEMORY, AGENTS). No code yet. Awaiting problem statement.
+## 7. Submission checklist (confirm exact rules first)
+- [ ] Report file  - [ ] PPT  - [ ] Demo link/video  - [ ] Repo link  - [ ] Submitted before deadline (time: ASSUME 25 Oct 9:00 AM — owner to confirm exact deadline/format on Teams before 5 PM)
+
+## 8. Session log
+- `24 Oct` Docs rewritten for Q15. Awaiting Phase 0.
 
 ## 9. Open questions
-- Problem statement and any mandatory tech/data?
-- Team size / roles?
-- Official judging rubric?
-- Is GitHub Pages mandatory, or is any hosted link acceptable?
+- Exact submission deadline/format/portal?
+- Is a live GitHub link mandatory?
+- Venue equipment (projector, webcam, lighting)?
 
 ## 10. Next actions for the agent
-1. Do Phase 0 tasks in `TASKS.md` in order.
-2. After the problem statement is pasted into `PRD.md`, run Phase 1, then update this file.
+1. Do Phase 0 in order; stop at T0.8 and report Go/No-Go evidence.
+2. Never skip the live-URL check; never claim a gesture works without testing it.

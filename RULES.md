@@ -87,3 +87,16 @@ be demoable from a **public GitHub live link**. Optimise for: **working demo > c
 - Delete or overwrite files without checking git status.
 - Invent APIs, library functions, or config options - check the docs or the installed package.
 - Hide failures or fake results (hard-coded outputs presented as live AI) without clearly marking them as mock/demo mode.
+
+---
+
+## 11. Q15-specific rules (gesture kiosk)
+- **Privacy by design:** never upload, store or log camera frames. Test logs hold labels, scores, condition tags only. Show a privacy notice. Stop camera tracks when leaving the view.
+- **Spec before testing:** the gesture-action map in `PRD.md` is frozen before the formal evaluation; any change after that must be logged in `MEMORY.md` and the evaluation re-run for the changed gesture.
+- **No fake results:** evaluation numbers must come from logged trials in test mode. Never hard-code or estimate accuracy. Report failures and neutral/abstention rates.
+- **No leakage:** tune thresholds on validation conditions/sessions; report on separate test conditions/sessions.
+- **Safe interaction:** every gesture action requires dwell + cooldown; no destructive actions; manual parity for all actions; neutral state on low confidence.
+- **Self-hosted assets:** no runtime CDN links. Verify offline reload before each deploy.
+- **Pure logic is tested:** `decision.ts`, `smoothing.ts` and the kiosk reducer need unit tests (Vitest).
+- **Performance guardrails:** camera <= 640x480, single recognizer instance, `requestAnimationFrame` loop, no React re-render per frame for landmarks (draw on canvas).
+- **Explainability for Q&A:** keep `docs/HOW_IT_WORKS.md` (one page, plain English) updated as the pipeline changes so the owner can explain it.
