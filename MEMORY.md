@@ -5,8 +5,8 @@
 
 ## 1. Current status
 - **Phase:** 0 - Setup (problem statement not yet received)
-- **Last completed task:** T0.4
-- **Next task:** T0.5
+- **Last completed task:** T0.5
+- **Next task:** T0.6
 - **Blockers:** waiting for problem statement
 - **Live URL:** `https://shouryaahuja.github.io/ai-hackathon/`
 - **Last known-good tag:** none
@@ -54,6 +54,7 @@
 | (ML) dataset / split / baseline / best metric | `[FILL]` |
 
 ## 8. Session log (newest first)
+- `[2026-10-24 16:52]` T0.5: Added GitHub Actions workflow (`.github/workflows/deploy.yml`) for building and deploying to GitHub Pages with Pages permissions, concurrency controls, and artifact upload.
 - `[2026-10-24 16:50]` T0.4: Added Tailwind CSS (v4 with @tailwindcss/vite), ESLint with flat config, Prettier with config & ignore, and .env.example. Lint, format, and production build verified.
 - `[2026-10-24 16:45]` T0.3: Scaffolded Vite + React + TS app, set base to `/ai-hackathon/`, installed react-router-dom and wrapped app with HashRouter. Verified production build passes cleanly.
 - `[2026-10-24 16:40]` T0.1 & T0.2: Initialized git repository with main branch and remote origin (ShouryaAhuja/ai-hackathon), added .gitignore and MIT LICENSE, committed 7 core workflow documents.

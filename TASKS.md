@@ -9,7 +9,7 @@ Legend: `[ ]` todo, `[~]` in progress, `[x]` done, `[!]` blocked.
 - [x] T0.2 Copy these 7 docs into repo root (`AGENTS.md`, `RULES.md`, `PRD.md`, `ARCHITECTURE.md`, `DESIGN.md`, `TASKS.md`, `MEMORY.md`) and commit
 - [x] T0.3 Scaffold Vite + React + TS app; set `base: '/<repo-name>/'`; use `HashRouter`
 - [x] T0.4 Add Tailwind, ESLint, Prettier; add `.env.example`
-- [ ] T0.5 Add GitHub Actions workflow to build + deploy to Pages; enable Pages (Source: GitHub Actions)
+- [x] T0.5 Add GitHub Actions workflow to build + deploy to Pages; enable Pages (Source: GitHub Actions)
 - [ ] T0.6 Push a "Hello" page and **verify the live URL loads in incognito** (this de-risks deployment early)
 - [ ] T0.7 Confirm the IDE agent can read `AGENTS.md` (ask it to summarise the rules) and can run `npm run build`
 - [ ] T0.8 Create LLM provider account(s) / free API keys (at least 2 providers for redundancy); store only in local `.env`
