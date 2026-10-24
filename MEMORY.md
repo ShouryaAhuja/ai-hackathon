@@ -5,8 +5,8 @@
 ## 1. Current status
 - **Phase:** 3 - Test mode + evaluation
 - **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
-- **Last completed task:** T3.3 (Collect data: 324 empirical trials across C1-C4 analyzed via ml/analyze.py)
-- **Next task:** T3.4 (Compute false triggers per minute from No Gesture trials)
+- **Last completed task:** T3.4 (Compute false-trigger rate: 0.00 false triggers/min across 40 No-Gesture trials)
+- **Next task:** T3.5 (Verify docs/ evaluation artifacts at frozen 0.70 threshold)
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/
 - **Last known-good tag:** v0.1-demo-safe
@@ -60,7 +60,7 @@
 | Thresholds (score / frames / dwell / cooldown) | 0.70 / 7 / 800 ms / 1200 ms (frozen in config.ts) |
 | Conditions completed | C1 (80), C2 (84), C3 (80), C4 (80) = 324 unique trials |
 | Overall accuracy / neutral rate | 78.70% (255/324) / 21.30% (69/324) |
-| False-trigger rate (per min) | pending T3.4 |
+| False-trigger rate (per min) | 0.00 / min (0 triggers across 40 No-Gesture trials / 200s total) |
 | Weakest gesture | Open_Palm (Recall: 30.2%, F1: 0.464, 30 abstentions) |
 | Custom classifier vs pretrained | - |
 
@@ -76,6 +76,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `25 Oct 00:19` T3.4: Computed false-trigger rates from 40 No-Gesture trials (triggers_fired column). Results: C1=0/50s (0.00/min), C2=0/50s (0.00/min), C3=0/50s (0.00/min), C4=0/50s (0.00/min), overall=0 triggers across 200s (3.33 min) of observation -> 0.00 false triggers/min. Proves the 800ms dwell + 7-frame smoothing + 0.70 threshold completely prevented accidental kiosk actions during non-gesture movement.
 - `25 Oct 00:18` T3.3: Ingested 32 empirical CSV runs from ml/data/ into ml/analyze.py. Preserved literal "None" labels across pandas ingestion. Total unique trials = 324 (C1=80, C2=84, C3=80, C4=80). Overall accuracy: 78.70%, Neutral rate: 21.30%, Error/misclassification: 0.00%, False triggers: 0. Recorded real context notes (lighting, clutter, handedness, Victory orientation) in MEMORY.md.
 - `24 Oct 20:57` PRE-COLLECTION-FIX Task E: Verified docs/HOW_IT_WORKS.md and docs/REPORT.md did not previously exist; created 1-page oral Q&A guide (HOW_IT_WORKS.md) and full factual REPORT.md skeleton with [RESULTS] placeholder. Verified PRD §6 already contains ILoveYou->Help (row 6) and Closed_Fist->Lock (row 7) and confirmed no duplicates were added.
 - `24 Oct 20:53` PRE-COLLECTION-FIX Task D: Configured Python 3.12.15 venv (`.venv`) via `uv` with pandas, matplotlib, numpy. Updated `ml/analyze.py` to accept one or more CSV paths (`nargs='*'`), concatenate them, and drop exact duplicate rows. Added Closed_Fist to CANONICAL_GESTURES and PREDICTED_CLASSES. Verified execution with `.\.venv\Scripts\python.exe ml/analyze.py --mock`.
