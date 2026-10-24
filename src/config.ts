@@ -17,6 +17,7 @@ export type KioskAction =
   | 'Home'
   | 'Schedule'
   | 'Map'
+  | 'Help'
   | 'Confirm'
   | 'Back'
   | 'Lock'
@@ -25,6 +26,7 @@ export const GESTURE_ACTIONS: Record<string, KioskAction> = {
   Open_Palm: 'Home',
   Pointing_Up: 'Schedule',
   Victory: 'Map',
+  ILoveYou: 'Help',
   Thumb_Up: 'Confirm',
   Thumb_Down: 'Back',
   Closed_Fist: 'Lock',

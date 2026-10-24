@@ -71,7 +71,8 @@ FROZEN 24 Oct, pre-evaluation, per owner's local test.
 | 3 | Victory (V sign) | `Victory` | **Open Campus Map** | |
 | 4 | Thumbs up | `Thumb_Up` | **Confirm / Select** | |
 | 5 | Thumbs down | `Thumb_Down` | **Back / Cancel** | |
-| (opt) 6 | Closed fist | `Closed_Fist` | **Pause gesture control (lock)** | Optional; frees user from accidental triggers |
+| 6 | I-love-you sign | `ILoveYou` | **Help** | Added 24 Oct pre-evaluation amendment - see MEMORY.md |
+| (opt) 7 | Closed fist | `Closed_Fist` | **Pause gesture control (lock)** | Optional; frees user from accidental triggers |
 | - | Anything else / low confidence | `None` / below threshold | **Neutral: no action** | Shown explicitly as "Not sure - try again or use buttons" |
 
 > Verify the exact built-in label list against the current MediaPipe docs on day one. If a label is unreliable in testing, swap the gesture **before** the formal evaluation, and record the change in `MEMORY.md`.

@@ -198,5 +198,12 @@ describe('kioskReducer — KioskAction compatibility', () => {
     expect(home.screen).toBe('home')
     expect(home.lastAction).toBe(Action.HOME)
   })
+
+  it('handles "Help" KioskAction string to navigate to help screen', () => {
+    const next = kioskReducer(INITIAL_STATE, 'Help')
+    expect(next.screen).toBe('help')
+    expect(next.history).toEqual(['home'])
+    expect(next.lastAction).toBe(Action.HELP)
+  })
 })
 

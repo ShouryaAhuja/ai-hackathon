@@ -35,6 +35,7 @@
 | 24 Oct | Gesture map frozen in PRD section 6: FROZEN 24 Oct, pre-evaluation, per owner's local test | 5/5 gestures recognised in local test; no swaps needed |
 | 24 Oct | Hold-to-confirm + neutral state + manual parity | Trust, accessibility, responsible AI |
 | 24 Oct | Custom landmark classifier = stretch only | Depth upgrade after MVP + evaluation exist |
+| 24 Oct | Amendment (pre-evaluation): ILoveYou -> Help added as 6th gesture | Reason: Help screen had no gesture path; ILoveYou unused and visually distinct. Owner reliability test passed. |
 
 ## 5. Gotchas (verify as you go)
 - Camera needs HTTPS or localhost: GitHub Pages OK.
@@ -67,6 +68,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `24 Oct 18:42` MAP-AMEND-1: Pre-evaluation gesture map amendment: ILoveYou -> Help added as 6th gesture across PRD.md, config.ts, actions.ts, KioskShell legend, with unit tests in decision.test.ts and actions.test.ts.
 - `24 Oct 18:28` T2.4: Wired DecisionEngine into App.tsx frame loop and connected emitted GestureEvents to kioskReducer. Mapped KioskAction compatibility in actions.ts, keyboard shortcuts and gestures unified under one dispatcher. 44/44 unit tests pass, lint passes, build passes.
 - `24 Oct 18:14` T2.3: Built kiosk shell per DESIGN.md §12: Home/Schedule/Map/Help/Locked screens, responsive header, nav cards, permanent gesture legend, keyboard shortcuts.
 - `24 Oct 18:13` T2.2: Created src/kiosk/actions.ts with Action enum, pure kioskReducer, keyboard shortcut mapper, and unit tests (40/40 tests).

@@ -143,6 +143,22 @@ describe('DecisionEngine — dwell expiry', () => {
     expect(event?.gesture).toBe('Open_Palm')
     expect(typeof event?.confidence).toBe('number')
   })
+
+  it('emits Help action when ILoveYou gesture is sustained for DWELL_MS', () => {
+    const engine = new DecisionEngine()
+    let dwellStart: number | null = null
+    let t = 0
+    while (dwellStart === null) {
+      engine.update('ILoveYou', 0.95, t, true)
+      dwellStart = engine.getState().dwellStart
+      t++
+    }
+    const event = engine.update('ILoveYou', 0.95, dwellStart + DWELL_MS, true)
+    expect(event).not.toBeNull()
+    expect(event?.action).toBe('Help')
+    expect(event?.gesture).toBe('ILoveYou')
+    expect(typeof event?.confidence).toBe('number')
+  })
 })
 
 

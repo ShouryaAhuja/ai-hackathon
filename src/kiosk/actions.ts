@@ -45,6 +45,7 @@ const KIOSK_ACTION_TO_ACTION: Record<KioskAction, Action> = {
   Home: Action.HOME,
   Schedule: Action.SCHEDULE,
   Map: Action.MAP,
+  Help: Action.HELP,
   Confirm: Action.CONFIRM,
   Back: Action.BACK,
   Lock: Action.LOCK,

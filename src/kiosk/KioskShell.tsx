@@ -33,6 +33,7 @@ const GESTURE_LEGEND = [
   { gesture: '✋ Open Palm', action: 'Home',     key: 'H' },
   { gesture: '☝️ Point Up',  action: 'Schedule', key: 'S' },
   { gesture: '✌️ Victory',   action: 'Map',      key: 'M' },
+  { gesture: '🤟 ILY',       action: 'Help',     key: '?' },
   { gesture: '👍 Thumb Up',  action: 'Confirm',  key: '↵' },
   { gesture: '👎 Thumb Down', action: 'Back',    key: '←' },
   { gesture: '✊ Fist',      action: 'Lock',     key: 'L' },
