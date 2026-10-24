@@ -8,7 +8,7 @@ Legend: `[ ]` todo, `[~]` in progress, `[x]` done, `[!]` blocked.
 - [x] T0.1 Create GitHub repo (public), clone locally, `git init` if needed, add `.gitignore` (node, python, `.env*`, OS files) and MIT license
 - [x] T0.2 Copy these 7 docs into repo root (`AGENTS.md`, `RULES.md`, `PRD.md`, `ARCHITECTURE.md`, `DESIGN.md`, `TASKS.md`, `MEMORY.md`) and commit
 - [x] T0.3 Scaffold Vite + React + TS app; set `base: '/<repo-name>/'`; use `HashRouter`
-- [ ] T0.4 Add Tailwind, ESLint, Prettier; add `.env.example`
+- [x] T0.4 Add Tailwind, ESLint, Prettier; add `.env.example`
 - [ ] T0.5 Add GitHub Actions workflow to build + deploy to Pages; enable Pages (Source: GitHub Actions)
 - [ ] T0.6 Push a "Hello" page and **verify the live URL loads in incognito** (this de-risks deployment early)
 - [ ] T0.7 Confirm the IDE agent can read `AGENTS.md` (ask it to summarise the rules) and can run `npm run build`
