@@ -5,8 +5,8 @@
 ## 1. Current status
 - **Phase:** 2 - Core build (MVP)
 - **Selected problem:** **Q15 Gesture-Based Interface (confirmed via T0.8 GO)**.
-- **Last completed task:** T2.9 (Deploy, verify GitHub Actions run, live HEAD-check /mediapipe/ assets, tag v0.1-demo-safe)
-- **Next task:** T3.1 (Test mode UI: pick true gesture + condition; auto-run N trials with countdown; log to memory; export CSV)
+- **Last completed task:** T3.1 (Test mode UI: true gesture & condition selection, 3s countdown, 5s capture, verdict, in-memory log, CSV export, pure tests)
+- **Next task:** T3.2 (Create ml/analyze.py, requirements.txt, confusion matrix, per_class.csv, condition_table.csv, threshold curve)
 - **Blockers:** none
 - **Live URL:** https://shouryaahuja.github.io/ai-hackathon/
 - **Last known-good tag:** v0.1-demo-safe
@@ -68,6 +68,7 @@
 - [ ] Working demo / recorded PoC  - [ ] Gesture-to-action mapping  - [ ] Evaluation table  - [ ] Report file  - [ ] PPT  - [ ] Repo link  - [ ] Submitted before deadline (25 Oct 09:00 AM)
 
 ## 8. Session log
+- `24 Oct 20:09` T3.1: Built Test Mode UI & empirical trial pipeline (src/testmode/). Pre-trial selection of true gesture (7 options: 6 mapped + None/other) and condition (C1-C4), 3s countdown, 5s live capture window, in-memory trial log with correct/neutral/incorrect verdict, CSV export (trials.csv) with zero image/frame storage. Added Test Mode button to Home and header (and key T). Unit tests for pure trial evaluation, CSV conversion, and metrics (57/57 pass). Lint/build pass.
 - `24 Oct 19:13` T2.9: Production deployment verified on live GitHub Pages. GitHub Actions CI/CD completed successfully. Verified live HEAD checks on `/mediapipe/gesture_recognizer.task` and `/mediapipe/vision_wasm_internal.wasm` (HTTP 200). Tagged milestone release `v0.1-demo-safe` and pushed tags. Phase 2 (MVP) complete.
 - `24 Oct 19:11` T2.8: Authored realistic, synthetic campus event content per DESIGN.md §9/§12. Schedule populated with 8 VIT AI Innovate-A-Thon sessions (times, venues, tags, interactive selection). Map built with detailed SVG rendering 5 campus buildings (SJT Block venue, MB Block, Tech Tower, Library, Anna Auditorium) with active building inspector. Help screen structured with comprehensive 6-gesture guide (+ fist lock), visual legend, troubleshooting guide, keyboard shortcuts, and organizing committee contacts. All buttons >= 72px tall. Tests pass (47/47).
 - `24 Oct 19:09` T2.7: Implemented idle/lock and privacy features. Closed_Fist gesture and L key toggle gesture control lock (other gestures ignored while locked, clear LOCKED indicator displayed, manual controls remain active). Added Camera ON/OFF toggle in header and preview. Added required privacy notice ("Video is processed on your device and never stored or uploaded.") across footer and preview. Verified camera tracks fully stopped on unmount and stop. Tests pass (47/47).

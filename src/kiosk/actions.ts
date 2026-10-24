@@ -35,6 +35,7 @@ export const Action = {
   BACK: 'BACK',
   CONFIRM: 'CONFIRM',
   LOCK: 'LOCK',
+  TEST: 'TEST',
 } as const
 
 export type Action = (typeof Action)[keyof typeof Action]
@@ -66,7 +67,8 @@ export function toAction(action: Action | KioskAction): Action {
 // Screen type + navigation graph
 // ---------------------------------------------------------------------------
 
-export type KioskScreen = 'home' | 'schedule' | 'map' | 'help' | 'locked'
+export type KioskScreen =
+  'home' | 'schedule' | 'map' | 'help' | 'locked' | 'test'
 
 /**
  * Where each action navigates to from a given screen.
@@ -80,6 +82,7 @@ export const SCREEN_MAP: Record<Action, KioskScreen | null> = {
   [Action.BACK]: null, // resolved by reducer history
   [Action.CONFIRM]: null, // contextual; currently a no-op / placeholder
   [Action.LOCK]: 'locked',
+  [Action.TEST]: 'test',
 }
 
 // ---------------------------------------------------------------------------
@@ -153,7 +156,8 @@ export function kioskReducer(
     case Action.HOME:
     case Action.SCHEDULE:
     case Action.MAP:
-    case Action.HELP: {
+    case Action.HELP:
+    case Action.TEST: {
       const targetScreen = SCREEN_MAP[action]!
       if (state.screen === targetScreen) {
         // Already here — just record the action
@@ -199,6 +203,8 @@ export const KEYBOARD_SHORTCUTS: Record<string, Action> = {
   '/': Action.HELP,
   l: Action.LOCK,
   L: Action.LOCK,
+  t: Action.TEST,
+  T: Action.TEST,
 }
 
 /**

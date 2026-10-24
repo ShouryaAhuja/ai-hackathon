@@ -41,6 +41,13 @@ describe('kioskReducer — navigation', () => {
     expect(next.screen).toBe('help')
   })
 
+  it('navigates from home to test via TEST', () => {
+    const next = kioskReducer(INITIAL_STATE, Action.TEST)
+    expect(next.screen).toBe('test')
+    expect(next.history).toEqual(['home'])
+    expect(next.lastAction).toBe(Action.TEST)
+  })
+
   it('navigates to locked via LOCK, and toggles back to previous screen on second LOCK', () => {
     const lockedFromHome = kioskReducer(INITIAL_STATE, Action.LOCK)
     expect(lockedFromHome.screen).toBe('locked')
@@ -177,6 +184,8 @@ describe('keyToAction', () => {
     expect(keyToAction('c')).toBe(Action.CONFIRM)
     expect(keyToAction('C')).toBe(Action.CONFIRM)
     expect(keyToAction('/')).toBe(Action.HELP)
+    expect(keyToAction('t')).toBe(Action.TEST)
+    expect(keyToAction('T')).toBe(Action.TEST)
   })
 
   it('returns null for unmapped key', () => {

@@ -19,6 +19,7 @@ import ScheduleScreen from './screens/ScheduleScreen'
 import MapScreen from './screens/MapScreen'
 import HelpScreen from './screens/HelpScreen'
 import LockedScreen from './screens/LockedScreen'
+import TestModeScreen from '../testmode/TestModeScreen'
 
 export interface DetectionInfo {
   gesture: string
@@ -200,6 +201,15 @@ export default function KioskShell({
         return <HelpScreen onDispatch={onDispatch} />
       case 'locked':
         return <LockedScreen onDispatch={onDispatch} />
+      case 'test':
+        return (
+          <TestModeScreen
+            onDispatch={onDispatch}
+            currentDetection={detection}
+            isCameraActive={isCameraActive}
+            onStartCamera={onStartCamera}
+          />
+        )
       default:
         return <HomeScreen onDispatch={onDispatch} />
     }
@@ -309,6 +319,33 @@ export default function KioskShell({
               <span>{isCameraActive ? 'Camera ON' : 'Camera OFF'}</span>
             </button>
           )}
+
+          {/* Test Mode Navigation Button (T3.1) */}
+          <button
+            type="button"
+            onClick={() =>
+              onDispatch(state.screen === 'test' ? Action.HOME : Action.TEST)
+            }
+            title={
+              state.screen === 'test'
+                ? 'Exit Test Mode (Home)'
+                : 'Open Evaluation Test Mode (T)'
+            }
+            className={[
+              'min-h-[46px] px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-all font-semibold text-xs sm:text-sm border-2 cursor-pointer',
+              state.screen === 'test'
+                ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow'
+                : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white',
+            ].join(' ')}
+            aria-label={
+              state.screen === 'test' ? 'Exit Test Mode' : 'Open Test Mode'
+            }
+          >
+            <span aria-hidden="true">🧪</span>
+            <span>
+              {state.screen === 'test' ? 'Exit Test' : 'Test Mode (T)'}
+            </span>
+          </button>
 
           {state.lastAction && (
             <div

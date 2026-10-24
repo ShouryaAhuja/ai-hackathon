@@ -32,7 +32,7 @@ Deadline anchor: work backwards from the **official submission time (confirm: li
 - [x] T2.9 Deploy; full smoke test on **live URL**; tag `v0.1-demo-safe`
 
 ## Phase 3 - Test mode + evaluation (target 2-3 h)
-- [ ] T3.1 Test mode UI: pick true gesture + condition; auto-run N trials with countdown; log to memory; export CSV
+- [x] T3.1 Test mode UI: pick true gesture + condition; auto-run N trials with countdown; log to memory; export CSV
 - [ ] T3.2 `ml/analyze.py`: per-class precision/recall/F1, confusion matrix (incl. NEUTRAL), per-condition table, threshold curve
 - [ ] T3.3 Collect data: C1 baseline, C2 dim, C3 backlit, C4 cluttered, C5 distance, C6 other person/hand (20 trials/gesture/condition; reduce if needed, record honestly)
 - [ ] T3.4 False-trigger session (2 min of normal movement/talking) -> count accidental actions

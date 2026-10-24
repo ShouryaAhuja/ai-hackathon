@@ -139,6 +139,19 @@ export default function HomeScreen({ onDispatch }: Props) {
             M
           </kbd>
         </button>
+
+        <button
+          type="button"
+          onClick={() => onDispatch(Action.TEST)}
+          className="min-h-[72px] flex-1 min-w-[200px] px-6 py-4 rounded-2xl bg-teal-950/70 hover:bg-teal-900/80 text-teal-300 font-bold text-xl border-2 border-teal-500/60 transition-all flex items-center justify-center gap-3 cursor-pointer shadow-md"
+          aria-label="Open evaluation test mode"
+        >
+          <span className="text-2xl">🧪</span>
+          <span>Test Mode</span>
+          <kbd className="text-xs font-mono bg-slate-900 text-teal-200 px-2 py-1 rounded border border-teal-600">
+            T
+          </kbd>
+        </button>
       </div>
 
       {/* Privacy note */}
