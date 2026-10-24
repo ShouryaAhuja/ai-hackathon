@@ -75,6 +75,12 @@
   - `Closed_Fist` → Gesture Lock (`Action.LOCK` — toggles touchless control off/on)
 - **Manual Parity:** Every single action has a persistent button (>= 72px tall) and a keyboard shortcut (`H`, `S`, `M`, `?`, `Enter`, `Esc`, `L`). The kiosk is 100% functional even if the camera is disabled or denied.
 
+### Kiosk Lock & Unlock Mechanism (Presenter Guide)
+When the kiosk is in the **Locked** state (`screen === 'locked'`):
+- **Gesture Unlock (`Closed_Fist` ONLY):** In `App.tsx`, while locked, all gestures except `Closed_Fist` (`Action.LOCK`) are suppressed. Showing `Open_Palm` does **not** unlock the kiosk via gesture. To unlock touchlessly, hold **`Closed_Fist` ✊** steadily for 800 ms to toggle lock off and restore the previous screen.
+- **On-Screen Manual Unlock:** Click the large teal **"Unlock Kiosk (H)"** button (dispatches `Action.HOME` to Home) or the **"← Back"** button (restores the previous screen).
+- **Keyboard Shortcut Unlock:** Press **`L`** (toggles lock off back to previous screen), **`H`** (unlocks to Home), or **`Escape`** / **`Backspace`** (returns to previous screen).
+
 ---
 
 ## 3. Anticipated Judge Questions & Strong Answers
