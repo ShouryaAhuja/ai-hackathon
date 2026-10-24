@@ -66,13 +66,13 @@ FROZEN 24 Oct, pre-evaluation, per owner's local test.
 
 | # | Gesture | MediaPipe label | Kiosk action | Notes |
 |---|---|---|---|---|
-| 1 | Open palm | `Open_Palm` | **Home** | Also "wake" from idle |
+| 1 | Open palm | `Open_Palm` | **Home** | Navigates to Home screen |
 | 2 | Pointing up | `Pointing_Up` | **Open Schedule** | |
 | 3 | Victory (V sign) | `Victory` | **Open Campus Map** | |
 | 4 | Thumbs up | `Thumb_Up` | **Confirm / Select** | |
 | 5 | Thumbs down | `Thumb_Down` | **Back / Cancel** | |
 | 6 | I-love-you sign | `ILoveYou` | **Help** | Added 24 Oct pre-evaluation amendment - see MEMORY.md |
-| (opt) 7 | Closed fist | `Closed_Fist` | **Pause gesture control (lock)** | Optional; frees user from accidental triggers |
+| (opt) 7 | Closed fist | `Closed_Fist` | **Pause gesture control (lock)** | Optional; hold ~800ms to lock or unlock |
 | - | Anything else / low confidence | `None` / below threshold | **Neutral: no action** | Shown explicitly as "Not sure - try again or use buttons" |
 
 > Verify the exact built-in label list against the current MediaPipe docs on day one. If a label is unreliable in testing, swap the gesture **before** the formal evaluation, and record the change in `MEMORY.md`.

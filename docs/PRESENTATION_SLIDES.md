@@ -86,7 +86,7 @@
   - `Thumb_Down` 👎 → Back / Previous View
   - `Victory` ✌️ → Interactive SVG Campus Map & Building Inspector
   - `ILoveYou` 🤟 → Help, Legend & Troubleshooting (100% reliability)
-  - `Closed_Fist` ✊ → Gesture Lock / Pause Protection
+  - `Closed_Fist` ✊ → Gesture Lock / Pause Protection (hold to lock / unlock)
   - `Open_Palm` ✋ → Home Screen Navigation
 - **Kiosk Feedback Suite:** Live confidence meter, animated dwell ring, mirrored preview with landmark toggle, and status strip.
 

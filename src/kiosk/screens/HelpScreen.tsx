@@ -83,7 +83,7 @@ const GESTURE_INSTRUCTIONS: GestureInstruction[] = [
     action: 'Lock / Pause',
     key: 'L',
     howTo: 'Close all fingers tightly into a ball to toggle gesture lock.',
-    tip: 'Pauses gesture recognition so accidental movements are ignored.',
+    tip: 'Pauses gesture recognition so accidental movements are ignored. Hold again to unlock.',
   },
 ]
 

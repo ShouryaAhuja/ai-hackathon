@@ -1,6 +1,6 @@
 /**
  * LockedScreen.tsx — Kiosk locked state (T2.3, T2.6 manual parity, T2.7 idle/lock)
- * Displays a lock message; unlock via button >= 72px tall or Open_Palm gesture / H key.
+ * Displays a lock message; unlock via button >= 72px tall or Closed_Fist gesture / L key / H key.
  */
 import { Action } from '../actions'
 
@@ -33,7 +33,7 @@ export default function LockedScreen({ onDispatch }: Props) {
           style={{ fontSize: 'clamp(22px, 2.2vw, 26px)' }}
         >
           Gesture control is paused to prevent accidental triggers. Manual
-          buttons remain active, or press Unlock to return Home.
+          buttons remain active, or press Unlock to Home.
         </p>
       </div>
 
@@ -43,10 +43,10 @@ export default function LockedScreen({ onDispatch }: Props) {
           onClick={() => onDispatch(Action.HOME)}
           className="min-h-[72px] px-10 py-5 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-bold transition-all shadow-lg shadow-teal-500/20 flex items-center justify-center gap-3 border-2 border-teal-400 cursor-pointer text-2xl"
           style={{ minWidth: '260px' }}
-          aria-label="Unlock kiosk and go to home screen"
+          aria-label="Unlock kiosk and return to home screen"
         >
           <span>🔓</span>
-          <span>Unlock Kiosk (H)</span>
+          <span>Unlock to Home (H)</span>
         </button>
 
         <button
@@ -60,9 +60,9 @@ export default function LockedScreen({ onDispatch }: Props) {
       </div>
 
       <p className="text-slate-400 text-xl text-center">
-        Or show an{' '}
-        <span className="text-teal-400 font-semibold">Open Palm ✋</span>{' '}
-        gesture to unlock
+        Or hold a{' '}
+        <span className="text-teal-400 font-semibold">Closed Fist ✊</span>{' '}
+        for about a second to unlock.
       </p>
     </section>
   )

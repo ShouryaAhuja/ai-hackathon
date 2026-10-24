@@ -285,7 +285,7 @@ export default function KioskShell({
               className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-amber-500/20 border-2 border-amber-500/80 text-amber-300 font-extrabold text-xs sm:text-sm shadow-md animate-pulse"
             >
               <span aria-hidden="true">🔒</span>
-              <span>LOCKED · GESTURES PAUSED</span>
+              <span>LOCKED - FIST TO UNLOCK</span>
             </div>
           )}
 

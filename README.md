@@ -35,7 +35,7 @@ The kiosk gesture vocabulary is frozen in `src/config.ts` and maps 7 hand poses 
 | `ILoveYou` | 🤟 | **Help** | Gesture legend, user guide & troubleshooting | `?` / `/` |
 | `Thumb_Up` | 👍 | **Confirm** | Selects highlighted schedule session / item | `Enter` / `C` |
 | `Thumb_Down` | 👎 | **Back** | Returns to previous view / cancels modal | `Esc` / `Backspace` |
-| `Closed_Fist` | ✊ | **Lock** | Toggles gesture pause (suppresses gestures) | `L` |
+| `Closed_Fist` | ✊ | **Lock** | Toggles gesture pause (hold to lock / unlock) | `L` |
 
 ---
 

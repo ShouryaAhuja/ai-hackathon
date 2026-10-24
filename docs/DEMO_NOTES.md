@@ -35,7 +35,7 @@ If you lock the kiosk with `Closed_Fist` ✊, here is exactly how to unlock it:
    - Showing `Open_Palm` will **NOT** unlock the kiosk via gesture.
    - **Hold `Closed_Fist` ✊ steadily for 800 ms** to toggle lock off and return to your previous screen.
 2. **Manual Button Unlock (Fail-safe):**
-   - Click the large teal **"Unlock Kiosk (H)"** button (routes to Home).
+   - Click the large teal **"Unlock to Home (H)"** button (routes to Home).
    - Or click **"← Back"** to restore the previous screen.
 3. **Keyboard Shortcut (Emergency fast unlock):**
    - Press **`L`** on your keyboard to toggle unlock.

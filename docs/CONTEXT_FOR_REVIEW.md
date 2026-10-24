@@ -148,13 +148,13 @@ export const NO_HAND_RESET_MS = 300     // Milliseconds of missing hand detectio
 ## 4. GESTURES
 
 ### Gestures Actually Used by the App & Test Mode
-1. `Open_Palm` → **Home** (Also used to wake/unlock kiosk)
+1. `Open_Palm` → **Home** (Navigate to Home screen; does not unlock when locked)
 2. `Pointing_Up` → **Schedule** (Navigate to campus event schedule)
 3. `Victory` → **Map** (Navigate to SVG campus map)
 4. `Thumb_Up` → **Confirm** (Contextual confirmation / selection)
 5. `Thumb_Down` → **Back** (Unwind screen navigation history)
 6. `ILoveYou` → **Help** (Navigate to help, instructions, and FAQ)
-7. `Closed_Fist` → **Lock** (Toggle gesture-control lock: pauses touchless recognition, manual only)
+7. `Closed_Fist` → **Lock** (Toggle gesture-control lock: hold ~800ms to lock or unlock touchless control)
 8. `None` / below threshold → **NEUTRAL** (System abstains; shows NeutralBanner "Not sure - hold your hand steady or use the buttons")
 
 ### Test Mode Ground-Truth Options
