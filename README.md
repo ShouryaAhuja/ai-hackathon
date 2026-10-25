@@ -5,8 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 > **VIT AI Innovate-A-Thon 2026**  
-> **Problem Statement Q15:** Gesture-Based Interface for Public Kiosks  
-> **Team:** Solo + Antigravity AI Agent  
+> **Problem Statement :** Gesture-Based Interface for Public Kiosks   
 > **Live Web Application:** [https://shouryaahuja.github.io/ai-hackathon/](https://shouryaahuja.github.io/ai-hackathon/)
 
 ---
